@@ -68,7 +68,13 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    pages: Page;
     media: Media;
+    'gallery-images': GalleryImage;
+    reviews: Review;
+    'faq-items': FaqItem;
+    'booking-inquiries': BookingInquiry;
+    'contact-messages': ContactMessage;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -77,18 +83,28 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'gallery-images': GalleryImagesSelect<false> | GalleryImagesSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
+    'booking-inquiries': BookingInquiriesSelect<false> | BookingInquiriesSelect<true>;
+    'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -122,7 +138,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,10 +160,307 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  layout?:
+    | (
+        | {
+            slides: {
+              image: number | Media;
+              kicker?: string | null;
+              title: string;
+              accent?: string | null;
+              subtext?: string | null;
+              id?: string | null;
+            }[];
+            transitionDuration?: number | null;
+            interval?: number | null;
+            primaryCta?: {
+              label?: string | null;
+              url?: string | null;
+            };
+            secondaryCta?: {
+              label?: string | null;
+              url?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero-slider';
+          }
+        | {
+            title: string;
+            accent?: string | null;
+            lead?: string | null;
+            /**
+             * Overrides the default breadcrumb trail label
+             */
+            breadcrumbLabel?: string | null;
+            image: number | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero-sub';
+          }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            badge?: string | null;
+            showMap?: boolean | null;
+            mapEmbedUrl?: string | null;
+            mapDirectUrl?: string | null;
+            mapAddress?: string | null;
+            lead: string;
+            paragraphs?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
+            highlights?:
+              | {
+                  icon?: ('users' | 'pool' | 'flame' | 'paw' | 'bed' | 'sun' | 'sparkles') | null;
+                  label: string;
+                  detail: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'storyHighlights';
+          }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            bgStyle?: ('surface' | 'paper') | null;
+            spaces?:
+              | {
+                  /**
+                   * e.g. Kitchen & Dining, Master Bedroom, BBQ House
+                   */
+                  name: string;
+                  /**
+                   * e.g. interior, bedrooms, bathrooms, outdoors
+                   */
+                  category?: string | null;
+                  subtitle?: string | null;
+                  images?:
+                    | {
+                        image: number | Media;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  features?:
+                    | {
+                        label: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'spacesShowcase';
+          }
+        | {
+            kicker?: string | null;
+            headline: string;
+            accent?: string | null;
+            body: string;
+            delicacies?:
+              | {
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            imageMain?: (number | null) | Media;
+            imageTop?: (number | null) | Media;
+            imageBottom?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'welcomePackage';
+          }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            items?:
+              | {
+                  /**
+                   * e.g. 14 km, 20 min, 1.5 km
+                   */
+                  value: string;
+                  /**
+                   * e.g. Nearest beach, Šibenik old town, Split airport
+                   */
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'distances';
+          }
+        | {
+            title: string;
+            accent?: string | null;
+            body?: string | null;
+            primaryCtaLabel?: string | null;
+            primaryCtaLink?: string | null;
+            whatsappLabel?: string | null;
+            whatsappNumber?: string | null;
+            hostName?: string | null;
+            hostRole?: string | null;
+            hostInitials?: string | null;
+            /**
+             * Profile picture of the host (circular). If left empty, initials will be displayed.
+             */
+            hostAvatar?: (number | null) | Media;
+            hostPhone?: string | null;
+            hostEmail?: string | null;
+            guarantees?:
+              | {
+                  icon?: ('shield' | 'receipt' | 'sparkles' | 'clock' | 'paw' | 'pool' | 'users' | 'star') | null;
+                  title: string;
+                  desc: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'bookingBand';
+          }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            titleEnd?: string | null;
+            paragraphs?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
+            primaryImage?: (number | null) | Media;
+            secondaryImage?: (number | null) | Media;
+            stats?:
+              | {
+                  label: string;
+                  value: number;
+                  suffix?: string | null;
+                  detail?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'perspective';
+          }
+        | {
+            quote: string;
+            author?: string | null;
+            role?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'quote';
+          }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            items?:
+              | {
+                  name: string;
+                  tag?: string | null;
+                  time?: string | null;
+                  desc?: string | null;
+                  image?: (number | null) | Media;
+                  link?: string | null;
+                  icon?: ('sun' | 'flame' | 'moon' | 'sparkles' | 'clock') | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'places';
+          }
+        | {
+            kicker?: string | null;
+            title?: string | null;
+            accent?: string | null;
+            /**
+             * Duration in seconds for one full loop cycle. Lower number = faster movement, higher number = slower movement (e.g. 45 for fast, 65 for default, 90 for slow).
+             */
+            speed?: number | null;
+            images?:
+              | {
+                  image: number | Media;
+                  alt?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'galleryStrip';
+          }
+        | {
+            kicker?: string | null;
+            title?: string | null;
+            accent?: string | null;
+            intro?: string | null;
+            limit?: number | null;
+            selectedReviews?: (number | Review)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'reviews';
+          }
+        | {
+            kicker?: string | null;
+            title?: string | null;
+            accent?: string | null;
+            subtext?: string | null;
+            items?: (number | FaqItem)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faqShort';
+          }
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  /**
+   * URL slug for this page (e.g. "home", "about-villa", "gallery")
+   */
+  slug: string;
+  includeInNav?: boolean | null;
+  /**
+   * Lower numbers appear first (e.g. 1, 2, 3...)
+   */
+  navOrder?: number | null;
+  /**
+   * If left empty, Page Title will be used in navigation
+   */
+  navLabel?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -160,13 +473,136 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    tablet?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    desktop?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  name: string;
+  country?: string | null;
+  /**
+   * Guest rating from 1 to 5
+   */
+  stars?: number | null;
+  text: string;
+  /**
+   * e.g. adriaticluxuryvillas.com
+   */
+  source?: string | null;
+  /**
+   * Link to the original review
+   */
+  sourceUrl?: string | null;
+  /**
+   * Lower numbers appear first
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-items".
+ */
+export interface FaqItem {
+  id: number;
+  question: string;
+  answer: string;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-images".
+ */
+export interface GalleryImage {
+  id: number;
+  image: number | Media;
+  /**
+   * Overrides the media alt text if filled in
+   */
+  alt?: string | null;
+  /**
+   * Featured images are shown larger in the gallery grid
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "booking-inquiries".
+ */
+export interface BookingInquiry {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  country?: string | null;
+  checkIn: string;
+  checkOut: string;
+  adults: number;
+  kids?: number | null;
+  pets: 'no' | 'yes';
+  notes?: string | null;
+  status?: ('new' | 'contacted' | 'booked' | 'archived') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages".
+ */
+export interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  /**
+   * The sender agreed to personal data processing
+   */
+  consent: boolean;
+  status?: ('new' | 'handled' | 'archived') | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +619,44 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'gallery-images';
+        value: number | GalleryImage;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'faq-items';
+        value: number | FaqItem;
+      } | null)
+    | ({
+        relationTo: 'booking-inquiries';
+        value: number | BookingInquiry;
+      } | null)
+    | ({
+        relationTo: 'contact-messages';
+        value: number | ContactMessage;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +666,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +689,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -259,6 +719,290 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  layout?:
+    | T
+    | {
+        'hero-slider'?:
+          | T
+          | {
+              slides?:
+                | T
+                | {
+                    image?: T;
+                    kicker?: T;
+                    title?: T;
+                    accent?: T;
+                    subtext?: T;
+                    id?: T;
+                  };
+              transitionDuration?: T;
+              interval?: T;
+              primaryCta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              secondaryCta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'hero-sub'?:
+          | T
+          | {
+              title?: T;
+              accent?: T;
+              lead?: T;
+              breadcrumbLabel?: T;
+              image?: T;
+              id?: T;
+              blockName?: T;
+            };
+        storyHighlights?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              badge?: T;
+              showMap?: T;
+              mapEmbedUrl?: T;
+              mapDirectUrl?: T;
+              mapAddress?: T;
+              lead?: T;
+              paragraphs?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              highlights?:
+                | T
+                | {
+                    icon?: T;
+                    label?: T;
+                    detail?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        spacesShowcase?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              bgStyle?: T;
+              spaces?:
+                | T
+                | {
+                    name?: T;
+                    category?: T;
+                    subtitle?: T;
+                    images?:
+                      | T
+                      | {
+                          image?: T;
+                          id?: T;
+                        };
+                    features?:
+                      | T
+                      | {
+                          label?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        welcomePackage?:
+          | T
+          | {
+              kicker?: T;
+              headline?: T;
+              accent?: T;
+              body?: T;
+              delicacies?:
+                | T
+                | {
+                    label?: T;
+                    id?: T;
+                  };
+              imageMain?: T;
+              imageTop?: T;
+              imageBottom?: T;
+              id?: T;
+              blockName?: T;
+            };
+        distances?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              items?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        bookingBand?:
+          | T
+          | {
+              title?: T;
+              accent?: T;
+              body?: T;
+              primaryCtaLabel?: T;
+              primaryCtaLink?: T;
+              whatsappLabel?: T;
+              whatsappNumber?: T;
+              hostName?: T;
+              hostRole?: T;
+              hostInitials?: T;
+              hostAvatar?: T;
+              hostPhone?: T;
+              hostEmail?: T;
+              guarantees?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    desc?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        perspective?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              titleEnd?: T;
+              paragraphs?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              primaryImage?: T;
+              secondaryImage?: T;
+              stats?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    suffix?: T;
+                    detail?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              role?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        places?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              items?:
+                | T
+                | {
+                    name?: T;
+                    tag?: T;
+                    time?: T;
+                    desc?: T;
+                    image?: T;
+                    link?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        galleryStrip?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              speed?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        reviews?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              intro?: T;
+              limit?: T;
+              selectedReviews?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faqShort?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              subtext?: T;
+              items?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  slug?: T;
+  includeInNav?: T;
+  navOrder?: T;
+  navLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -274,6 +1018,111 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        tablet?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        desktop?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-images_select".
+ */
+export interface GalleryImagesSelect<T extends boolean = true> {
+  image?: T;
+  alt?: T;
+  featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  name?: T;
+  country?: T;
+  stars?: T;
+  text?: T;
+  source?: T;
+  sourceUrl?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-items_select".
+ */
+export interface FaqItemsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "booking-inquiries_select".
+ */
+export interface BookingInquiriesSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  country?: T;
+  checkIn?: T;
+  checkOut?: T;
+  adults?: T;
+  kids?: T;
+  pets?: T;
+  notes?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages_select".
+ */
+export interface ContactMessagesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  subject?: T;
+  message?: T;
+  consent?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +1163,97 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  contact: {
+    email: string;
+    phone?: string | null;
+    /**
+     * e.g. Podine, near Šibenik
+     */
+    address: string;
+    region?: string | null;
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
+    distances?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+  };
+  stats?: {
+    items?:
+      | {
+          label: string;
+          value: number;
+          suffix?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  contact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+        region?: T;
+        coordinates?:
+          | T
+          | {
+              lat?: T;
+              lng?: T;
+            };
+        distances?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+      };
+  stats?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              suffix?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

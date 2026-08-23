@@ -1,0 +1,124 @@
+@import 'tailwindcss';
+
+@theme {
+  /*
+    Villa San Antonio - MaisonFav-pinned visual world:
+    paper ground, ink type, Instrument Serif italic accents.
+    Reference: https://maisonfav.aura.build/ (pinned by the owner).
+  */
+  --color-paper: #f5f5f2;
+  --color-surface: #e9e8e4;
+  --color-surface-deep: #dedfdb;
+  --color-ink: #090b0c;
+  --color-ink-soft: #090c0d;
+  --color-fog: #c9c3b9;
+  --color-mist: #b8c0bc;
+  --color-sky: #b9e5f3;
+
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+  --font-accent: var(--font-instrument), Georgia, 'Times New Roman', serif;
+
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --radius-band: 16px;
+  --radius-input: 0px;
+
+  --animate-fade-in: fade-in 0.5s var(--ease-reveal) both;
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-[91.5vw] max-w-[1440px];
+  }
+
+  /* MaisonFav headline voice: huge, tight, semibold sans with serif italic accents */
+  .heading-display {
+    @apply font-semibold leading-[0.9] tracking-[-0.06em] text-balance;
+  }
+
+  .heading-section {
+    @apply text-5xl font-medium leading-[0.94] tracking-[-0.06em] text-balance sm:text-6xl lg:text-7xl;
+  }
+
+  .kicker {
+    @apply text-xs font-medium uppercase tracking-[0.16rem] text-ink/55;
+  }
+
+  .body-quiet {
+    @apply max-w-md text-sm leading-6 text-ink/60;
+  }
+
+  .accent-serif {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .link-quiet {
+    @apply underline decoration-1 underline-offset-4 transition-colors duration-200 ease-[var(--ease-reveal)];
+  }
+
+  /* Black pill with the white arrow chip, per the pinned reference */
+  .pill-cta {
+    @apply inline-flex items-center gap-4 rounded-full bg-ink py-1.5 pl-5 pr-1.5 text-xs font-medium uppercase tracking-wider text-white transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .pill-cta-lg {
+    @apply inline-flex items-center gap-4 rounded-full bg-ink py-2 pl-6 pr-2 text-xs font-medium uppercase tracking-wider text-white transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-1 active:translate-y-0;
+  }
+
+  .pill-chip {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-ink;
+  }
+}

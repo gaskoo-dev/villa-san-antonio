@@ -1,16 +1,7 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+import nextConfig from 'eslint-config-next'
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...nextConfig,
   {
     rules: {
       '@typescript-eslint/ban-ts-comment': 'warn',
@@ -29,9 +20,21 @@ const eslintConfig = [
         },
       ],
     },
+    // attach to the typescript plugin already registered by next/typescript
+    plugins: nextConfig[1].plugins,
   },
   {
-    ignores: ['.next/', 'src/payload-types.ts', 'src/payload-generated-schema.ts'],
+    ignores: [
+      '.next/',
+      'src/payload-types.ts',
+      'src/payload-generated-schema.ts',
+      '.migration/',
+      '.screenshots/',
+      '.agents/',
+      '.claude/',
+      '.impeccable/',
+      'tests/',
+    ],
   },
 ]
 
