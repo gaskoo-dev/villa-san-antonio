@@ -102,9 +102,13 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    header: Header;
+    footer: Footer;
     'site-settings': SiteSetting;
   };
   globalsSelect: {
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
@@ -1254,6 +1258,72 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  topBar?: {
+    phone?: string | null;
+    email?: string | null;
+    enableLanguages?: boolean | null;
+  };
+  navItems?:
+    | {
+        label: string;
+        link: string;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    label?: string | null;
+    link?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  brandTagline?: string | null;
+  primaryCta?: {
+    label?: string | null;
+    link?: string | null;
+  };
+  navLinks?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  contact?: {
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    region?: string | null;
+  };
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'facebook' | 'whatsapp' | 'tiktok' | 'youtube' | 'airbnb' | 'booking' | 'other';
+        label?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Displayed at the bottom right next to Back to Top button.
+   */
+  bottomTicker?: string | null;
+  copyright?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
@@ -1268,6 +1338,77 @@ export interface SiteSetting {
   calendarLastSyncedAt?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  topBar?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        enableLanguages?: T;
+      };
+  navItems?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        newTab?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  brandTagline?: T;
+  primaryCta?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+      };
+  navLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+        region?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  bottomTicker?: T;
+  copyright?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -8,7 +8,7 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
 import { LocaleProvider } from '@/context/LocaleContext'
 import { SITE_URL } from '@/lib/content'
-import { getNavPages } from '@/lib/queries'
+import { getFooter, getHeader, getNavPages } from '@/lib/queries'
 
 import './globals.css'
 
@@ -47,16 +47,20 @@ export const metadata: Metadata = {
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const navPages = await getNavPages()
+  const [navPages, headerData, footerData] = await Promise.all([
+    getNavPages(),
+    getHeader(),
+    getFooter(),
+  ])
 
   return (
     <html lang="en" className={`${dmSans.variable} ${instrumentSerif.variable}`}>
       <body>
         <LocaleProvider>
           <CursorDot />
-          <SiteHeader cmsNavLinks={navPages} />
+          <SiteHeader cmsNavLinks={navPages} headerData={headerData} />
           <main id="content">{children}</main>
-          <SiteFooter cmsNavLinks={navPages} />
+          <SiteFooter cmsNavLinks={navPages} footerData={footerData} />
           <BackToTop />
         </LocaleProvider>
       </body>

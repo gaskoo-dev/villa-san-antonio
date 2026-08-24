@@ -15,6 +15,8 @@ import { FAQCategories } from './collections/FAQCategories'
 import { GalleryImages } from './collections/GalleryImages'
 import { BookingInquiries } from './collections/BookingInquiries'
 import { ContactMessages } from './collections/ContactMessages'
+import { Header } from './globals/Header'
+import { Footer } from './globals/Footer'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -38,7 +40,7 @@ export default buildConfig({
     BookingInquiries,
     ContactMessages,
   ],
-  globals: [SiteSettings],
+  globals: [Header, Footer, SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

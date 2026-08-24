@@ -5,22 +5,24 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 
 import { useLocale } from '@/context/LocaleContext'
 import { BOOKING_ANCHOR, CONTACT_EMAIL, CONTACT_PHONE } from '@/lib/content'
+import type { Header } from '@/payload-types'
 
 export function SiteHeader({
   cmsNavLinks,
+  headerData,
 }: {
   cmsNavLinks?: Array<{ href: string; label: string }>
+  headerData?: Header | null
 } = {}) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { locale, setLocale, t, locales } = useLocale()
   const pathname = usePathname()
   const { scrollY } = useScroll()
-  const reduce = useReducedMotion()
 
   useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 24))
 
@@ -31,17 +33,35 @@ export function SiteHeader({
     }
   }, [menuOpen])
 
-  const bookingHref = BOOKING_ANCHOR
   const overHero = !scrolled && !menuOpen
 
+  // Dynamic Top Bar
+  const phone = headerData?.topBar?.phone || CONTACT_PHONE
+  const email = headerData?.topBar?.email || CONTACT_EMAIL
+  const enableLanguages = headerData?.topBar?.enableLanguages !== false
+
+  // Dynamic Navigation Links
   const fallbackNavLinks = [
-    { href: '/about-villa', label: t.nav.about },
-    { href: '/gallery', label: t.nav.gallery },
-    { href: '/faq', label: t.nav.faq },
-    { href: '/contact-us', label: t.nav.contact },
+    { href: '/about-villa', label: t.nav.about, newTab: false },
+    { href: '/gallery', label: t.nav.gallery, newTab: false },
+    { href: '/faq', label: t.nav.faq, newTab: false },
+    { href: '/contact-us', label: t.nav.contact, newTab: false },
   ]
 
-  const navLinks = cmsNavLinks && cmsNavLinks.length > 0 ? cmsNavLinks : fallbackNavLinks
+  const navLinks =
+    headerData?.navItems && headerData.navItems.length > 0
+      ? headerData.navItems.map((item) => ({
+          href: item.link,
+          label: item.label,
+          newTab: item.newTab || false,
+        }))
+      : cmsNavLinks && cmsNavLinks.length > 0
+        ? cmsNavLinks.map((l) => ({ ...l, newTab: false }))
+        : fallbackNavLinks
+
+  // Dynamic CTA
+  const ctaLabel = headerData?.cta?.label || t.nav.checkAvailability
+  const ctaLink = headerData?.cta?.link || BOOKING_ANCHOR
 
   return (
     <header
@@ -66,45 +86,47 @@ export function SiteHeader({
         <div className="container-page flex h-10 items-center justify-between text-[11px] font-medium tracking-[0.14rem]">
           <div className="flex items-center gap-6">
             <a
-              href={`tel:${CONTACT_PHONE}`}
+              href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
               className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90"
             >
               <IconPhone size={18} stroke={1.8} className="opacity-90" />
-              <span>{CONTACT_PHONE}</span>
+              <span>{phone}</span>
             </a>
             <span className="hidden opacity-30 sm:inline">/</span>
             <a
-              href={`mailto:${CONTACT_EMAIL}`}
+              href={`mailto:${email}`}
               className="hidden items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90 sm:inline-flex"
             >
               <IconMail size={18} stroke={1.8} className="opacity-90" />
-              <span>{CONTACT_EMAIL}</span>
+              <span>{email}</span>
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Languages */}
-            <div className="flex items-center gap-1.5 font-semibold">
-              {locales.map((l, i) => (
-                <React.Fragment key={l.code}>
-                  {i > 0 && <span className="opacity-30 text-[9px]">/</span>}
-                  <button
-                    type="button"
-                    onClick={() => setLocale(l.code)}
-                    className={`transition-all uppercase ${
-                      locale === l.code
-                        ? overHero
-                          ? 'font-bold text-white underline underline-offset-4'
-                          : 'font-bold text-ink underline underline-offset-4'
-                        : 'opacity-70 hover:opacity-100'
-                    }`}
-                  >
-                    {l.flag}
-                  </button>
-                </React.Fragment>
-              ))}
+          {enableLanguages && (
+            <div className="flex items-center gap-3">
+              {/* Languages */}
+              <div className="flex items-center gap-1.5 font-semibold">
+                {locales.map((l, i) => (
+                  <React.Fragment key={l.code}>
+                    {i > 0 && <span className="opacity-30 text-[9px]">/</span>}
+                    <button
+                      type="button"
+                      onClick={() => setLocale(l.code)}
+                      className={`transition-all uppercase ${
+                        locale === l.code
+                          ? overHero
+                            ? 'font-bold text-white underline underline-offset-4'
+                            : 'font-bold text-ink underline underline-offset-4'
+                          : 'opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      {l.flag}
+                    </button>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -150,8 +172,10 @@ export function SiteHeader({
         <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.href + link.label}
               href={link.href}
+              target={link.newTab ? '_blank' : undefined}
+              rel={link.newTab ? 'noopener noreferrer' : undefined}
               className={`text-xs font-medium uppercase tracking-[0.13rem] transition-colors duration-200 ${
                 overHero
                   ? 'text-white/80 hover:text-white'
@@ -165,12 +189,12 @@ export function SiteHeader({
           ))}
 
           <Link
-            href={bookingHref}
+            href={ctaLink}
             className={`inline-flex items-center gap-4 rounded-full py-1.5 pl-5 pr-1.5 text-xs font-medium uppercase tracking-wider transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-0.5 active:translate-y-0 ${
               overHero ? 'bg-white text-ink' : 'bg-ink text-white'
             }`}
           >
-            {t.nav.checkAvailability}
+            {ctaLabel}
             <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${overHero ? 'bg-ink text-white' : 'bg-white text-ink'}`}>
               <IconArrowUpRight size={18} stroke={2} aria-hidden />
             </span>
@@ -179,79 +203,98 @@ export function SiteHeader({
 
         <div className="flex items-center gap-3 lg:hidden">
           {/* Mobile Language Switcher */}
-          <div
-            className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-wider ${
-              overHero ? 'bg-white/10 text-white/70' : 'bg-ink/5 text-ink/70'
-            }`}
-          >
-            {locales.map((l, i) => (
-              <React.Fragment key={l.code}>
-                {i > 0 && <span className="opacity-30 text-[9px]">/</span>}
-                <button
-                  type="button"
-                  onClick={() => setLocale(l.code)}
-                  className={`transition-colors uppercase ${
-                    locale === l.code
-                      ? overHero
-                        ? 'font-bold text-white'
-                        : 'font-bold text-ink'
-                      : overHero
-                        ? 'hover:text-white'
-                        : 'hover:text-ink'
-                  }`}
-                >
-                  {l.flag}
-                </button>
-              </React.Fragment>
-            ))}
-          </div>
+          {enableLanguages && (
+            <div
+              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-wider ${
+                overHero ? 'bg-white/10 text-white/70' : 'bg-ink/5 text-ink/70'
+              }`}
+            >
+              {locales.map((l, i) => (
+                <React.Fragment key={l.code}>
+                  {i > 0 && <span className="opacity-30 text-[9px]">/</span>}
+                  <button
+                    type="button"
+                    onClick={() => setLocale(l.code)}
+                    className={`transition-colors uppercase ${
+                      locale === l.code
+                        ? overHero
+                          ? 'font-bold text-white'
+                          : 'font-bold text-ink'
+                        : overHero
+                          ? 'hover:text-white'
+                          : 'hover:text-ink'
+                    }`}
+                  >
+                    {l.flag}
+                  </button>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
 
           <button
             type="button"
-            onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-300 ${
-              overHero ? 'border-white/40 text-white' : 'border-ink/20 text-ink'
+            aria-label="Toggle navigation menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
+              overHero
+                ? 'border-white/25 text-white hover:border-white'
+                : 'border-ink/15 text-ink hover:border-ink/40'
             }`}
           >
-            {menuOpen ? <IconX size={18} stroke={1.5} /> : <IconMenu2 size={18} stroke={1.5} />}
+            {menuOpen ? <IconX size={20} /> : <IconMenu2 size={20} />}
           </button>
         </div>
       </div>
 
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="border-b border-ink/10 bg-paper px-6 pb-8 pt-4 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 top-0 z-40 flex h-dvh flex-col justify-between bg-paper px-6 pb-10 pt-28 text-ink lg:hidden"
           >
-            <nav className="flex flex-col gap-4 text-sm font-medium uppercase tracking-[0.14rem]">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`py-2 transition-colors ${
-                    pathname === link.href ? 'text-ink' : 'text-ink/60 hover:text-ink'
-                  }`}
+            <nav className="flex flex-col gap-6">
+              {navLinks.map((link, idx) => (
+                <motion.div
+                  key={link.href + link.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * idx, duration: 0.3 }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    target={link.newTab ? '_blank' : undefined}
+                    rel={link.newTab ? 'noopener noreferrer' : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className={`text-2xl font-medium tracking-tight ${
+                      pathname === link.href ? 'text-ink underline' : 'text-ink/70'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
-              <div className="pt-2">
-                <Link
-                  href={bookingHref}
-                  onClick={() => setMenuOpen(false)}
-                  className="btn-primary w-full justify-center text-xs"
-                >
-                  {t.nav.checkAvailability}
-                </Link>
-              </div>
             </nav>
+
+            <div className="space-y-6 border-t border-ink/10 pt-6">
+              <Link
+                href={ctaLink}
+                onClick={() => setMenuOpen(false)}
+                className="flex w-full items-center justify-center gap-3 rounded-full bg-ink py-4 text-xs font-semibold uppercase tracking-widest text-white shadow-md"
+              >
+                <span>{ctaLabel}</span>
+                <IconArrowUpRight size={16} />
+              </Link>
+              <div className="flex justify-between text-xs text-ink/60">
+                <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`}>{phone}</a>
+                <a href={`mailto:${email}`}>{email}</a>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

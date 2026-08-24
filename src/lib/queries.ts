@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 
-import type { FaqCategory, FaqItem, GalleryImage, Media, Page, Review, SiteSetting } from '@/payload-types'
+import type { FaqCategory, FaqItem, Footer, GalleryImage, Header, Media, Page, Review, SiteSetting } from '@/payload-types'
 import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
@@ -53,6 +53,24 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
       depth: 2,
     })
     return (docs[0] as Page) || null
+  } catch {
+    return null
+  }
+}
+
+export async function getHeader(): Promise<Header | null> {
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({ slug: 'header', depth: 1 })
+  } catch {
+    return null
+  }
+}
+
+export async function getFooter(): Promise<Footer | null> {
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({ slug: 'footer', depth: 1 })
   } catch {
     return null
   }
