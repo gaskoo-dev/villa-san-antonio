@@ -447,6 +447,12 @@ export interface Page {
             rightTitle?: string | null;
             rightAccent?: string | null;
             rightLead?: string | null;
+            enableSearch?: boolean | null;
+            enableCategoryTabs?: boolean | null;
+            /**
+             * Select specific FAQ items to display in order, or leave empty to automatically display all FAQ items from the collection.
+             */
+            items?: (number | FaqItem)[] | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'faqSection';
@@ -1029,6 +1035,9 @@ export interface PagesSelect<T extends boolean = true> {
               rightTitle?: T;
               rightAccent?: T;
               rightLead?: T;
+              enableSearch?: T;
+              enableCategoryTabs?: T;
+              items?: T;
               id?: T;
               blockName?: T;
             };

@@ -15,7 +15,7 @@ import { FaqInteractive } from '@/components/FaqInteractive'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { getFaqItems, getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
-import type { Media, Page } from '@/payload-types'
+import type { FaqItem, Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 type HeroSubBlock = Extract<LayoutBlock, { blockType: 'hero-sub' }>
@@ -41,7 +41,7 @@ const ICON_MAP = {
 } as const
 
 export default async function FaqPage() {
-  const [pageDoc, faqItems, gallery] = await Promise.all([
+  const [pageDoc, allFaqItems, gallery] = await Promise.all([
     getPageBySlug('faq'),
     getFaqItems(),
     getGallery(),
@@ -89,6 +89,12 @@ export default async function FaqPage() {
     faqBlock?.quickFacts && faqBlock.quickFacts.length > 0
       ? faqBlock.quickFacts
       : defaultQuickFacts
+
+  // Resolve FAQ items: either specific selected items in block, or all items from collection
+  const resolvedFaqItems =
+    faqBlock?.items && Array.isArray(faqBlock.items) && faqBlock.items.length > 0
+      ? (faqBlock.items.filter((item): item is FaqItem => typeof item === 'object' && item !== null))
+      : allFaqItems
 
   return (
     <>
@@ -178,7 +184,11 @@ export default async function FaqPage() {
             </Reveal>
 
             <Reveal delay={80}>
-              <FaqInteractive items={faqItems} />
+              <FaqInteractive
+                items={resolvedFaqItems}
+                enableSearch={faqBlock?.enableSearch ?? true}
+                enableCategoryTabs={faqBlock?.enableCategoryTabs ?? true}
+              />
             </Reveal>
           </div>
         </div>

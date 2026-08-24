@@ -7,6 +7,9 @@ export const FaqSectionBlock: Block = {
     plural: 'FAQ Sections (Full)',
   },
   fields: [
+    // ----------------------------------------------------
+    // LEFT COLUMN: Quick Facts
+    // ----------------------------------------------------
     {
       type: 'row',
       fields: [
@@ -39,9 +42,9 @@ export const FaqSectionBlock: Block = {
     {
       name: 'quickFacts',
       type: 'array',
-      label: 'Quick Fact Cards (Left Sidebar)',
+      label: 'Quick Fact Cards (Left Column)',
       minRows: 1,
-      maxRows: 6,
+      maxRows: 8,
       fields: [
         {
           type: 'row',
@@ -81,6 +84,10 @@ export const FaqSectionBlock: Block = {
         },
       ],
     },
+
+    // ----------------------------------------------------
+    // RIGHT COLUMN: FAQ & Guide
+    // ----------------------------------------------------
     {
       type: 'row',
       fields: [
@@ -109,6 +116,36 @@ export const FaqSectionBlock: Block = {
       type: 'textarea',
       defaultValue:
         'Everything you need to know about staying at Villa San Antonio. Filter by category or search below.',
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'enableSearch',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Enable Search Bar',
+          admin: { width: '50%' },
+        },
+        {
+          name: 'enableCategoryTabs',
+          type: 'checkbox',
+          defaultValue: true,
+          label: 'Enable Category Tabs',
+          admin: { width: '50%' },
+        },
+      ],
+    },
+    {
+      name: 'items',
+      type: 'relationship',
+      relationTo: 'faq-items',
+      hasMany: true,
+      label: 'FAQ Items (Right Column)',
+      admin: {
+        description:
+          'Select specific FAQ items to display in order, or leave empty to automatically display all FAQ items from the collection.',
+      },
     },
   ],
 }

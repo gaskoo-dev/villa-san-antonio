@@ -19,11 +19,22 @@ const CATEGORY_TABS = [
   { id: 'rules', label: 'Rules & Pets' },
 ] as const
 
-export function FaqInteractive({ items }: { items: FaqItemData[] }) {
+export function FaqInteractive({
+  items,
+  enableSearch = true,
+  enableCategoryTabs = true,
+}: {
+  items: FaqItemData[]
+  enableSearch?: boolean | null
+  enableCategoryTabs?: boolean | null
+}) {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [openIndex, setOpenIndex] = useState<number | null>(4)
   const baseId = useId()
+
+  const showSearch = enableSearch !== false
+  const showTabs = enableCategoryTabs !== false
 
   // Auto-categorize items if category is missing or default
   const categorizedItems = useMemo(() => {
@@ -78,15 +89,18 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
   const filteredItems = useMemo(() => {
     return categorizedItems.filter((item) => {
       const matchesCategory =
-        selectedCategory === 'all' || item.category === selectedCategory
+        !showTabs ||
+        selectedCategory === 'all' ||
+        item.category === selectedCategory
       const query = search.trim().toLowerCase()
       const matchesSearch =
+        !showSearch ||
         !query ||
         item.question.toLowerCase().includes(query) ||
         item.answer.toLowerCase().includes(query)
       return matchesCategory && matchesSearch
     })
-  }, [categorizedItems, selectedCategory, search])
+  }, [categorizedItems, selectedCategory, search, showTabs, showSearch])
 
   const countsByCategory = useMemo(() => {
     const counts: Record<string, number> = { all: categorizedItems.length }
@@ -100,79 +114,83 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
   return (
     <div className="space-y-8">
       {/* Search Input Bar */}
-      <div className="relative">
-        <div className="relative flex items-center">
-          <div className="pointer-events-none absolute left-4.5 flex items-center text-ink/40">
-            <IconSearch size={19} stroke={1.8} />
+      {showSearch && (
+        <div className="relative">
+          <div className="relative flex items-center">
+            <div className="pointer-events-none absolute left-4.5 flex items-center text-ink/40">
+              <IconSearch size={19} stroke={1.8} />
+            </div>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setOpenIndex(0) // open first matching on search
+              }}
+              placeholder="Search questions (e.g. heated pool, parking, deposit, pets)..."
+              className="w-full rounded-2xl border border-ink/10 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 transition-colors duration-200 hover:border-ink/25 focus:border-ink/30 focus:outline-hidden focus:ring-0"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                className="absolute right-3.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/5 text-ink/60 hover:bg-ink/10 hover:text-ink transition-colors cursor-pointer"
+                aria-label="Clear search"
+              >
+                <IconX size={15} />
+              </button>
+            )}
           </div>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value)
-              setOpenIndex(0) // open first matching on search
-            }}
-            placeholder="Search questions (e.g. heated pool, parking, deposit, pets)..."
-            className="w-full rounded-2xl border border-ink/10 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 transition-colors duration-200 hover:border-ink/25 focus:border-ink/30 focus:outline-hidden focus:ring-0"
-          />
-          {search && (
-            <button
-              type="button"
-              onClick={() => setSearch('')}
-              className="absolute right-3.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/5 text-ink/60 hover:bg-ink/10 hover:text-ink transition-colors cursor-pointer"
-              aria-label="Clear search"
-            >
-              <IconX size={15} />
-            </button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Category Pills / Filter Tabs with Smooth Spring Sliding Pill */}
-      <LayoutGroup id="faqTabsGroup">
-        <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {CATEGORY_TABS.map((tab) => {
-            const isActive = selectedCategory === tab.id
-            const count = countsByCategory[tab.id] || 0
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => {
-                  setSelectedCategory(tab.id)
-                  setOpenIndex(0)
-                }}
-                className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer outline-hidden ${
-                  isActive
-                    ? 'text-white'
-                    : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/25 hover:text-ink hover:bg-white'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeFaqPill"
-                    className="absolute inset-0 rounded-full bg-ink shadow-xs"
-                    transition={{
-                      type: 'spring',
-                      stiffness: 450,
-                      damping: 32,
-                      mass: 0.7,
-                    }}
-                  />
-                )}
-                <span className="relative z-10">{tab.label}</span>
-                <span
-                  className={`relative z-10 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-semibold transition-colors ${
-                    isActive ? 'bg-white/20 text-white' : 'bg-ink/8 text-ink/60'
+      {showTabs && (
+        <LayoutGroup id="faqTabsGroup">
+          <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {CATEGORY_TABS.map((tab) => {
+              const isActive = selectedCategory === tab.id
+              const count = countsByCategory[tab.id] || 0
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory(tab.id)
+                    setOpenIndex(0)
+                  }}
+                  className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer outline-hidden ${
+                    isActive
+                      ? 'text-white'
+                      : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/25 hover:text-ink hover:bg-white'
                   }`}
                 >
-                  {count}
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </LayoutGroup>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeFaqPill"
+                      className="absolute inset-0 rounded-full bg-ink shadow-xs"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 450,
+                        damping: 32,
+                        mass: 0.7,
+                      }}
+                    />
+                  )}
+                  <span className="relative z-10">{tab.label}</span>
+                  <span
+                    className={`relative z-10 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-semibold transition-colors ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-ink/8 text-ink/60'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </LayoutGroup>
+      )}
 
       {/* Clean Minimalist Accordion with smooth fade-in between tabs */}
       <AnimatePresence mode="wait">
