@@ -466,6 +466,52 @@ async function seedPages() {
           breadcrumbLabel: 'Booking',
           image: bookingHeroMedia,
         },
+        {
+          blockType: 'bookingSection',
+          stepsTitle: 'How direct reservation works',
+          steps: [
+            {
+              num: '01',
+              title: 'Select Your Dates',
+              desc: 'Pick your preferred arrival and departure dates on the live calendar.',
+            },
+            {
+              num: '02',
+              title: 'Send Direct Inquiry',
+              desc: 'No instant credit card charges and zero platform booking commissions.',
+            },
+            {
+              num: '03',
+              title: 'Confirm with Josip',
+              desc: '30% deposit secures your reservation; pay the remaining balance on arrival.',
+            },
+          ],
+          privilegesTitle: 'Direct booking privileges',
+          privileges: [
+            {
+              icon: 'shield',
+              title: 'Guaranteed Best Rate',
+              desc: 'Save 15–20% compared to third-party agency platforms.',
+            },
+            {
+              icon: 'sparkles',
+              title: 'Personal Welcome Gift',
+              desc: 'Local Dalmatian wine, prosciutto & garden produce upon arrival.',
+            },
+            {
+              icon: 'clock',
+              title: 'Fast Direct Response',
+              desc: 'Direct communication with Josip with typical replies in under 1 hour.',
+            },
+          ],
+          hostName: 'Josip & Family',
+          hostSubtitle: 'Estate Owners & Hosts',
+          badgeText: 'Fast Reply',
+          whatsappLabel: 'WhatsApp Chat',
+          whatsappNumber: '+385 91 602 1899',
+          phone: '+385 91 602 1899',
+          email: 'kontakt@villa-sanantonio.com',
+        },
       ],
       meta: {
         title: 'Direct Booking & Availability · Villa San Antonio Šibenik',

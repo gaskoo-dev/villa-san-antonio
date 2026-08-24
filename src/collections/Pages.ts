@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { adminWrite, publicRead } from '@/access'
 import { slugField } from '@/fields/slug'
 import { BookingBandBlock } from '@/blocks/BookingBandBlock'
+import { BookingSectionBlock } from '@/blocks/BookingSectionBlock'
 import { ContactBlock } from '@/blocks/ContactBlock'
 import { DistancesBlock } from '@/blocks/DistancesBlock'
 import { FaqSectionBlock } from '@/blocks/FaqSectionBlock'
@@ -64,6 +65,7 @@ export const Pages: CollectionConfig = {
                 FaqShortBlock,
                 FaqSectionBlock,
                 ContactBlock,
+                BookingSectionBlock,
               ],
               admin: {
                 initCollapsed: true,

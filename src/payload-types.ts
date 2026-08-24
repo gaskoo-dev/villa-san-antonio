@@ -493,6 +493,36 @@ export interface Page {
             blockName?: string | null;
             blockType: 'contactSection';
           }
+        | {
+            stepsTitle?: string | null;
+            steps?:
+              | {
+                  num?: string | null;
+                  title: string;
+                  desc: string;
+                  id?: string | null;
+                }[]
+              | null;
+            privilegesTitle?: string | null;
+            privileges?:
+              | {
+                  icon?: ('shield' | 'sparkles' | 'clock' | 'heart' | 'check') | null;
+                  title: string;
+                  desc: string;
+                  id?: string | null;
+                }[]
+              | null;
+            hostName?: string | null;
+            hostSubtitle?: string | null;
+            badgeText?: string | null;
+            whatsappLabel?: string | null;
+            whatsappNumber?: string | null;
+            phone?: string | null;
+            email?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'bookingSection';
+          }
       )[]
     | null;
   meta?: {
