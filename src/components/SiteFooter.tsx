@@ -114,38 +114,24 @@ export async function SiteFooter({
 
         {/* 4-Column Balanced Grid */}
         <div className="grid gap-12 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          {/* Column 1: Brand & CTA (Col span 4) */}
-          <div className="flex flex-col justify-between lg:col-span-4">
-            <div>
-              <Link href="/" aria-label="Villa San Antonio home" className="inline-block">
-                <Image
-                  src="/branding/logo-white.png"
-                  alt="Villa San Antonio"
-                  width={500}
-                  height={500}
-                  className="h-28 w-28 lg:h-[120px] lg:w-[120px] object-contain"
-                />
-              </Link>
-              <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
-                {brandTagline}
-              </p>
-            </div>
-
-            <div className="mt-8">
-              <Link
-                href={ctaLink}
-                className="group inline-flex items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2 text-xs font-semibold uppercase tracking-[0.14rem] text-ink shadow-lg transition-all duration-300 hover:bg-paper hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span>{ctaLabel}</span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
-                  <IconArrowUpRight size={17} stroke={2.2} aria-hidden />
-                </span>
-              </Link>
-            </div>
+          {/* Column 1: Brand (Col span 4) */}
+          <div className="lg:col-span-4">
+            <Link href="/" aria-label="Villa San Antonio home" className="inline-block">
+              <Image
+                src="/branding/logo-white.png"
+                alt="Villa San Antonio"
+                width={500}
+                height={500}
+                className="h-28 w-28 lg:h-[120px] lg:w-[120px] object-contain"
+              />
+            </Link>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
+              {brandTagline}
+            </p>
           </div>
 
-          {/* Column 2: Direct Booking Perks (Col span 3) */}
-          <div className="lg:col-span-3">
+          {/* Column 2: Direct Booking Perks & CTA (Col span 4) */}
+          <div className="lg:col-span-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
               Direct Booking Perks
             </p>
@@ -159,6 +145,18 @@ export async function SiteFooter({
                 </li>
               ))}
             </ul>
+
+            <div className="mt-8">
+              <Link
+                href={ctaLink}
+                className="group inline-flex items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2 text-xs font-semibold uppercase tracking-[0.14rem] text-ink shadow-lg transition-all duration-300 hover:bg-paper hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>{ctaLabel}</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
+                  <IconArrowUpRight size={17} stroke={2.2} aria-hidden />
+                </span>
+              </Link>
+            </div>
           </div>
 
           {/* Column 3: Navigation Links (Col span 2) */}
