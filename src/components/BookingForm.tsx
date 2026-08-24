@@ -115,7 +115,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   }
 
   return (
-    <div className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden">
+    <div className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden h-full flex flex-col justify-between">
       {/* Step Progress Header */}
       <div className="border-b border-ink/10 pb-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
