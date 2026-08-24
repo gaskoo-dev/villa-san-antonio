@@ -2,7 +2,7 @@
 
 import { IconHelp, IconPlus, IconSearch, IconX } from '@tabler/icons-react'
 import { useId, useMemo, useState } from 'react'
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 
 export type FaqCategoryData = {
   id?: string | number | null
@@ -159,52 +159,49 @@ export function FaqInteractive({
         </div>
       )}
 
-      {/* Category Pills / Filter Tabs with Smooth Spring Sliding Pill */}
+      {/* Category Pills / Filter Tabs with Smooth Spring Sliding Pill Capsule */}
       {showTabs && (
-        <LayoutGroup id="faqTabsGroup">
-          <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {tabs.map((tab) => {
-              const isActive = selectedCategory === tab.id
-              const count = countsByCategory[tab.id] || 0
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory(tab.id)
-                    setOpenIndex(0)
-                  }}
-                  className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer outline-hidden ${
-                    isActive
-                      ? 'text-white'
-                      : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/30 hover:text-ink'
+        <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+          {tabs.map((tab) => {
+            const isActive = selectedCategory === tab.id
+            const count = countsByCategory[tab.id] || 0
+            if (tab.id !== 'all' && count === 0) return null
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => {
+                  setSelectedCategory(tab.id)
+                  setOpenIndex(0)
+                }}
+                className={`relative flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
+                  isActive
+                    ? 'text-white'
+                    : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeFaqFilterPill"
+                    className="absolute inset-0 rounded-full bg-ink shadow-md"
+                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10">
+                  {tab.label === 'All Questions' ? 'All' : tab.label}
+                </span>
+                <span
+                  className={`relative z-10 text-[10px] tabular-nums ${
+                    isActive ? 'text-white/60' : 'text-ink/40'
                   }`}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeFaqPill"
-                      className="absolute inset-0 rounded-full bg-ink shadow-xs"
-                      transition={{
-                        type: 'spring',
-                        stiffness: 450,
-                        damping: 32,
-                        mass: 0.7,
-                      }}
-                    />
-                  )}
-                  <span className="relative z-10">{tab.label}</span>
-                  <span
-                    className={`relative z-10 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-semibold transition-colors ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-ink/8 text-ink/60'
-                    }`}
-                  >
-                    {count}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </LayoutGroup>
+                  {count}
+                </span>
+              </button>
+            )
+          })}
+        </div>
       )}
 
       {/* Clean Minimalist Accordion with smooth fade-in between tabs */}
