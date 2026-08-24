@@ -12,9 +12,11 @@ export function ScrollToExplore({
 }) {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const target = document.getElementById(targetId)
+    const target = targetId ? document.getElementById(targetId) : null
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' })
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
     }
   }
 

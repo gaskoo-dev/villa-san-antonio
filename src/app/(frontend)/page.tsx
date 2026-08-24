@@ -280,7 +280,7 @@ export default async function HomePage() {
       />
 
       {/* 02 · The Perspective (Visual Storytelling + Metrics) */}
-      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-24 lg:py-36">
+      <section id="perspective" className="mx-auto w-[91.5vw] max-w-[1440px] py-24 lg:py-36 scroll-mt-20">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr] lg:gap-24">
           <div>
             <Reveal>
