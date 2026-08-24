@@ -123,7 +123,7 @@ export default async function FaqPage() {
                 <p className="kicker mb-2.5">
                   {faqBlock?.leftKicker || 'At a glance'}
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-medium leading-[0.94] tracking-[-0.04em] text-balance text-ink">
+                <h2 className="heading-section text-2xl sm:text-3xl font-medium tracking-tight text-ink">
                   {faqBlock?.leftTitle || 'Key facts'}{' '}
                   <span className="accent-serif font-normal text-ink">
                     {faqBlock?.leftAccent || 'before arrival.'}
@@ -171,7 +171,7 @@ export default async function FaqPage() {
                 <p className="kicker mb-2.5">
                   {faqBlock?.rightKicker || 'House Guide & Details'}
                 </p>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-[0.94] tracking-[-0.04em] text-balance text-ink">
+                <h2 className="heading-section text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-ink">
                   {faqBlock?.rightTitle || 'Frequently asked'}{' '}
                   <span className="accent-serif font-normal text-ink">
                     {faqBlock?.rightAccent || 'questions.'}

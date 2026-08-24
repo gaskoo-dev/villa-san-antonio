@@ -159,48 +159,50 @@ export function FaqInteractive({
         </div>
       )}
 
-      {/* Category Pills / Filter Tabs - matching Gallery pattern */}
+      {/* Category Pills / Filter Tabs dynamically distributed without hardcoded grid columns */}
       {showTabs && (
-        <div className="no-scrollbar flex max-w-full flex-nowrap items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
-          {tabs.map((tab) => {
-            const isActive = selectedCategory === tab.id
-            const count = countsByCategory[tab.id] || 0
-            if (tab.id !== 'all' && count === 0) return null
+        <div className="w-full no-scrollbar overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+          <div className="flex min-w-full flex-nowrap items-center justify-between gap-1 sm:gap-1.5">
+            {tabs.map((tab) => {
+              const isActive = selectedCategory === tab.id
+              const count = countsByCategory[tab.id] || 0
+              if (tab.id !== 'all' && count === 0) return null
 
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => {
-                  setSelectedCategory(tab.id)
-                  setOpenIndex(0)
-                }}
-                className={`relative flex shrink-0 min-w-max items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
-                  isActive
-                    ? 'text-white'
-                    : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeFaqFilterPill"
-                    className="absolute inset-0 rounded-full bg-ink shadow-md"
-                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                  />
-                )}
-                <span className="relative z-10 whitespace-nowrap">
-                  {tab.label === 'All Questions' ? 'All' : tab.label}
-                </span>
-                <span
-                  className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
-                    isActive ? 'text-white/60' : 'text-ink/40'
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory(tab.id)
+                    setOpenIndex(0)
+                  }}
+                  className={`relative flex flex-1 min-w-max shrink-0 items-center justify-center gap-2 rounded-full py-2 px-3.5 text-center text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
+                    isActive
+                      ? 'text-white'
+                      : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
                   }`}
                 >
-                  {count}
-                </span>
-              </button>
-            )
-          })}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeFaqFilterPill"
+                      className="absolute inset-0 rounded-full bg-ink shadow-md"
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10 whitespace-nowrap">
+                    {tab.label === 'All Questions' ? 'All' : tab.label}
+                  </span>
+                  <span
+                    className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
+                      isActive ? 'text-white/60' : 'text-ink/40'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       )}
 
@@ -220,31 +222,31 @@ export function FaqInteractive({
                 const panelId = `${baseId}-panel-${idx}`
 
                 return (
-                  <div key={item.question + idx} className="transition-colors duration-200 min-w-0">
+                  <div key={item.question + idx} className="transition-colors duration-200">
                     <h3>
                       <button
                         type="button"
                         aria-expanded={isOpen}
                         aria-controls={panelId}
                         onClick={() => setOpenIndex(isOpen ? null : idx)}
-                        className="group flex w-full items-center justify-between gap-3 sm:gap-4 py-4 sm:py-5 text-left transition-colors cursor-pointer"
+                        className="group flex w-full items-center justify-between gap-4 py-5 text-left transition-colors cursor-pointer"
                       >
                         <span
-                          className={`min-w-0 text-sm sm:text-base lg:text-lg font-medium tracking-tight transition-colors duration-200 ${
+                          className={`text-base sm:text-lg font-medium tracking-tight transition-colors duration-200 ${
                             isOpen ? 'text-ink font-semibold' : 'text-ink/85 group-hover:text-ink'
                           }`}
                         >
                           {item.question}
                         </span>
                         <span
-                          className={`flex h-7 w-7 sm:h-7.5 sm:w-7.5 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                          className={`flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                             isOpen
                               ? 'rotate-45 bg-ink text-white border-ink shadow-xs'
                               : 'border-ink/20 text-ink/60 bg-transparent group-hover:border-ink group-hover:bg-ink group-hover:text-white'
                           }`}
                           aria-hidden
                         >
-                          <IconPlus size={14} stroke={2} />
+                          <IconPlus size={16} stroke={2} />
                         </span>
                       </button>
                     </h3>
@@ -256,7 +258,7 @@ export function FaqInteractive({
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="pb-5 sm:pb-6 text-xs sm:text-sm leading-relaxed text-ink/65 break-words">
+                        <p className="max-w-[65ch] pb-6 text-sm sm:text-[15px] leading-relaxed text-ink/65">
                           {item.answer}
                         </p>
                       </div>
