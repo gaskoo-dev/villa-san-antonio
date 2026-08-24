@@ -1,14 +1,9 @@
 import {
-  IconBrandWhatsapp,
   IconClock,
-  IconMail,
-  IconMapPin,
   IconPaw,
-  IconPhone,
   IconPool,
   IconShieldCheck,
 } from '@tabler/icons-react'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import React from 'react'
 
@@ -16,8 +11,7 @@ import { BookingBand } from '@/components/BookingBand'
 import { FaqInteractive } from '@/components/FaqInteractive'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
-import { CONTACT_EMAIL, CONTACT_PHONE } from '@/lib/content'
-import { getFaqItems, getGallery, getPageBySlug, getSettings, mediaSrc } from '@/lib/queries'
+import { getFaqItems, getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -33,11 +27,10 @@ export const metadata: Metadata = {
 }
 
 export default async function FaqPage() {
-  const [pageDoc, faqItems, gallery, settings] = await Promise.all([
+  const [pageDoc, faqItems, gallery] = await Promise.all([
     getPageBySlug('faq'),
     getFaqItems(),
     getGallery(),
-    getSettings(),
   ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
@@ -48,19 +41,6 @@ export default async function FaqPage() {
   const heroSrc = heroMedia
     ? (mediaSrc(heroMedia, 'desktop') ?? mediaSrc(heroMedia) ?? '')
     : (mediaSrc(fallbackHeroImg?.image, 'desktop') ?? mediaSrc(fallbackHeroImg?.image) ?? '')
-
-  // Host contact info
-  const hostPhone = settings?.contact?.phone || CONTACT_PHONE
-  const hostEmail = settings?.contact?.email || CONTACT_EMAIL
-  const cleanPhone = hostPhone.replace(/[^0-9+]/g, '')
-  const whatsappUrl = `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent('Hello Josip, I have a question regarding Villa San Antonio.')}`
-
-  // Host avatar photo from media or gallery
-  const hostAvatarMedia =
-    (typeof bookingBlock?.hostAvatar === 'object' && bookingBlock?.hostAvatar ? (bookingBlock.hostAvatar as Media) : null) ||
-    gallery.find((g) => g.image.filename?.includes('-078'))?.image ||
-    gallery[0]?.image
-  const hostAvatarSrc = mediaSrc(hostAvatarMedia, 'thumbnail') ?? mediaSrc(hostAvatarMedia)
 
   const quickFacts = [
     {
@@ -134,105 +114,24 @@ export default async function FaqPage() {
         </div>
       </section>
 
-      {/* 02 · Main FAQ & Concierge Help Section */}
-      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.8fr] lg:gap-16 items-start">
-          {/* Left Column: Sticky Luxury Concierge Card */}
-          <div className="lg:sticky lg:top-28 space-y-6">
-            <Reveal>
-              <div className="overflow-hidden rounded-3xl border border-ink/12 bg-paper p-6 sm:p-8 shadow-sm">
-                {/* Online Status Pill */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                  </span>
-                  <span>Host Concierge · Replies in ~30 min</span>
-                </div>
-
-                {/* Host Profile Bar */}
-                <div className="mt-6 flex items-center gap-4">
-                  {hostAvatarSrc ? (
-                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-ink/15 shadow-xs bg-surface">
-                      <Image
-                        src={hostAvatarSrc}
-                        alt="Josip - Villa San Antonio Host"
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-ink text-white font-bold tracking-wider shadow-xs">
-                      JP
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="text-lg font-semibold text-ink leading-snug">
-                      {bookingBlock?.hostName || 'Josip & Family'}
-                    </h3>
-                    <p className="text-xs text-ink/60">
-                      {bookingBlock?.hostRole || 'Estate Owners & Hosts'}
-                    </p>
-                  </div>
-                </div>
-
-                <p className="mt-5 text-sm leading-relaxed text-ink/70">
-                  Have specific arrival requirements, flexible date inquiries, or local recommendations? We answer every message personally.
-                </p>
-
-                {/* Quick Action Contact Buttons */}
-                <div className="mt-6 space-y-2.5">
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2.5 rounded-full bg-emerald-600 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.12rem] text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:scale-[1.02] active:scale-98"
-                  >
-                    <IconBrandWhatsapp size={18} stroke={2} />
-                    <span>WhatsApp Direct Chat</span>
-                  </a>
-
-                  <a
-                    href={`mailto:${hostEmail}`}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-full border border-ink/15 bg-white px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.12rem] text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
-                  >
-                    <IconMail size={16} stroke={1.8} />
-                    <span>Send Direct Email</span>
-                  </a>
-
-                  <a
-                    href={`tel:${cleanPhone}`}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-full border border-ink/15 bg-surface/60 px-6 py-3 text-xs font-medium tracking-wide text-ink/80 transition-colors hover:border-ink hover:text-ink"
-                  >
-                    <IconPhone size={15} stroke={1.8} />
-                    <span>{hostPhone}</span>
-                  </a>
-                </div>
-
-                {/* Location Micro Link */}
-                <div className="mt-6 border-t border-ink/8 pt-5">
-                  <a
-                    href="https://maps.app.goo.gl/Xm8sAH7drKf2pADaA"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 text-xs text-ink/60 hover:text-ink transition-colors"
-                  >
-                    <IconMapPin size={15} className="text-ink/40 group-hover:text-ink" />
-                    <span>Podine 14, Šibenik (20 min to sea) ↗</span>
-                  </a>
-                </div>
-              </div>
-            </Reveal>
+      {/* 02 · Main Interactive FAQ Section */}
+      <section className="mx-auto w-[91.5vw] max-w-[960px] py-16 lg:py-28">
+        <Reveal>
+          <div className="text-center mb-10 sm:mb-12">
+            <p className="kicker mb-3">House Guide & Details</p>
+            <h2 className="heading-section text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-ink">
+              Frequently asked{' '}
+              <span className="accent-serif font-normal text-ink">questions.</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-ink/65">
+              Everything you need to know about staying at Villa San Antonio. Filter by category or search for specific amenities below.
+            </p>
           </div>
+        </Reveal>
 
-          {/* Right Column: Interactive Search, Category Tabs & Card Accordion */}
-          <div>
-            <Reveal delay={80}>
-              <FaqInteractive items={faqItems} />
-            </Reveal>
-          </div>
-        </div>
+        <Reveal delay={80}>
+          <FaqInteractive items={faqItems} />
+        </Reveal>
       </section>
 
       {/* 03 · Direct Booking CTA Banner */}
