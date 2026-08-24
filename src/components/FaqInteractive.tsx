@@ -177,7 +177,7 @@ export function FaqInteractive({
                   className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer outline-hidden ${
                     isActive
                       ? 'text-white'
-                      : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/25 hover:text-ink hover:bg-white'
+                      : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/30 hover:text-ink'
                   }`}
                 >
                   {isActive && (
