@@ -77,5 +77,52 @@ export const HeroBlock: Block = {
         { name: 'url', type: 'text', defaultValue: '/about-villa' },
       ],
     },
+    {
+      type: 'collapsible',
+      label: 'Bottom Metadata & Editorial Bar',
+      admin: {
+        initCollapsed: false,
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'coordsText',
+              type: 'text',
+              label: 'Coordinates / Location Text (Left)',
+              defaultValue: '43.647° N, 16.055° E · PODINE',
+              admin: { width: '50%' },
+            },
+            {
+              name: 'scrollLabel',
+              type: 'text',
+              label: 'Scroll Button Label (Center)',
+              defaultValue: 'Scroll to explore',
+              admin: { width: '50%' },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'instagramUrl',
+              type: 'text',
+              label: 'Instagram URL (Right)',
+              defaultValue: 'https://www.instagram.com/villa_sanantonio/',
+              admin: { width: '50%' },
+            },
+            {
+              name: 'facebookUrl',
+              type: 'text',
+              label: 'Facebook URL (Right)',
+              defaultValue: 'https://web.facebook.com/villasanantoniopodine/',
+              admin: { width: '50%' },
+            },
+          ],
+        },
+      ],
+    },
   ],
 }

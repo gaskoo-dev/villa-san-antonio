@@ -194,6 +194,10 @@ export interface Page {
               label?: string | null;
               url?: string | null;
             };
+            coordsText?: string | null;
+            scrollLabel?: string | null;
+            instagramUrl?: string | null;
+            facebookUrl?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero-slider';

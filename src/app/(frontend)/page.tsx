@@ -277,6 +277,10 @@ export default async function HomePage() {
         secondaryCta={heroBlock?.secondaryCta}
         transitionDuration={heroBlock?.transitionDuration}
         interval={heroBlock?.interval}
+        coordsText={heroBlock?.coordsText}
+        scrollLabel={heroBlock?.scrollLabel}
+        instagramUrl={heroBlock?.instagramUrl}
+        facebookUrl={heroBlock?.facebookUrl}
       />
 
       {/* 02 · The Perspective (Visual Storytelling + Metrics) */}

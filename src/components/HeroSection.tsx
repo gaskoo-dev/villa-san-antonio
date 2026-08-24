@@ -50,6 +50,10 @@ export type HeroSectionProps = {
   secondaryCta?: { label?: string | null; url?: string | null } | null
   transitionDuration?: number | null
   interval?: number | null
+  coordsText?: string | null
+  scrollLabel?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
 }
 
 export function HeroSection({
@@ -59,6 +63,10 @@ export function HeroSection({
   secondaryCta,
   transitionDuration = 2000,
   interval = 6500,
+  coordsText,
+  scrollLabel,
+  instagramUrl,
+  facebookUrl,
 }: HeroSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const { t } = useLocale()
@@ -138,31 +146,37 @@ export function HeroSection({
       <div className="container-page absolute inset-x-0 bottom-6 z-30 flex items-center justify-between text-xs font-medium uppercase tracking-[0.16rem] text-white/75 lg:bottom-8">
         <div className="hidden items-center gap-2 md:flex">
           <IconMapPin size={18} stroke={1.8} className="text-white/85 shrink-0" aria-hidden />
-          <span>{t.hero.meta.coords}</span>
+          <span>{coordsText || t.hero.meta.coords}</span>
         </div>
-        <ScrollToExplore targetId="perspective" label={t.hero.meta.scroll} />
+        <ScrollToExplore targetId="perspective" label={scrollLabel || t.hero.meta.scroll} />
         <div className="hidden md:flex items-center gap-5 text-xs font-medium tracking-[0.14rem]">
-          <a
-            href="https://www.instagram.com/villa_sanantonio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="flex items-center gap-2 transition-colors hover:text-white"
-          >
-            <IconBrandInstagram size={18} stroke={1.8} />
-            <span>Instagram</span>
-          </a>
-          <span className="opacity-30">·</span>
-          <a
-            href="https://web.facebook.com/villasanantoniopodine/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            className="flex items-center gap-2 transition-colors hover:text-white"
-          >
-            <IconBrandFacebook size={18} stroke={1.8} />
-            <span>Facebook</span>
-          </a>
+          {(instagramUrl || instagramUrl === undefined) && (
+            <a
+              href={instagramUrl || 'https://www.instagram.com/villa_sanantonio/'}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="flex items-center gap-2 transition-colors hover:text-white"
+            >
+              <IconBrandInstagram size={18} stroke={1.8} />
+              <span>Instagram</span>
+            </a>
+          )}
+          {(instagramUrl || instagramUrl === undefined) && (facebookUrl || facebookUrl === undefined) && (
+            <span className="opacity-30">·</span>
+          )}
+          {(facebookUrl || facebookUrl === undefined) && (
+            <a
+              href={facebookUrl || 'https://web.facebook.com/villasanantoniopodine/'}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="flex items-center gap-2 transition-colors hover:text-white"
+            >
+              <IconBrandFacebook size={18} stroke={1.8} />
+              <span>Facebook</span>
+            </a>
+          )}
         </div>
       </div>
     </section>
