@@ -38,15 +38,25 @@ export async function GET() {
   const siteSettings = await getSettings()
   const customIcalUrl =
     siteSettings?.calendarIcalUrl || 'https://www.myluxoria.com/api/v1/get-ical/358'
+  const noStore = Boolean(siteSettings?.calendarNoStore)
+  const cacheMinutes =
+    typeof siteSettings?.calendarCacheMinutes === 'number'
+      ? siteSettings.calendarCacheMinutes
+      : 15
+  const revalidateSeconds = Math.max(0, cacheMinutes * 60)
 
   // 1. Fetch official iCal Feed
   try {
-    const icalRes = await fetch(customIcalUrl, {
+    const fetchOptions: RequestInit = {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
       },
-      next: { revalidate: 900 },
-    })
+      ...(noStore || revalidateSeconds === 0
+        ? { cache: 'no-store' }
+        : { next: { revalidate: revalidateSeconds } }),
+    }
+
+    const icalRes = await fetch(customIcalUrl, fetchOptions)
 
     if (icalRes.ok) {
       // Record last sync timestamp in site-settings
@@ -151,12 +161,22 @@ export async function GET() {
     console.error('Failed to fetch ALV reservations:', err)
   }
 
-  return NextResponse.json({
-    success: true,
-    lastUpdated: new Date().toISOString(),
-    minNights: typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3,
-    totalRanges: bookedRanges.length,
-    bookedRanges: bookedRanges.sort((a, b) => a.start.localeCompare(b.start)),
-    disabledDates: Array.from(disabledDateSet).sort(),
-  })
+  return NextResponse.json(
+    {
+      success: true,
+      lastUpdated: new Date().toISOString(),
+      minNights: typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3,
+      noStore,
+      cacheMinutes,
+      totalRanges: bookedRanges.length,
+      bookedRanges: bookedRanges.sort((a, b) => a.start.localeCompare(b.start)),
+      disabledDates: Array.from(disabledDateSet).sort(),
+    },
+    {
+      headers:
+        noStore || revalidateSeconds === 0
+          ? { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' }
+          : { 'Cache-Control': `public, s-maxage=${revalidateSeconds}, stale-while-revalidate=60` },
+    }
+  )
 }

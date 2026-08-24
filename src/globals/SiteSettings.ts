@@ -24,6 +24,28 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'calendarNoStore',
+      type: 'checkbox',
+      label: 'Real-Time Sync (cache: no-store)',
+      defaultValue: false,
+      admin: {
+        description:
+          'When checked, the server always bypasses cache and fetches real-time calendar availability directly from the iCal URL on every visitor page load.',
+      },
+    },
+    {
+      name: 'calendarCacheMinutes',
+      type: 'number',
+      label: 'Calendar Cache Duration (Minutes)',
+      defaultValue: 15,
+      min: 1,
+      max: 1440,
+      admin: {
+        description:
+          'How many minutes availability data is cached in memory (default: 15 minutes). Ignored when Real-Time Sync (no-store) is enabled.',
+      },
+    },
+    {
       name: 'minNights',
       type: 'number',
       label: 'Minimum Nights for Booking',

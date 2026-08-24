@@ -1398,6 +1398,14 @@ export interface SiteSetting {
    */
   calendarIcalUrl?: string | null;
   /**
+   * When checked, the server always bypasses cache and fetches real-time calendar availability directly from the iCal URL on every visitor page load.
+   */
+  calendarNoStore?: boolean | null;
+  /**
+   * How many minutes availability data is cached in memory (default: 15 minutes).
+   */
+  calendarCacheMinutes?: number | null;
+  /**
    * Minimum number of consecutive nights required for a direct reservation (e.g. 3 or 7 nights).
    */
   minNights?: number | null;
@@ -1505,6 +1513,8 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   calendarIcalUrl?: T;
+  calendarNoStore?: T;
+  calendarCacheMinutes?: T;
   minNights?: T;
   calendarLastSyncedAt?: T;
   updatedAt?: T;
