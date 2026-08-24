@@ -117,8 +117,8 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   return (
     <div className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden">
       {/* Step Progress Header */}
-      <div className="border-b border-ink/10 pb-5 space-y-3.5">
-        <div className="flex items-center justify-between">
+      <div className="border-b border-ink/10 pb-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.14rem] text-ink/50">
               Step {step} of 2
@@ -127,52 +127,48 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               {step === 1 ? 'Select Your Dates' : 'Guest Details & Inquiry'}
             </h3>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-800">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Live Sync</span>
-          </span>
-        </div>
 
-        {/* Minimalist Animated Step Progress Navigation */}
-        <div className="flex items-center gap-2 pt-1">
-          <button
-            type="button"
-            onClick={() => setStep(1)}
-            className={`relative inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
-              step === 1 ? 'text-white' : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
-            }`}
-          >
-            {step === 1 && (
-              <motion.div
-                layoutId="activeBookingStepPill"
-                className="absolute inset-0 rounded-full bg-ink shadow-xs"
-                transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-              />
-            )}
-            <span className="relative z-10 text-[11px]">01</span>
-            <span className="relative z-10">Dates</span>
-          </button>
+          {/* Minimalist Animated Step Progress Navigation */}
+          <div className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper/60 p-1">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className={`relative inline-flex items-center gap-1.5 rounded-full py-1.5 px-3.5 text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                step === 1 ? 'text-white' : 'text-ink/60 hover:text-ink'
+              }`}
+            >
+              {step === 1 && (
+                <motion.div
+                  layoutId="activeBookingStepPill"
+                  className="absolute inset-0 rounded-full bg-ink shadow-xs"
+                  transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10 text-[10px] font-bold">01</span>
+              <span className="relative z-10">Dates</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => checkIn && checkOut && nights >= minNights && setStep(2)}
-            disabled={!checkIn || !checkOut || nights < minNights}
-            className={`relative inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs font-semibold uppercase tracking-wider transition-colors ${
-              step === 2
-                ? 'text-white'
-                : 'text-ink/60 hover:text-ink hover:bg-black/[0.04] disabled:opacity-30 disabled:cursor-not-allowed'
-            }`}
-          >
-            {step === 2 && (
-              <motion.div
-                layoutId="activeBookingStepPill"
-                className="absolute inset-0 rounded-full bg-ink shadow-xs"
-                transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-              />
-            )}
-            <span className="relative z-10 text-[11px]">02</span>
-            <span className="relative z-10">Guest Details</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => checkIn && checkOut && nights >= minNights && setStep(2)}
+              disabled={!checkIn || !checkOut || nights < minNights}
+              className={`relative inline-flex items-center gap-1.5 rounded-full py-1.5 px-3.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                step === 2
+                  ? 'text-white'
+                  : 'text-ink/60 hover:text-ink disabled:opacity-30 disabled:cursor-not-allowed'
+              }`}
+            >
+              {step === 2 && (
+                <motion.div
+                  layoutId="activeBookingStepPill"
+                  className="absolute inset-0 rounded-full bg-ink shadow-xs"
+                  transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10 text-[10px] font-bold">02</span>
+              <span className="relative z-10">Guest Details</span>
+            </button>
+          </div>
         </div>
       </div>
 
