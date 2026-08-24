@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 
-import type { FaqCategory, FaqItem, GalleryImage, Media, Page, Review } from '@/payload-types'
+import type { FaqCategory, FaqItem, GalleryImage, Media, Page, Review, SiteSetting } from '@/payload-types'
 import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
@@ -53,6 +53,15 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
       depth: 2,
     })
     return (docs[0] as Page) || null
+  } catch {
+    return null
+  }
+}
+
+export async function getSettings(): Promise<SiteSetting | null> {
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({ slug: 'site-settings', depth: 0 })
   } catch {
     return null
   }

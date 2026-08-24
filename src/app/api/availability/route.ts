@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { getPayloadClient, getSettings } from '@/lib/queries'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 900 // Cache for 15 minutes
@@ -34,10 +35,13 @@ export async function GET() {
   const bookedRanges: BookedRange[] = []
   const disabledDateSet = new Set<string>()
 
-  // 1. Fetch official MyLuxoria iCal Feed
+  const siteSettings = await getSettings()
+  const customIcalUrl =
+    siteSettings?.settings?.calendarIcalUrl || 'https://www.myluxoria.com/api/v1/get-ical/358'
+
+  // 1. Fetch official iCal Feed
   try {
-    const icalUrl = 'https://www.myluxoria.com/api/v1/get-ical/358'
-    const icalRes = await fetch(icalUrl, {
+    const icalRes = await fetch(customIcalUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
       },
@@ -45,6 +49,21 @@ export async function GET() {
     })
 
     if (icalRes.ok) {
+      // Record last sync timestamp in site-settings
+      getPayloadClient()
+        .then((payload) =>
+          payload.updateGlobal({
+            slug: 'site-settings',
+            data: {
+              settings: {
+                calendarIcalUrl: customIcalUrl,
+                calendarLastSyncedAt: new Date().toISOString(),
+              },
+            },
+          })
+        )
+        .catch(() => {})
+
       const icsText = await icalRes.text()
       const events = icsText.split('BEGIN:VEVENT')
 
