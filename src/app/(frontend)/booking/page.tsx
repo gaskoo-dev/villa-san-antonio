@@ -3,12 +3,10 @@ import {
   IconBrandWhatsapp,
   IconCheck,
   IconClock,
-  IconHome,
   IconMail,
   IconPhone,
   IconShieldCheck,
   IconSparkles,
-  IconUsers,
 } from '@tabler/icons-react'
 
 import { BookingForm } from '@/components/BookingForm'
@@ -210,22 +208,6 @@ export default async function BookingPage() {
                   <span>{CONTACT_EMAIL}</span>
                 </a>
               </div>
-            </div>
-
-            {/* Villa Key Highlights Pill */}
-            <div className="flex flex-wrap items-center gap-2 text-xs text-ink/70">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
-                <IconUsers size={14} className="text-ink/60" />
-                <span>Up to 8 Guests</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
-                <IconHome size={14} className="text-ink/60" />
-                <span>3 Bedrooms · 4 Baths</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
-                <IconSparkles size={14} className="text-ink/60" />
-                <span>Heated Pool & Jacuzzi</span>
-              </span>
             </div>
           </Reveal>
 
