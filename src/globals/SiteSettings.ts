@@ -35,11 +35,13 @@ export const SiteSettings: GlobalConfig = {
               type: 'date',
               label: 'Last Calendar Sync',
               admin: {
+                readOnly: true,
+                disabled: true,
                 date: {
                   pickerAppearance: 'dayAndTime',
                   displayFormat: 'dd.MM.yyyy HH:mm',
                 },
-                description: 'Timestamp when the calendar feed was last retrieved and synced.',
+                description: 'Automatski zabilježeno vrijeme zadnje sinkronizacije kalendara (samo za čitanje).',
               },
             },
           ],

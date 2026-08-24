@@ -1264,7 +1264,7 @@ export interface SiteSetting {
      */
     calendarIcalUrl?: string | null;
     /**
-     * Timestamp when the calendar feed was last retrieved and synced.
+     * Automatski zabilježeno vrijeme zadnje sinkronizacije kalendara (samo za čitanje).
      */
     calendarLastSyncedAt?: string | null;
   };
