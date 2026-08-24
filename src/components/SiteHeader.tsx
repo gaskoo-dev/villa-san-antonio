@@ -202,36 +202,6 @@ export function SiteHeader({
         </nav>
 
         <div className="flex items-center gap-3 lg:hidden">
-          {/* Mobile Language Switcher */}
-          {enableLanguages && (
-            <div
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-wider ${
-                overHero ? 'bg-white/10 text-white/70' : 'bg-ink/5 text-ink/70'
-              }`}
-            >
-              {locales.map((l, i) => (
-                <React.Fragment key={l.code}>
-                  {i > 0 && <span className="opacity-30 text-[9px]">/</span>}
-                  <button
-                    type="button"
-                    onClick={() => setLocale(l.code)}
-                    className={`transition-colors uppercase ${
-                      locale === l.code
-                        ? overHero
-                          ? 'font-bold text-white'
-                          : 'font-bold text-ink'
-                        : overHero
-                          ? 'hover:text-white'
-                          : 'hover:text-ink'
-                    }`}
-                  >
-                    {l.flag}
-                  </button>
-                </React.Fragment>
-              ))}
-            </div>
-          )}
-
           <button
             type="button"
             aria-expanded={menuOpen}
