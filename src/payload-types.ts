@@ -72,8 +72,8 @@ export interface Config {
     media: Media;
     'gallery-images': GalleryImage;
     reviews: Review;
-    'faq-categories': FaqCategory;
     'faq-items': FaqItem;
+    'faq-categories': FaqCategory;
     'booking-inquiries': BookingInquiry;
     'contact-messages': ContactMessage;
     'payload-kv': PayloadKv;
@@ -88,8 +88,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'gallery-images': GalleryImagesSelect<false> | GalleryImagesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
-    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
+    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'booking-inquiries': BookingInquiriesSelect<false> | BookingInquiriesSelect<true>;
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -688,12 +688,12 @@ export interface PayloadLockedDocument {
         value: number | Review;
       } | null)
     | ({
-        relationTo: 'faq-categories';
-        value: number | FaqCategory;
-      } | null)
-    | ({
         relationTo: 'faq-items';
         value: number | FaqItem;
+      } | null)
+    | ({
+        relationTo: 'faq-categories';
+        value: number | FaqCategory;
       } | null)
     | ({
         relationTo: 'booking-inquiries';
@@ -1158,23 +1158,23 @@ export interface ReviewsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faq-categories_select".
- */
-export interface FaqCategoriesSelect<T extends boolean = true> {
-  name?: T;
-  slug?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faq-items_select".
  */
 export interface FaqItemsSelect<T extends boolean = true> {
   question?: T;
   answer?: T;
   category?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories_select".
+ */
+export interface FaqCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
