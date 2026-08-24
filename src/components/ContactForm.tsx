@@ -1,6 +1,6 @@
 'use client'
 
-import { IconArrowUpRight, IconCircleCheck, IconLoader2, IconSparkles } from '@tabler/icons-react'
+import { IconArrowUpRight, IconCircleCheck, IconLoader2 } from '@tabler/icons-react'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -46,20 +46,26 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex flex-col items-center justify-center rounded-3xl border border-emerald-900/10 bg-emerald-50/40 p-8 sm:p-12 text-center animate-[var(--animate-fade-in)]"
+        className="flex flex-col items-center justify-center py-10 sm:py-14 text-center space-y-4 animate-[var(--animate-fade-in)]"
       >
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md">
-          <IconCircleCheck size={32} stroke={1.8} />
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 shadow-xs">
+          <IconCircleCheck size={28} stroke={2} />
         </div>
-        <h3 className="mt-5 font-serif text-2xl sm:text-3xl text-ink">
-          Message delivered safely.
-        </h3>
-        <p className="mt-2.5 max-w-md text-sm leading-relaxed text-ink/70">
-          {state.message || 'Thank you for reaching out. Josip and the family usually answer within 30 minutes.'}
-        </p>
-        <div className="mt-8 flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-medium text-ink/60">
-          <IconSparkles size={15} className="text-amber-600" />
-          <span>A copy will also be logged in our host inbox.</span>
+        <div className="space-y-2">
+          <h3 className="font-serif text-2xl sm:text-3xl text-ink">
+            Thank you for reaching out
+          </h3>
+          <p className="mx-auto max-w-md text-sm sm:text-base leading-relaxed text-ink/70">
+            Your message has been received. Josip and the family typically reply within 30 minutes.
+          </p>
+        </div>
+        <div className="pt-4">
+          <a
+            href="/contact-us"
+            className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white cursor-pointer"
+          >
+            <span>Send another message</span>
+          </a>
         </div>
       </div>
     )
