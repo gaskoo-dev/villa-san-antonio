@@ -114,7 +114,7 @@ export async function SiteFooter({
 
         {/* 4-Column Balanced Grid */}
         <div className="grid gap-12 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          {/* Column 1: Brand (Col span 3) */}
+          {/* Column 1: Brand (Col span 3 - Left aligned) */}
           <div className="lg:col-span-3">
             <Link href="/" aria-label="Villa San Antonio home" className="inline-block">
               <Image
@@ -130,8 +130,8 @@ export async function SiteFooter({
             </p>
           </div>
 
-          {/* Column 2: Direct Booking Perks & CTA (Col span 4) */}
-          <div className="lg:col-span-4">
+          {/* Column 2: Direct Booking Perks & CTA (Col span 4 - Centered) */}
+          <div className="lg:col-span-4 lg:mx-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
               Direct Booking Perks
             </p>
@@ -159,8 +159,8 @@ export async function SiteFooter({
             </div>
           </div>
 
-          {/* Column 3: Navigation Links (Col span 2) */}
-          <nav aria-label="Footer" className="lg:col-span-2">
+          {/* Column 3: Navigation Links (Col span 2 - Centered) */}
+          <nav aria-label="Footer" className="lg:col-span-2 lg:mx-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
               Explore
             </p>
@@ -183,8 +183,8 @@ export async function SiteFooter({
             </ul>
           </nav>
 
-          {/* Column 4: Contact & Social (Col span 3) */}
-          <div className="lg:col-span-3">
+          {/* Column 4: Contact & Social (Col span 3 - Right aligned) */}
+          <div className="flex flex-col lg:col-span-3 lg:items-end lg:text-right">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
               Contact & Location
             </p>
@@ -192,7 +192,7 @@ export async function SiteFooter({
               <li>
                 <a
                   href={`mailto:${email}`}
-                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-white lg:flex-row-reverse"
                 >
                   <IconMail size={16} stroke={1.7} className="opacity-60" />
                   <span>{email}</span>
@@ -201,13 +201,13 @@ export async function SiteFooter({
               <li>
                 <a
                   href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-white lg:flex-row-reverse"
                 >
                   <IconPhone size={16} stroke={1.7} className="opacity-60" />
                   <span>{phone}</span>
                 </a>
               </li>
-              <li className="flex items-start gap-2 pt-1">
+              <li className="flex items-start gap-2 pt-1 lg:flex-row-reverse">
                 <IconMapPin size={16} stroke={1.7} className="mt-0.5 shrink-0 opacity-60" />
                 <span className="leading-relaxed">
                   {address}
@@ -218,7 +218,7 @@ export async function SiteFooter({
             </ul>
 
             {/* Tactile Luxury Social Buttons */}
-            <div className="mt-6 flex flex-wrap items-center gap-2.5">
+            <div className="mt-6 flex flex-wrap items-center gap-2.5 lg:justify-end">
               {socialLinks.map((social) => {
                 const IconComponent =
                   (social.platform && SOCIAL_ICON_MAP[social.platform as keyof typeof SOCIAL_ICON_MAP]) ||
