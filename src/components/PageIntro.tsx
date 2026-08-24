@@ -50,7 +50,7 @@ export function PageIntro({
       <div className="pointer-events-none absolute inset-0 z-1 bg-radial-gradient from-transparent via-transparent to-black/30" />
 
       {/* Foreground Content */}
-      <div className="container-page relative z-10 w-full space-y-4 text-white">
+      <div className="container-page relative z-10 space-y-4 text-white">
         {/* Clean Unboxed Breadcrumb Navigation */}
         <Reveal y={15}>
           <Breadcrumbs
