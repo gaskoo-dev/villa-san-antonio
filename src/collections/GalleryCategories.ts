@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { slugField } from '@/fields/slug'
 
 export const GalleryCategories: CollectionConfig = {
   slug: 'gallery-categories',
@@ -27,16 +28,12 @@ export const GalleryCategories: CollectionConfig = {
       required: true,
       label: 'Category Name',
     },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
+    slugField('name', {
       label: 'Category Slug (Identifier)',
       admin: {
-        description: 'URL-friendly identifier (e.g. pool-exterior, interior-rooms, bbq-garden)',
+        description: 'URL-friendly identifier (auto-generated from Name, click Unlock to edit)',
       },
-    },
+    }),
     {
       name: 'sortOrder',
       type: 'number',

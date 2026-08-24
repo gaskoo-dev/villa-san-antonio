@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { slugField } from '@/fields/slug'
 import { BookingBandBlock } from '@/blocks/BookingBandBlock'
 import { DistancesBlock } from '@/blocks/DistancesBlock'
 import { FaqSectionBlock } from '@/blocks/FaqSectionBlock'
@@ -70,16 +71,10 @@ export const Pages: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-      index: true,
+    slugField('title', {
       admin: {
-        position: 'sidebar',
         description: 'URL slug for this page (e.g. "home", "about-villa", "gallery")',
       },
-    },
+    }),
   ],
 }
