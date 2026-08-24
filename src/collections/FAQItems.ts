@@ -10,8 +10,8 @@ export const FAQItems: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'question',
-    defaultColumns: ['question', 'sortOrder'],
-    group: 'Content',
+    defaultColumns: ['question', 'category', 'sortOrder'],
+    group: 'FAQ',
   },
   access: {
     read: publicRead,

@@ -11,7 +11,7 @@ export const FAQCategories: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'sortOrder'],
-    group: 'Content',
+    group: 'FAQ',
   },
   access: {
     read: publicRead,
