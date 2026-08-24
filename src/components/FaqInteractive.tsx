@@ -161,7 +161,8 @@ export function FaqInteractive({
 
       {/* Category Pills / Filter Tabs with Smooth Spring Sliding Pill Capsule */}
       {showTabs && (
-        <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+        <div className="flex items-center">
+          <div className="no-scrollbar inline-flex w-fit max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
           {tabs.map((tab) => {
             const isActive = selectedCategory === tab.id
             const count = countsByCategory[tab.id] || 0
@@ -201,6 +202,7 @@ export function FaqInteractive({
               </button>
             )
           })}
+          </div>
         </div>
       )}
 
