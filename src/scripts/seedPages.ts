@@ -72,8 +72,6 @@ async function seedPages() {
     {
       title: 'Home',
       slug: 'home',
-      includeInNav: false,
-      navOrder: 0,
       meta: {
         title: 'Villa San Antonio · Private pool villa near Šibenik, Dalmatia',
         description:
@@ -83,9 +81,6 @@ async function seedPages() {
     {
       title: 'About the Villa',
       slug: 'about-villa',
-      navLabel: 'About Villa',
-      includeInNav: true,
-      navOrder: 1,
       layout: [
         {
           blockType: 'hero-sub',
@@ -337,9 +332,6 @@ async function seedPages() {
     {
       title: 'Gallery',
       slug: 'gallery',
-      navLabel: 'Gallery',
-      includeInNav: true,
-      navOrder: 2,
       layout: [
         {
           blockType: 'hero-sub',
@@ -361,9 +353,6 @@ async function seedPages() {
     {
       title: 'FAQ',
       slug: 'faq',
-      navLabel: 'FAQ',
-      includeInNav: true,
-      navOrder: 3,
       layout: [
         {
           blockType: 'hero-sub',
@@ -424,9 +413,6 @@ async function seedPages() {
     {
       title: 'Contact Us',
       slug: 'contact-us',
-      navLabel: 'Contact',
-      includeInNav: true,
-      navOrder: 4,
       layout: [
         {
           blockType: 'hero-sub',
@@ -448,9 +434,6 @@ async function seedPages() {
     {
       title: 'Direct Booking & Availability',
       slug: 'booking',
-      navLabel: 'Booking',
-      includeInNav: false,
-      navOrder: 5,
       layout: [
         {
           blockType: 'hero-sub',

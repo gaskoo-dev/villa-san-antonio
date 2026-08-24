@@ -477,15 +477,6 @@ export interface Page {
    * URL slug for this page (e.g. "home", "about-villa", "gallery")
    */
   slug: string;
-  includeInNav?: boolean | null;
-  /**
-   * Lower numbers appear first (e.g. 1, 2, 3...)
-   */
-  navOrder?: number | null;
-  /**
-   * If left empty, Page Title will be used in navigation
-   */
-  navLabel?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1075,9 +1066,6 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
       };
   slug?: T;
-  includeInNav?: T;
-  navOrder?: T;
-  navLabel?: T;
   updatedAt?: T;
   createdAt?: T;
 }

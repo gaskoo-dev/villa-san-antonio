@@ -274,8 +274,6 @@ async function seedHomeBlocks() {
       data: {
         title: 'Home',
         slug: 'home',
-        includeInNav: false,
-        navOrder: 0,
         layout: homeLayout as unknown as Page['layout'],
         meta: {
           title: 'Villa San Antonio · Private pool villa near Šibenik, Dalmatia',
@@ -291,8 +289,6 @@ async function seedHomeBlocks() {
       data: {
         title: 'Home',
         slug: 'home',
-        includeInNav: false,
-        navOrder: 0,
         layout: homeLayout as unknown as Page['layout'],
         meta: {
           title: 'Villa San Antonio · Private pool villa near Šibenik, Dalmatia',

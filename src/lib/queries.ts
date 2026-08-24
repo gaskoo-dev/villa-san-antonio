@@ -5,40 +5,6 @@ import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
 
-export type NavItem = {
-  href: string
-  label: string
-}
-
-export async function getNavPages(): Promise<NavItem[]> {
-  try {
-    const payload = await getPayloadClient()
-    const { docs } = await payload.find({
-      collection: 'pages',
-      where: {
-        includeInNav: {
-          equals: true,
-        },
-      },
-      sort: 'navOrder',
-      limit: 50,
-      depth: 0,
-    })
-
-    if (!docs || docs.length === 0) return []
-
-    return docs.map((doc) => {
-      const p = doc as unknown as { slug: string; title: string; navLabel?: string | null }
-      return {
-        href: `/${p.slug === 'home' ? '' : p.slug}`,
-        label: p.navLabel?.trim() || p.title,
-      }
-    })
-  } catch {
-    return []
-  }
-}
-
 export async function getPageBySlug(slug: string): Promise<Page | null> {
   const payload = await getPayloadClient()
   try {

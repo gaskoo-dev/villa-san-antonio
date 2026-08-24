@@ -20,7 +20,7 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'includeInNav', 'navOrder', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'updatedAt'],
     group: 'Content',
   },
   access: {
@@ -79,34 +79,6 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'URL slug for this page (e.g. "home", "about-villa", "gallery")',
-      },
-    },
-    {
-      name: 'includeInNav',
-      type: 'checkbox',
-      label: 'Show in Header Navigation',
-      defaultValue: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'navOrder',
-      type: 'number',
-      label: 'Navigation Order',
-      defaultValue: 10,
-      admin: {
-        position: 'sidebar',
-        description: 'Lower numbers appear first (e.g. 1, 2, 3...)',
-      },
-    },
-    {
-      name: 'navLabel',
-      type: 'text',
-      label: 'Custom Nav Label',
-      admin: {
-        position: 'sidebar',
-        description: 'If left empty, Page Title will be used in navigation',
       },
     },
   ],
