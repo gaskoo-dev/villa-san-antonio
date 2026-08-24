@@ -114,8 +114,8 @@ export async function SiteFooter({
 
         {/* 4-Column Balanced Grid */}
         <div className="grid gap-12 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          {/* Column 1: Brand (Col span 4) */}
-          <div className="lg:col-span-4">
+          {/* Column 1: Brand (Col span 3) */}
+          <div className="lg:col-span-3">
             <Link href="/" aria-label="Villa San Antonio home" className="inline-block">
               <Image
                 src="/branding/logo-white.png"
