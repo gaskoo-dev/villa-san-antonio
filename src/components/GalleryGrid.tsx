@@ -126,11 +126,11 @@ export function GalleryGrid({
         </div>
 
         {/* Filter Pills */}
-        <div className="no-scrollbar flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+        <div className="no-scrollbar flex max-w-full flex-nowrap items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
           <button
             type="button"
             onClick={() => handleSelectCategory('all')}
-            className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
+            className={`relative flex shrink-0 min-w-max items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
               selectedCategory === 'all'
                 ? 'text-white'
                 : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
@@ -143,9 +143,9 @@ export function GalleryGrid({
                 transition={{ type: 'spring', stiffness: 400, damping: 35 }}
               />
             )}
-            <span className="relative z-10">All</span>
+            <span className="relative z-10 whitespace-nowrap">All</span>
             <span
-              className={`relative z-10 text-[10px] tabular-nums ${
+              className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
                 selectedCategory === 'all' ? 'text-white/60' : 'text-ink/40'
               }`}
             >
@@ -163,7 +163,7 @@ export function GalleryGrid({
                 key={cat.slug}
                 type="button"
                 onClick={() => handleSelectCategory(cat.slug)}
-                className={`relative flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
+                className={`relative flex shrink-0 min-w-max items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
                   isSelected
                     ? 'text-white'
                     : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
@@ -176,9 +176,9 @@ export function GalleryGrid({
                     transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                   />
                 )}
-                <span className="relative z-10">{cat.name}</span>
+                <span className="relative z-10 whitespace-nowrap">{cat.name}</span>
                 <span
-                  className={`relative z-10 text-[10px] tabular-nums ${
+                  className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
                     isSelected ? 'text-white/60' : 'text-ink/40'
                   }`}
                 >
