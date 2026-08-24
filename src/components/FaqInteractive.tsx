@@ -159,49 +159,49 @@ export function FaqInteractive({
         </div>
       )}
 
-      {/* Category Pills / Filter Tabs with Smooth Spring Sliding Pill Capsule */}
+      {/* Category Pills / Filter Tabs evenly distributed across full width matching search bar */}
       {showTabs && (
-        <div className="flex items-center">
-          <div className="no-scrollbar inline-flex w-fit max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
-          {tabs.map((tab) => {
-            const isActive = selectedCategory === tab.id
-            const count = countsByCategory[tab.id] || 0
-            if (tab.id !== 'all' && count === 0) return null
+        <div className="w-full no-scrollbar overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+          <div className="flex min-w-full items-center justify-between gap-1 sm:grid sm:grid-cols-5 sm:gap-1.5">
+            {tabs.map((tab) => {
+              const isActive = selectedCategory === tab.id
+              const count = countsByCategory[tab.id] || 0
+              if (tab.id !== 'all' && count === 0) return null
 
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => {
-                  setSelectedCategory(tab.id)
-                  setOpenIndex(0)
-                }}
-                className={`relative flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
-                  isActive
-                    ? 'text-white'
-                    : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeFaqFilterPill"
-                    className="absolute inset-0 rounded-full bg-ink shadow-md"
-                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                  />
-                )}
-                <span className="relative z-10">
-                  {tab.label === 'All Questions' ? 'All' : tab.label}
-                </span>
-                <span
-                  className={`relative z-10 text-[10px] tabular-nums ${
-                    isActive ? 'text-white/60' : 'text-ink/40'
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory(tab.id)
+                    setOpenIndex(0)
+                  }}
+                  className={`relative flex flex-1 shrink-0 items-center justify-center gap-2 rounded-full py-2.5 px-3 text-center text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
+                    isActive
+                      ? 'text-white'
+                      : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
                   }`}
                 >
-                  {count}
-                </span>
-              </button>
-            )
-          })}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeFaqFilterPill"
+                      className="absolute inset-0 rounded-full bg-ink shadow-md"
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10 whitespace-nowrap">
+                    {tab.label === 'All Questions' ? 'All' : tab.label}
+                  </span>
+                  <span
+                    className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
+                      isActive ? 'text-white/60' : 'text-ink/40'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
       )}
