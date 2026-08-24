@@ -7,7 +7,7 @@ import { ContactForm } from '@/components/ContactForm'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { CONTACT_EMAIL, CONTACT_INTRO, CONTACT_PHONE } from '@/lib/content'
-import { getGallery, getPageBySlug, getSettings, mediaSrc } from '@/lib/queries'
+import { getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -23,10 +23,9 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-  const [pageDoc, gallery, settings] = await Promise.all([
+  const [pageDoc, gallery] = await Promise.all([
     getPageBySlug('contact-us'),
     getGallery(),
-    getSettings(),
   ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
@@ -38,19 +37,14 @@ export default async function ContactPage() {
     ? (mediaSrc(heroMedia, 'desktop') ?? mediaSrc(heroMedia) ?? '')
     : (mediaSrc(fallbackHeroImg?.image, 'desktop') ?? mediaSrc(fallbackHeroImg?.image) ?? '')
 
-  // Dynamic Contact & Location from SiteSettings CMS
-  const contact = settings?.contact
-  const email = contact?.email || CONTACT_EMAIL
-  const phone = contact?.phone || CONTACT_PHONE
+  const email = CONTACT_EMAIL
+  const phone = CONTACT_PHONE
   const cleanPhone = phone.replace(/[^0-9+]/g, '')
   const whatsappUrl = `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent('Hello Josip, I would like to inquire about Villa San Antonio.')}`
 
-  const address = contact?.address || 'Podine 14, Šibenik'
-  const region = contact?.region || 'Dalmatia · Croatia'
-  const fullLocation = `${address}, ${region}`
-
-  const lat = contact?.coordinates?.lat ?? 43.6470678
-  const lng = contact?.coordinates?.lng ?? 16.0546611
+  const fullLocation = 'Podine 14, 22000 Šibenik, Dalmatia · Croatia'
+  const lat = 43.6470678
+  const lng = 16.0546611
 
   return (
     <>

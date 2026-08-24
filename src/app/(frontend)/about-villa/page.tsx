@@ -8,7 +8,7 @@ import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { RoomImageSlider, type SlideImage } from '@/components/RoomImageSlider'
 import { ABOUT_INTRO, WELCOME_PACKAGE } from '@/lib/content'
-import { getGallery, getPageBySlug, getSettings, mediaSrc, type GalleryEntry } from '@/lib/queries'
+import { getGallery, getPageBySlug, mediaSrc, type GalleryEntry } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -167,11 +167,19 @@ function SpaceRow({
   )
 }
 
+const DEFAULT_DISTANCES = [
+  { label: 'Split Airport (SPU)', value: '45 km · 40 min drive' },
+  { label: 'Zadar Airport (ZAD)', value: '75 km · 50 min drive' },
+  { label: 'Historic Šibenik Old Town', value: '14 km · 15 min drive' },
+  { label: 'Krka National Park waterfalls', value: '15 km · 15 min drive' },
+  { label: 'Nearest Adriatic pebble beaches', value: '10 km · 12 min drive' },
+  { label: 'Supermarket & local grocery', value: '3 km · 4 min drive' },
+]
+
 export default async function AboutPage() {
-  const [pageDoc, gallery, settings] = await Promise.all([
+  const [pageDoc, gallery] = await Promise.all([
     getPageBySlug('about-villa'),
     getGallery(),
-    getSettings(),
   ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
@@ -195,7 +203,7 @@ export default async function AboutPage() {
   const distancesToUse =
     distancesBlock?.items && distancesBlock.items.length > 0
       ? distancesBlock.items
-      : settings?.contact?.distances ?? []
+      : DEFAULT_DISTANCES
 
   const welcomeBlock = pageDoc?.layout?.find((b): b is WelcomePackageBlock => b.blockType === 'welcomePackage')
   const bookingBlock = pageDoc?.layout?.find((b): b is BookingBandBlock => b.blockType === 'bookingBand')

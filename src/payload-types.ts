@@ -101,12 +101,8 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {
-    'site-settings': SiteSetting;
-  };
-  globalsSelect: {
-    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -1251,97 +1247,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
- */
-export interface SiteSetting {
-  id: number;
-  contact: {
-    email: string;
-    phone?: string | null;
-    /**
-     * e.g. Podine, near Šibenik
-     */
-    address: string;
-    region?: string | null;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-    distances?:
-      | {
-          label: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  social?: {
-    facebook?: string | null;
-    instagram?: string | null;
-  };
-  stats?: {
-    items?:
-      | {
-          label: string;
-          value: number;
-          suffix?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings_select".
- */
-export interface SiteSettingsSelect<T extends boolean = true> {
-  contact?:
-    | T
-    | {
-        email?: T;
-        phone?: T;
-        address?: T;
-        region?: T;
-        coordinates?:
-          | T
-          | {
-              lat?: T;
-              lng?: T;
-            };
-        distances?:
-          | T
-          | {
-              label?: T;
-              value?: T;
-              id?: T;
-            };
-      };
-  social?:
-    | T
-    | {
-        facebook?: T;
-        instagram?: T;
-      };
-  stats?:
-    | T
-    | {
-        items?:
-          | T
-          | {
-              label?: T;
-              value?: T;
-              suffix?: T;
-              id?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -12,7 +12,7 @@ import { Reveal } from '@/components/Reveal'
 import { ReviewsSwiper } from '@/components/ReviewsSwiper'
 import { StatsBand } from '@/components/StatsBand'
 import { REVIEWS_INTRO } from '@/lib/content'
-import { getFaqItems, getGallery, getPageBySlug, getReviews, getSettings, mediaSrc, type GalleryEntry } from '@/lib/queries'
+import { getFaqItems, getGallery, getPageBySlug, getReviews, mediaSrc, type GalleryEntry } from '@/lib/queries'
 import type { FaqItem, Media, Page, Review } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -49,9 +49,8 @@ function slide(entry?: GalleryEntry) {
 }
 
 export default async function HomePage() {
-  const [homePage, settings, gallery, reviews, faqItems] = await Promise.all([
+  const [homePage, gallery, reviews, faqItems] = await Promise.all([
     getPageBySlug('home'),
-    getSettings(),
     getGallery(),
     getReviews(200),
     getFaqItems(),
@@ -223,11 +222,6 @@ export default async function HomePage() {
     { label: 'Heated pool', value: 36, suffix: 'm²', detail: 'Private pool with waterfall & sun deck' },
     { label: 'Fenced plot', value: 800, suffix: 'm²', detail: 'Mediterranean garden & stone walls' },
   ]
-  const settingsMetrics = (settings?.stats?.items ?? []).slice(0, 4).map((s) => ({
-    label: s.label,
-    value: s.value,
-    suffix: s.suffix || undefined,
-  }))
 
   const cmsMetrics = perspectiveBlock?.stats?.map((s) => ({
     label: s.label,
@@ -239,9 +233,7 @@ export default async function HomePage() {
   const metricsToUse =
     cmsMetrics && cmsMetrics.length > 0
       ? cmsMetrics
-      : settingsMetrics.length >= 4
-        ? settingsMetrics
-        : fallbackMetrics
+      : fallbackMetrics
 
   const avgStars =
     reviews.length > 0 ? reviews.reduce((sum, r) => sum + (r.stars ?? 5), 0) / reviews.length : null
@@ -257,8 +249,8 @@ export default async function HomePage() {
     address: { '@type': 'PostalAddress', addressLocality: 'Podine, Šibenik', addressCountry: 'HR' },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: settings?.contact?.coordinates?.lat ?? 43.647,
-      longitude: settings?.contact?.coordinates?.lng ?? 16.055,
+      latitude: 43.647,
+      longitude: 16.055,
     },
     ...(avgStars && reviews.length > 0
       ? {
