@@ -14,7 +14,7 @@ import { BookingBand } from '@/components/BookingBand'
 import { FaqInteractive } from '@/components/FaqInteractive'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
-import { getFaqItems, getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { getFaqCategories, getFaqItems, getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
 import type { FaqItem, Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -41,9 +41,10 @@ const ICON_MAP = {
 } as const
 
 export default async function FaqPage() {
-  const [pageDoc, allFaqItems, gallery] = await Promise.all([
+  const [pageDoc, allFaqItems, faqCategories, gallery] = await Promise.all([
     getPageBySlug('faq'),
     getFaqItems(),
+    getFaqCategories(),
     getGallery(),
   ])
 
@@ -186,6 +187,7 @@ export default async function FaqPage() {
             <Reveal delay={80}>
               <FaqInteractive
                 items={resolvedFaqItems}
+                categories={faqCategories}
                 enableSearch={faqBlock?.enableSearch ?? true}
                 enableCategoryTabs={faqBlock?.enableCategoryTabs ?? true}
               />

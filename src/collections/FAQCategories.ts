@@ -2,15 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
 
-export const FAQItems: CollectionConfig = {
-  slug: 'faq-items',
+export const FAQCategories: CollectionConfig = {
+  slug: 'faq-categories',
   labels: {
-    singular: 'FAQ Item',
-    plural: 'FAQ Items',
+    singular: 'FAQ Category',
+    plural: 'FAQ Categories',
   },
   admin: {
-    useAsTitle: 'question',
-    defaultColumns: ['question', 'sortOrder'],
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'slug', 'sortOrder'],
     group: 'Content',
   },
   access: {
@@ -22,28 +22,26 @@ export const FAQItems: CollectionConfig = {
   defaultSort: 'sortOrder',
   fields: [
     {
-      name: 'question',
+      name: 'name',
       type: 'text',
       required: true,
+      label: 'Category Name',
     },
     {
-      name: 'answer',
-      type: 'textarea',
+      name: 'slug',
+      type: 'text',
       required: true,
-    },
-    {
-      name: 'category',
-      type: 'relationship',
-      relationTo: 'faq-categories',
-      label: 'Category',
+      unique: true,
+      label: 'Category Slug (Identifier)',
       admin: {
-        position: 'sidebar',
+        description: 'URL-friendly identifier (e.g. stay, pool, booking, rules)',
       },
     },
     {
       name: 'sortOrder',
       type: 'number',
       defaultValue: 100,
+      label: 'Display Order',
       admin: {
         position: 'sidebar',
       },

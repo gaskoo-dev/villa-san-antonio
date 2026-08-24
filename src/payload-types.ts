@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     'gallery-images': GalleryImage;
     reviews: Review;
+    'faq-categories': FaqCategory;
     'faq-items': FaqItem;
     'booking-inquiries': BookingInquiry;
     'contact-messages': ContactMessage;
@@ -87,6 +88,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'gallery-images': GalleryImagesSelect<false> | GalleryImagesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
     'booking-inquiries': BookingInquiriesSelect<false> | BookingInquiriesSelect<true>;
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
@@ -564,7 +566,22 @@ export interface FaqItem {
   id: number;
   question: string;
   answer: string;
-  category?: ('stay' | 'pool' | 'booking' | 'rules') | null;
+  category?: (number | null) | FaqCategory;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories".
+ */
+export interface FaqCategory {
+  id: number;
+  name: string;
+  /**
+   * URL-friendly identifier (e.g. stay, pool, booking, rules)
+   */
+  slug: string;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -669,6 +686,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'faq-categories';
+        value: number | FaqCategory;
       } | null)
     | ({
         relationTo: 'faq-items';
@@ -1131,6 +1152,17 @@ export interface ReviewsSelect<T extends boolean = true> {
   text?: T;
   source?: T;
   sourceUrl?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories_select".
+ */
+export interface FaqCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;

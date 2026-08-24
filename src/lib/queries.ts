@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 
-import type { FaqItem, GalleryImage, Media, Page, Review, SiteSetting } from '@/payload-types'
+import type { FaqCategory, FaqItem, GalleryImage, Media, Page, Review, SiteSetting } from '@/payload-types'
 import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
@@ -82,6 +82,21 @@ export async function getReviews(limit = 30): Promise<Review[]> {
   }
 }
 
+export async function getFaqCategories(): Promise<FaqCategory[]> {
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'faq-categories',
+      limit: 50,
+      sort: 'sortOrder',
+      depth: 0,
+    })
+    return docs as FaqCategory[]
+  } catch {
+    return []
+  }
+}
+
 export async function getFaqItems(): Promise<FaqItem[]> {
   try {
     const payload = await getPayloadClient()
@@ -89,7 +104,7 @@ export async function getFaqItems(): Promise<FaqItem[]> {
       collection: 'faq-items',
       limit: 50,
       sort: 'sortOrder',
-      depth: 0,
+      depth: 1,
     })
     return docs as FaqItem[]
   } catch {

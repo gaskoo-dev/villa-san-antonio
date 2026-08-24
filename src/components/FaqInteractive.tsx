@@ -4,27 +4,28 @@ import { IconHelp, IconPlus, IconSearch, IconX } from '@tabler/icons-react'
 import { useId, useMemo, useState } from 'react'
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
 
+export type FaqCategoryData = {
+  id?: string | number | null
+  name: string
+  slug: string
+  sortOrder?: number | null
+}
+
 export type FaqItemData = {
   id?: string | number | null
   question: string
   answer: string
-  category?: 'stay' | 'pool' | 'booking' | 'rules' | string | null
+  category?: string | number | FaqCategoryData | null
 }
-
-const CATEGORY_TABS = [
-  { id: 'all', label: 'All Questions' },
-  { id: 'stay', label: 'Arrival & Stay' },
-  { id: 'pool', label: 'Pool & Amenities' },
-  { id: 'booking', label: 'Booking & Payment' },
-  { id: 'rules', label: 'Rules & Pets' },
-] as const
 
 export function FaqInteractive({
   items,
+  categories = [],
   enableSearch = true,
   enableCategoryTabs = true,
 }: {
   items: FaqItemData[]
+  categories?: FaqCategoryData[]
   enableSearch?: boolean | null
   enableCategoryTabs?: boolean | null
 }) {
@@ -36,62 +37,75 @@ export function FaqInteractive({
   const showSearch = enableSearch !== false
   const showTabs = enableCategoryTabs !== false
 
-  // Auto-categorize items if category is missing or default
-  const categorizedItems = useMemo(() => {
-    return items.map((item) => {
-      if (item.category && item.category !== 'general') {
-        return item
+  // Dynamic Category Tabs from CMS
+  const tabs = useMemo(() => {
+    const list: Array<{ id: string; label: string }> = [{ id: 'all', label: 'All Questions' }]
+    if (categories && categories.length > 0) {
+      for (const cat of categories) {
+        list.push({ id: cat.slug, label: cat.name })
       }
-      const q = (item.question + ' ' + item.answer).toLowerCase()
-      let inferredCategory = 'stay'
-      if (
-        q.includes('pool') ||
-        q.includes('heat') ||
-        q.includes('bbq') ||
-        q.includes('grill') ||
-        q.includes('garden') ||
-        q.includes('jacuzzi')
-      ) {
-        inferredCategory = 'pool'
-      } else if (
-        q.includes('book') ||
-        q.includes('pay') ||
-        q.includes('card') ||
-        q.includes('deposit') ||
-        q.includes('refund') ||
-        q.includes('cancel') ||
-        q.includes('price')
-      ) {
-        inferredCategory = 'booking'
-      } else if (
-        q.includes('pet') ||
-        q.includes('dog') ||
-        q.includes('smoke') ||
-        q.includes('party') ||
-        q.includes('rule') ||
-        q.includes('guest')
-      ) {
-        inferredCategory = 'rules'
-      } else if (
-        q.includes('park') ||
-        q.includes('wifi') ||
-        q.includes('check-in') ||
-        q.includes('arrive') ||
-        q.includes('location')
-      ) {
-        inferredCategory = 'stay'
-      }
-      return { ...item, category: inferredCategory }
-    })
-  }, [items])
+    } else {
+      list.push(
+        { id: 'stay', label: 'Arrival & Stay' },
+        { id: 'pool', label: 'Pool & Amenities' },
+        { id: 'booking', label: 'Booking & Payment' },
+        { id: 'rules', label: 'House Rules & Pets' },
+      )
+    }
+    return list
+  }, [categories])
+
+  // Helper to extract category slug
+  const getItemCategorySlug = (item: FaqItemData): string => {
+    if (typeof item.category === 'object' && item.category !== null) {
+      return item.category.slug
+    }
+    if (typeof item.category === 'string') {
+      return item.category
+    }
+    const q = (item.question + ' ' + item.answer).toLowerCase()
+    if (
+      q.includes('pool') ||
+      q.includes('heat') ||
+      q.includes('bbq') ||
+      q.includes('grill') ||
+      q.includes('garden') ||
+      q.includes('jacuzzi')
+    ) {
+      return 'pool'
+    }
+    if (
+      q.includes('book') ||
+      q.includes('pay') ||
+      q.includes('card') ||
+      q.includes('deposit') ||
+      q.includes('refund') ||
+      q.includes('cancel') ||
+      q.includes('price')
+    ) {
+      return 'booking'
+    }
+    if (
+      q.includes('pet') ||
+      q.includes('dog') ||
+      q.includes('smoke') ||
+      q.includes('party') ||
+      q.includes('rule') ||
+      q.includes('guest')
+    ) {
+      return 'rules'
+    }
+    return 'stay'
+  }
 
   // Filter by category and search query
   const filteredItems = useMemo(() => {
-    return categorizedItems.filter((item) => {
+    return items.filter((item) => {
+      const itemCat = getItemCategorySlug(item)
       const matchesCategory =
         !showTabs ||
         selectedCategory === 'all' ||
-        item.category === selectedCategory
+        itemCat === selectedCategory
       const query = search.trim().toLowerCase()
       const matchesSearch =
         !showSearch ||
@@ -100,16 +114,17 @@ export function FaqInteractive({
         item.answer.toLowerCase().includes(query)
       return matchesCategory && matchesSearch
     })
-  }, [categorizedItems, selectedCategory, search, showTabs, showSearch])
+  }, [items, selectedCategory, search, showTabs, showSearch])
 
+  // Counts by category tab
   const countsByCategory = useMemo(() => {
-    const counts: Record<string, number> = { all: categorizedItems.length }
-    for (const item of categorizedItems) {
-      const cat = item.category || 'stay'
+    const counts: Record<string, number> = { all: items.length }
+    for (const item of items) {
+      const cat = getItemCategorySlug(item)
       counts[cat] = (counts[cat] || 0) + 1
     }
     return counts
-  }, [categorizedItems])
+  }, [items])
 
   return (
     <div className="space-y-8">
@@ -148,7 +163,7 @@ export function FaqInteractive({
       {showTabs && (
         <LayoutGroup id="faqTabsGroup">
           <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {CATEGORY_TABS.map((tab) => {
+            {tabs.map((tab) => {
               const isActive = selectedCategory === tab.id
               const count = countsByCategory[tab.id] || 0
               return (
