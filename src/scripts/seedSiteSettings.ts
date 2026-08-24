@@ -9,32 +9,8 @@ async function seedSiteSettings() {
   await payload.updateGlobal({
     slug: 'site-settings',
     data: {
-      settings: {
-        calendarIcalUrl: 'https://www.myluxoria.com/api/v1/get-ical/358',
-        calendarLastSyncedAt: new Date().toISOString(),
-      },
-      social: {
-        links: [
-          {
-            platform: 'instagram',
-            label: 'Instagram',
-            url: 'https://www.instagram.com',
-            enabled: true,
-          },
-          {
-            platform: 'facebook',
-            label: 'Facebook',
-            url: 'https://www.facebook.com',
-            enabled: true,
-          },
-          {
-            platform: 'whatsapp',
-            label: 'WhatsApp Direct',
-            url: 'https://wa.me/385916021899',
-            enabled: true,
-          },
-        ],
-      },
+      calendarIcalUrl: 'https://www.myluxoria.com/api/v1/get-ical/358',
+      calendarLastSyncedAt: new Date().toISOString(),
     },
   })
 

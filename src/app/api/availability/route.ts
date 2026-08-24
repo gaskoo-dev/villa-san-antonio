@@ -37,7 +37,7 @@ export async function GET() {
 
   const siteSettings = await getSettings()
   const customIcalUrl =
-    siteSettings?.settings?.calendarIcalUrl || 'https://www.myluxoria.com/api/v1/get-ical/358'
+    siteSettings?.calendarIcalUrl || 'https://www.myluxoria.com/api/v1/get-ical/358'
 
   // 1. Fetch official iCal Feed
   try {
@@ -55,10 +55,8 @@ export async function GET() {
           payload.updateGlobal({
             slug: 'site-settings',
             data: {
-              settings: {
-                calendarIcalUrl: customIcalUrl,
-                calendarLastSyncedAt: new Date().toISOString(),
-              },
+              calendarIcalUrl: customIcalUrl,
+              calendarLastSyncedAt: new Date().toISOString(),
             },
           })
         )

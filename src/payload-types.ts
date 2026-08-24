@@ -1258,27 +1258,14 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
-  settings?: {
-    /**
-     * External iCal URL feed used to sync villa availability (e.g. MyLuxoria, Airbnb, Booking.com).
-     */
-    calendarIcalUrl?: string | null;
-    /**
-     * Timestamp when the calendar feed was last retrieved and synced.
-     */
-    calendarLastSyncedAt?: string | null;
-  };
-  social?: {
-    links?:
-      | {
-          platform: 'instagram' | 'facebook' | 'whatsapp' | 'tiktok' | 'youtube' | 'airbnb' | 'booking' | 'other';
-          label?: string | null;
-          url: string;
-          enabled?: boolean | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
+  /**
+   * External iCal URL feed used to sync villa availability (e.g. MyLuxoria, Airbnb, Booking.com).
+   */
+  calendarIcalUrl?: string | null;
+  /**
+   * Timestamp when the calendar feed was last retrieved and synced.
+   */
+  calendarLastSyncedAt?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1287,25 +1274,8 @@ export interface SiteSetting {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
-  settings?:
-    | T
-    | {
-        calendarIcalUrl?: T;
-        calendarLastSyncedAt?: T;
-      };
-  social?:
-    | T
-    | {
-        links?:
-          | T
-          | {
-              platform?: T;
-              label?: T;
-              url?: T;
-              enabled?: T;
-              id?: T;
-            };
-      };
+  calendarIcalUrl?: T;
+  calendarLastSyncedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

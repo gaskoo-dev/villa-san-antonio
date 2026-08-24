@@ -2,10 +2,6 @@ import {
   IconArrowUpRight,
   IconBrandFacebook,
   IconBrandInstagram,
-  IconBrandTiktok,
-  IconBrandWhatsapp,
-  IconBrandYoutube,
-  IconLink,
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,35 +15,14 @@ import {
   PRIMARY_CTA_LABEL,
   SITE_NAME,
 } from '@/lib/content'
-import { getSettings } from '@/lib/queries'
-
-const SOCIAL_ICON_MAP = {
-  instagram: IconBrandInstagram,
-  facebook: IconBrandFacebook,
-  whatsapp: IconBrandWhatsapp,
-  tiktok: IconBrandTiktok,
-  youtube: IconBrandYoutube,
-  airbnb: IconLink,
-  booking: IconLink,
-  other: IconLink,
-} as const
 
 export async function SiteFooter({
   cmsNavLinks,
 }: {
   cmsNavLinks?: Array<{ href: string; label: string }>
 } = {}) {
-  const [settings] = await Promise.all([getSettings()])
   const fallbackNavLinks = NAV_LINKS
   const navLinks = cmsNavLinks && cmsNavLinks.length > 0 ? cmsNavLinks : fallbackNavLinks
-
-  const activeSocialLinks =
-    settings?.social?.links && settings.social.links.length > 0
-      ? settings.social.links.filter((l) => l.enabled !== false && Boolean(l.url))
-      : [
-          { platform: 'instagram' as const, label: 'Instagram', url: 'https://www.instagram.com' },
-          { platform: 'facebook' as const, label: 'Facebook', url: 'https://www.facebook.com' },
-        ]
 
   return (
     <footer className="bg-ink px-6 pb-8 pt-20 text-white lg:pt-28">
@@ -113,24 +88,25 @@ export async function SiteFooter({
                 Dalmatia · Croatia
               </li>
             </ul>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              {activeSocialLinks.map((social) => {
-                const IconComponent =
-                  (social.platform && SOCIAL_ICON_MAP[social.platform as keyof typeof SOCIAL_ICON_MAP]) ||
-                  IconLink
-                return (
-                  <a
-                    key={social.url + social.platform}
-                    href={social.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={social.label || `Villa San Antonio on ${social.platform}`}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white/60 transition-colors hover:border-white hover:text-white"
-                  >
-                    <IconComponent size={18} stroke={1.5} />
-                  </a>
-                )
-              })}
+            <div className="mt-6 flex items-center gap-3">
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Villa San Antonio on Instagram"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white/60 transition-colors hover:border-white hover:text-white"
+              >
+                <IconBrandInstagram size={18} stroke={1.5} />
+              </a>
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Villa San Antonio on Facebook"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white/60 transition-colors hover:border-white hover:text-white"
+              >
+                <IconBrandFacebook size={18} stroke={1.5} />
+              </a>
             </div>
           </div>
         </div>
