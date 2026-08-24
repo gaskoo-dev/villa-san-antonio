@@ -512,6 +512,7 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            hostImage?: (number | null) | Media;
             hostName?: string | null;
             hostSubtitle?: string | null;
             badgeText?: string | null;

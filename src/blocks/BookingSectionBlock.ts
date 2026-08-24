@@ -120,6 +120,16 @@ export const BookingSectionBlock: Block = {
       },
       fields: [
         {
+          name: 'hostImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Host Avatar Image (Optional)',
+          admin: {
+            description:
+              'Upload a personal portrait photo of Josip / Hosts. If empty, initials will be shown.',
+          },
+        },
+        {
           type: 'row',
           fields: [
             {

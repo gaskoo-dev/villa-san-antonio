@@ -124,6 +124,12 @@ export default async function BookingPage() {
           desc: p.desc,
         }))
 
+  const hostMedia =
+    typeof bookingSection?.hostImage === 'object' && bookingSection?.hostImage
+      ? (bookingSection.hostImage as Media)
+      : null
+  const hostImgSrc = hostMedia ? (mediaSrc(hostMedia, 'thumbnail') ?? mediaSrc(hostMedia) ?? '') : ''
+
   const hostName = bookingSection?.hostName || 'Josip & Family'
   const hostSubtitle = bookingSection?.hostSubtitle || 'Estate Owners & Hosts'
   const badgeText = bookingSection?.badgeText || 'Fast Reply'
@@ -215,9 +221,20 @@ export default async function BookingPage() {
               <div className="border-t border-ink/8 pt-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-white text-xs font-bold tracking-wider shadow-sm">
-                      {hostName.split(' ').map((w) => w[0]).slice(0, 2).join('') || 'JP'}
-                    </div>
+                    {hostImgSrc ? (
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-ink/10 shadow-sm">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={hostImgSrc}
+                          alt={hostMedia?.alt || hostName}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-white text-xs font-bold tracking-wider shadow-sm">
+                        {hostName.split(' ').map((w) => w[0]).slice(0, 2).join('') || 'JP'}
+                      </div>
+                    )}
                     <div>
                       <h4 className="text-sm sm:text-base font-semibold text-ink leading-tight">
                         {hostName}
