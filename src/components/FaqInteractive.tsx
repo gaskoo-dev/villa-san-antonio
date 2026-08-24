@@ -113,7 +113,7 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
               setOpenIndex(0) // open first matching on search
             }}
             placeholder="Search questions (e.g. heated pool, parking, deposit, pets)..."
-            className="w-full rounded-2xl border border-ink/12 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 shadow-xs transition-all duration-200 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-ink/10"
+            className="w-full rounded-2xl border border-ink/10 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 transition-colors duration-200 hover:border-ink/25 focus:border-ink/30 focus:outline-hidden focus:ring-0"
           />
           {search && (
             <button
