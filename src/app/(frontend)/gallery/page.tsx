@@ -6,7 +6,7 @@ import { GalleryGrid } from '@/components/GalleryGrid'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { GALLERY_INTRO } from '@/lib/content'
-import { getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { getGallery, getGalleryCategories, getPageBySlug, mediaSrc } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -22,7 +22,11 @@ export const metadata: Metadata = {
 }
 
 export default async function GalleryPage() {
-  const [pageDoc, gallery] = await Promise.all([getPageBySlug('gallery'), getGallery()])
+  const [pageDoc, gallery, categories] = await Promise.all([
+    getPageBySlug('gallery'),
+    getGallery(200),
+    getGalleryCategories(),
+  ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
   const bookingBlock = pageDoc?.layout?.find((b): b is BookingBandBlock => b.blockType === 'bookingBand')
@@ -46,9 +50,9 @@ export default async function GalleryPage() {
         }}
       />
 
-      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-20 lg:py-28">
+      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 lg:py-24">
         <Reveal>
-          <GalleryGrid images={gallery} />
+          <GalleryGrid images={gallery} categories={categories} />
         </Reveal>
       </section>
 

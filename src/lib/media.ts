@@ -6,6 +6,7 @@ export type GalleryEntryLike = {
   caption?: string | null
   alt?: string | null
   featured?: boolean | null
+  category?: { id?: number | string; name?: string; slug?: string } | number | string | null
 }
 
 export function mediaAlt(entry: { alt?: string | null; image?: Media | number | string | null }): string {
