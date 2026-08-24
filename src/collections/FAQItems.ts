@@ -32,6 +32,20 @@ export const FAQItems: CollectionConfig = {
       required: true,
     },
     {
+      name: 'category',
+      type: 'select',
+      defaultValue: 'stay',
+      options: [
+        { label: 'Arrival & Stay', value: 'stay' },
+        { label: 'Pool & Amenities', value: 'pool' },
+        { label: 'Booking & Payment', value: 'booking' },
+        { label: 'House Rules & Pets', value: 'rules' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'sortOrder',
       type: 'number',
       defaultValue: 100,

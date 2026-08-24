@@ -536,6 +536,7 @@ export interface FaqItem {
   id: number;
   question: string;
   answer: string;
+  category?: ('stay' | 'pool' | 'booking' | 'rules') | null;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -1087,6 +1088,7 @@ export interface ReviewsSelect<T extends boolean = true> {
 export interface FaqItemsSelect<T extends boolean = true> {
   question?: T;
   answer?: T;
+  category?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
