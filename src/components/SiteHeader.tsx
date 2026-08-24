@@ -256,11 +256,40 @@ export function SiteHeader({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 top-0 z-40 flex h-dvh flex-col justify-between bg-paper px-6 pb-8 pt-24 text-ink lg:hidden overflow-y-auto"
+            className="fixed inset-0 top-0 z-50 flex h-dvh flex-col justify-between bg-paper px-6 pb-8 pt-5 text-ink lg:hidden overflow-y-auto"
           >
-            <div className="space-y-8">
+            {/* Drawer Top Header with Logo & Prominent X Close Button */}
+            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
+              <Link
+                href="/"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Villa San Antonio home"
+                className="relative flex items-center"
+              >
+                <div className="relative h-12 w-12">
+                  <Image
+                    src="/branding/logo-black.png"
+                    alt="Villa San Antonio"
+                    width={200}
+                    height={200}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close navigation menu"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-surface text-ink shadow-xs transition-all hover:border-ink hover:bg-ink hover:text-white active:scale-95 cursor-pointer"
+              >
+                <IconX size={22} stroke={2.2} />
+              </button>
+            </div>
+
+            <div className="space-y-6 pt-2">
               {/* Navigation Links */}
-              <nav className="flex flex-col gap-5 pt-4">
+              <nav className="flex flex-col gap-4 pt-2">
                 {navLinks.map((link, idx) => (
                   <motion.div
                     key={link.href + link.label}
