@@ -7,6 +7,7 @@ import {
   IconLoader2,
   IconRefresh,
 } from '@tabler/icons-react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 const DAYS_OF_WEEK = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
@@ -46,10 +47,11 @@ export function AvailabilityCalendar({
   const [loading, setLoading] = useState(true)
   const [hoveredDate, setHoveredDate] = useState<string | null>(null)
 
-  // Current viewing month (0-indexed)
+  // Current viewing month (0-indexed) & transition direction
   const today = new Date()
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth())
+  const [direction, setDirection] = useState<1 | -1>(1)
 
   useEffect(() => {
     let ignore = false
@@ -81,6 +83,7 @@ export function AvailabilityCalendar({
   }, [])
 
   const nextMonth = () => {
+    setDirection(1)
     if (viewMonth === 11) {
       setViewMonth(0)
       setViewYear((y) => y + 1)
@@ -96,6 +99,7 @@ export function AvailabilityCalendar({
     ) {
       return
     }
+    setDirection(-1)
     if (viewMonth === 0) {
       setViewMonth(11)
       setViewYear((y) => y - 1)
@@ -297,12 +301,24 @@ export function AvailabilityCalendar({
         </div>
       </div>
 
-      {/* 2-Month Grid (Single on mobile, Dual on tablet/desktop) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1">
-        {renderMonth(viewYear, viewMonth)}
-        <div className="hidden md:block">
-          {renderMonth(secondYear, secondMonth)}
-        </div>
+      {/* Animated 2-Month Grid */}
+      <div className="relative overflow-hidden min-h-[290px]">
+        <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+          <motion.div
+            key={`${viewYear}-${viewMonth}`}
+            custom={direction}
+            initial={{ opacity: 0, x: direction * 28 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -direction * 28 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1"
+          >
+            {renderMonth(viewYear, viewMonth)}
+            <div className="hidden md:block">
+              {renderMonth(secondYear, secondMonth)}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Calendar Legend & Selection Summary */}
