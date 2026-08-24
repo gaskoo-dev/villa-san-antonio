@@ -117,7 +117,7 @@ export async function SiteFooter({
           {/* Column 1: Brand & CTA (Col span 4) */}
           <div className="flex flex-col justify-between lg:col-span-4">
             <div>
-              <Link href="/" aria-label="Villa San Antonio home" className="inline-block transition-opacity hover:opacity-85">
+              <Link href="/" aria-label="Villa San Antonio home" className="inline-block">
                 <Image
                   src="/branding/logo-white.png"
                   alt="Villa San Antonio"
