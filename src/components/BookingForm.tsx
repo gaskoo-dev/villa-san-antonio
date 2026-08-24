@@ -23,7 +23,7 @@ import { useLocale } from '@/context/LocaleContext'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
-  'w-full rounded-xl border border-ink/15 bg-surface/50 px-4 py-3.5 text-sm text-ink transition-all duration-200 placeholder:text-ink/35 focus:border-ink focus:bg-white focus:outline-none focus:ring-2 focus:ring-ink/10'
+  'w-full rounded-xl border border-ink/15 bg-surface/50 px-4 py-3.5 text-base sm:text-sm text-ink transition-all duration-200 placeholder:text-ink/35 focus:border-ink focus:bg-white focus:outline-none focus:ring-2 focus:ring-ink/10'
 
 const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/75'
 

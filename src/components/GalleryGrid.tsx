@@ -42,6 +42,7 @@ export function GalleryGrid({
   const reduce = useReducedMotion()
   const closeRef = useRef<HTMLButtonElement>(null)
   const thumbnailContainerRef = useRef<HTMLDivElement>(null)
+  const touchStartXRef = useRef<number | null>(null)
 
   // Filter images according to active category tab
   const filteredImages = useMemo(() => {
@@ -325,8 +326,20 @@ export function GalleryGrid({
 
             {/* Main Stage / Image Viewer */}
             <div
-              className="relative flex flex-1 items-center justify-center py-4"
+              className="relative flex flex-1 items-center justify-center py-4 touch-pan-y"
               onClick={close}
+              onTouchStart={(e) => {
+                touchStartXRef.current = e.touches[0].clientX
+              }}
+              onTouchEnd={(e) => {
+                if (touchStartXRef.current === null) return
+                const diff = touchStartXRef.current - e.changedTouches[0].clientX
+                if (Math.abs(diff) > 40) {
+                  if (diff > 0) show(1)
+                  else show(-1)
+                }
+                touchStartXRef.current = null
+              }}
             >
               <motion.figure
                 key={current.id ?? active}

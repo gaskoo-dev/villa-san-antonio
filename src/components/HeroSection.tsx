@@ -99,35 +99,35 @@ export function HeroSection({
               transition={{ duration: animDuration, ease: [0.22, 1, 0.36, 1] }}
               className="flex w-full flex-col items-center text-center"
             >
-              <p className="mb-6 text-xs font-medium uppercase tracking-[0.2rem] text-white/75">
+              <p className="mb-4 sm:mb-6 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2rem] text-white/80">
                 {current.kicker}
               </p>
-              <h1 className="max-w-[90vw] text-center text-[clamp(3.2rem,7.5vw,7.8rem)] font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:leading-[1.04]">
+              <h1 className="max-w-[92vw] text-center text-[clamp(2.35rem,6.8vw,7.2rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-white break-words sm:break-normal">
                 <span className="block">{current.title}</span>
-                <span className="accent-serif mt-1.5 block font-normal italic tracking-[-0.02em] text-white sm:mt-2.5">
+                <span className="accent-serif mt-1 block font-normal italic tracking-[-0.02em] text-white sm:mt-2.5">
                   {current.accent}
                 </span>
               </h1>
-              <p className="mt-8 max-w-lg text-center text-sm leading-6 text-white/85 sm:text-[15px]">
+              <p className="mt-6 sm:mt-8 max-w-lg text-center text-sm leading-relaxed text-white/85 sm:text-[15px]">
                 {current.subtext}
               </p>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-7">
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-7 w-full sm:w-auto px-4 sm:px-0">
           <Link
             href={ctaPrimary.url}
-            className="inline-flex items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2 text-xs font-medium uppercase tracking-wider text-ink transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-1 active:translate-y-0"
+            className="inline-flex w-full sm:w-auto items-center justify-center gap-4 rounded-full bg-white py-3 sm:py-2 pl-6 pr-2.5 text-xs font-semibold uppercase tracking-wider text-ink shadow-lg transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-0.5 active:translate-y-0"
           >
-            {ctaPrimary.label}
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white">
+            <span>{ctaPrimary.label}</span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-white">
               <IconArrowRight size={18} stroke={2} aria-hidden />
             </span>
           </Link>
           <Link
             href={ctaSecondary.url}
-            className="text-xs font-medium uppercase tracking-[0.15rem] text-white/85 underline decoration-white/40 underline-offset-[6px] transition-colors hover:text-white hover:decoration-white"
+            className="text-xs font-semibold uppercase tracking-[0.15rem] text-white/85 underline decoration-white/40 underline-offset-[6px] transition-colors hover:text-white hover:decoration-white py-2"
           >
             {ctaSecondary.label}
           </Link>

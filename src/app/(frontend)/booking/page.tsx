@@ -100,11 +100,11 @@ export default async function BookingPage() {
       />
 
       <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 sm:py-20 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-12 lg:gap-16 items-start">
-          {/* Left Column: Guarantees, Steps & Host Card */}
-          <Reveal className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-10 lg:gap-16 items-start">
+          {/* Left Column: Guarantees, Steps & Host Card (Appears second on mobile, first on desktop) */}
+          <Reveal className="space-y-6 sm:space-y-8 order-2 lg:order-1">
             {/* 3-Step Process Timeline */}
-            <div className="space-y-4 rounded-3xl border border-ink/10 bg-surface/50 p-6 sm:p-7">
+            <div className="space-y-4 rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7">
               <h3 className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
                 How direct reservation works
               </h3>
@@ -112,7 +112,7 @@ export default async function BookingPage() {
                 {steps.map((step) => (
                   <div
                     key={step.num}
-                    className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-4 transition-all duration-200 hover:border-ink/20 hover:shadow-xs"
+                    className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-3.5 sm:p-4 transition-all duration-200 hover:border-ink/20 hover:shadow-xs"
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-ink text-xs font-bold tracking-wider text-white shadow-xs">
                       {step.num}
@@ -131,7 +131,7 @@ export default async function BookingPage() {
             </div>
 
             {/* Direct Booking Privileges */}
-            <div className="space-y-3 rounded-3xl border border-ink/10 bg-surface/50 p-6 sm:p-7">
+            <div className="space-y-3 rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7">
               <h3 className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
                 Direct booking privileges
               </h3>
@@ -158,7 +158,7 @@ export default async function BookingPage() {
             </div>
 
             {/* Host Profile & Contact Card */}
-            <div className="rounded-3xl border border-ink/10 bg-surface/50 p-6 sm:p-7 space-y-4">
+            <div className="rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-white text-xs font-bold tracking-wider shadow-sm">
@@ -178,7 +178,7 @@ export default async function BookingPage() {
                 </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-ink/10 text-xs">
+              <div className="flex flex-wrap items-center gap-2.5 pt-3 border-t border-ink/10 text-xs">
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -224,8 +224,8 @@ export default async function BookingPage() {
             </div>
           </Reveal>
 
-          {/* Right Column: Multi-Step Booking Form */}
-          <Reveal delay={120}>
+          {/* Right Column: Multi-Step Booking Form (Appears first on mobile) */}
+          <Reveal delay={120} className="order-1 lg:order-2">
             <BookingForm />
           </Reveal>
         </div>

@@ -8,7 +8,7 @@ import { submitContactMessage } from '@/actions/inquiries'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
-  'w-full border border-ink/20 bg-transparent px-4 py-3 text-[15px] text-ink transition-colors duration-200 placeholder:text-ink/40 focus:border-ink'
+  'w-full rounded-xl border border-ink/20 bg-surface/50 px-4 py-3 text-base sm:text-[15px] text-ink transition-colors duration-200 placeholder:text-ink/40 focus:border-ink focus:bg-white focus:outline-none focus:ring-2 focus:ring-ink/10'
 
 const labelClass = 'mb-1.5 block text-xs font-medium uppercase tracking-[0.13rem] text-ink/55'
 

@@ -121,17 +121,17 @@ export function StatsBand({
           return (
             <div
               key={m.label}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-ink/10 bg-surface/90 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-ink/25 hover:bg-surface sm:p-7"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-ink/10 bg-surface/90 p-4 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-ink/25 hover:bg-surface"
             >
               <div>
-                <strong className="block text-4xl font-medium leading-none tracking-[-0.05em] text-ink sm:text-5xl">
+                <strong className="block text-3xl sm:text-4xl lg:text-5xl font-medium leading-none tracking-[-0.04em] text-ink">
                   <Counter value={m.value} suffix={m.suffix} />
                 </strong>
-                <span className="mt-4 block text-xs font-semibold uppercase tracking-[0.15rem] text-ink/75">
+                <span className="mt-3 sm:mt-4 block text-[11px] sm:text-xs font-semibold uppercase tracking-[0.13rem] sm:tracking-[0.15rem] text-ink/75">
                   {m.label}
                 </span>
               </div>
-              <p className="mt-3 text-xs leading-relaxed text-ink/50">
+              <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-xs leading-relaxed text-ink/55">
                 {detail}
               </p>
             </div>

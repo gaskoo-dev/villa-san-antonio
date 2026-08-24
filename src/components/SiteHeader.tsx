@@ -1,6 +1,6 @@
 'use client'
 
-import { IconArrowUpRight, IconMail, IconMenu2, IconPhone, IconX } from '@tabler/icons-react'
+import { IconArrowUpRight, IconBrandWhatsapp, IconMail, IconMenu2, IconPhone, IconX } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -252,47 +252,98 @@ export function SiteHeader({
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-0 z-40 flex h-dvh flex-col justify-between bg-paper px-6 pb-10 pt-28 text-ink lg:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 top-0 z-40 flex h-dvh flex-col justify-between bg-paper px-6 pb-8 pt-24 text-ink lg:hidden overflow-y-auto"
           >
-            <nav className="flex flex-col gap-6">
-              {navLinks.map((link, idx) => (
-                <motion.div
-                  key={link.href + link.label}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * idx, duration: 0.3 }}
-                >
-                  <Link
-                    href={link.href}
-                    target={link.newTab ? '_blank' : undefined}
-                    rel={link.newTab ? 'noopener noreferrer' : undefined}
-                    onClick={() => setMenuOpen(false)}
-                    className={`text-2xl font-medium tracking-tight ${
-                      pathname === link.href ? 'text-ink underline' : 'text-ink/70'
-                    }`}
+            <div className="space-y-8">
+              {/* Navigation Links */}
+              <nav className="flex flex-col gap-5 pt-4">
+                {navLinks.map((link, idx) => (
+                  <motion.div
+                    key={link.href + link.label}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 * idx, duration: 0.25 }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
+                    <Link
+                      href={link.href}
+                      target={link.newTab ? '_blank' : undefined}
+                      rel={link.newTab ? 'noopener noreferrer' : undefined}
+                      onClick={() => setMenuOpen(false)}
+                      className={`flex items-center justify-between text-2xl font-medium tracking-tight py-1 ${
+                        pathname === link.href ? 'text-ink font-semibold' : 'text-ink/75 hover:text-ink'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {pathname === link.href && (
+                        <span className="h-2 w-2 rounded-full bg-ink" />
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
 
-            <div className="space-y-6 border-t border-ink/10 pt-6">
+              {/* Language Switcher in Drawer */}
+              {enableLanguages && (
+                <div className="border-t border-ink/10 pt-6">
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.16rem] text-ink/50 mb-3">
+                    Language
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {locales.map((l) => (
+                      <button
+                        key={l.code}
+                        type="button"
+                        onClick={() => {
+                          setLocale(l.code)
+                          setMenuOpen(false)
+                        }}
+                        className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                          locale === l.code
+                            ? 'bg-ink text-white shadow-xs'
+                            : 'bg-surface text-ink/70 hover:bg-surface/80'
+                        }`}
+                      >
+                        <span>{l.flag}</span>
+                        <span>{l.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Contact & Booking Actions */}
+            <div className="space-y-4 border-t border-ink/10 pt-6 mt-6">
               <Link
                 href={ctaLink}
                 onClick={() => setMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-3 rounded-full bg-ink py-4 text-xs font-semibold uppercase tracking-widest text-white shadow-md"
+                className="flex w-full items-center justify-center gap-3 rounded-full bg-ink py-4 text-xs font-semibold uppercase tracking-widest text-white shadow-md active:scale-[0.99] transition-transform"
               >
                 <span>{ctaLabel}</span>
-                <IconArrowUpRight size={16} />
+                <IconArrowUpRight size={17} stroke={2.2} />
               </Link>
-              <div className="flex justify-between text-xs text-ink/60">
-                <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`}>{phone}</a>
-                <a href={`mailto:${email}`}>{email}</a>
+
+              <div className="grid grid-cols-2 gap-3">
+                <a
+                  href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
+                >
+                  <IconPhone size={16} stroke={1.8} />
+                  <span>Call host</span>
+                </a>
+                <a
+                  href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
+                >
+                  <IconBrandWhatsapp size={16} stroke={1.8} />
+                  <span>WhatsApp</span>
+                </a>
               </div>
             </div>
           </motion.div>

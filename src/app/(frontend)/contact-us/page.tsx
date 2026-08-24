@@ -63,19 +63,19 @@ export default async function ContactPage() {
         }}
       />
 
-      <section className="mx-auto grid w-[91.5vw] max-w-[1440px] gap-14 pb-24 pt-16 lg:grid-cols-[1fr_1.4fr] lg:gap-24 lg:pb-36">
+      <section className="mx-auto grid w-[91.5vw] max-w-[1440px] gap-10 sm:gap-14 pb-16 sm:pb-24 pt-12 sm:pt-16 lg:grid-cols-[1fr_1.4fr] lg:gap-24 lg:pb-36">
         <div>
           <Reveal>
             <h2 className="text-4xl font-medium leading-[0.94] tracking-[-0.05em] sm:text-5xl">
               Get in <span className="accent-serif font-normal">touch.</span>
             </h2>
-            <p className="mt-6 max-w-sm text-sm leading-6 text-ink/60">
+            <p className="mt-4 sm:mt-6 max-w-sm text-sm leading-6 text-ink/60">
               We answer every message personally, usually within 30 minutes.
             </p>
 
-            <ul className="mt-12 space-y-8">
+            <ul className="mt-8 sm:mt-12 space-y-6 sm:space-y-8">
               {/* Direct Email */}
-              <li className="flex items-start gap-5">
+              <li className="flex items-start gap-4 sm:gap-5">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink">
                   <IconMail size={18} stroke={1.5} aria-hidden />
                 </span>
@@ -91,13 +91,13 @@ export default async function ContactPage() {
               </li>
 
               {/* Direct Phone & WhatsApp */}
-              <li className="flex items-start gap-5">
+              <li className="flex items-start gap-4 sm:gap-5">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink">
                   <IconPhone size={18} stroke={1.5} aria-hidden />
                 </span>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/50">Direct Phone & WhatsApp</p>
-                  <div className="mt-1 flex flex-wrap items-center gap-3">
+                  <div className="mt-1 flex flex-wrap items-center gap-2.5 sm:gap-3">
                     <a
                       href={`tel:${cleanPhone}`}
                       className="text-sm font-medium text-ink hover:underline"
@@ -108,7 +108,7 @@ export default async function ContactPage() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition-transform hover:scale-105"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition-transform hover:scale-105 active:scale-95"
                     >
                       <IconBrandWhatsapp size={14} />
                       <span>Chat on WhatsApp</span>
@@ -118,7 +118,7 @@ export default async function ContactPage() {
               </li>
 
               {/* Location */}
-              <li className="flex items-start gap-5">
+              <li className="flex items-start gap-4 sm:gap-5">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink">
                   <IconMapPin size={18} stroke={1.5} aria-hidden />
                 </span>
@@ -140,7 +140,7 @@ export default async function ContactPage() {
 
         <div>
           <Reveal delay={100}>
-            <div className="rounded-3xl border border-ink/10 bg-white p-8 shadow-sm sm:p-12">
+            <div className="rounded-3xl border border-ink/10 bg-white p-5 sm:p-8 md:p-12 shadow-sm">
               <ContactForm />
             </div>
           </Reveal>
@@ -148,7 +148,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Dynamic Google Maps Location Section */}
-      <section className="h-[420px] w-full border-t border-ink/10 relative">
+      <section className="h-[300px] sm:h-[420px] w-full border-t border-ink/10 relative">
         <a
           href="https://maps.app.goo.gl/Xm8sAH7drKf2pADaA"
           target="_blank"

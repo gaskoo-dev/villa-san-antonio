@@ -122,13 +122,13 @@ export function BookingBand(props: BookingBandProps = {}) {
             <p className="max-w-xl text-base sm:text-lg leading-relaxed text-ink/70">{body}</p>
 
             {/* Direct Booking CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
               <Link
                 href={props.primaryCtaLink || '/booking'}
-                className="group inline-flex items-center gap-3 rounded-full bg-ink px-8 py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-105 active:scale-95"
+                className="group flex sm:inline-flex items-center justify-center gap-3 rounded-full bg-ink px-6 sm:px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-105 active:scale-95 text-center"
               >
                 <span>{props.primaryCtaLabel || 'Check Availability & Book'}</span>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5 shrink-0">
                   <IconArrowRight size={15} stroke={2.5} />
                 </span>
               </Link>
@@ -137,7 +137,7 @@ export function BookingBand(props: BookingBandProps = {}) {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-6 py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.12rem] text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:scale-105 active:scale-95"
+                className="flex sm:inline-flex items-center justify-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-5 sm:px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.12rem] text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:scale-105 active:scale-95 text-center"
               >
                 <IconBrandWhatsapp size={18} stroke={2} />
                 <span>{props.whatsappLabel || 'WhatsApp Chat'}</span>

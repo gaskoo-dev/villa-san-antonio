@@ -278,7 +278,7 @@ export default async function AboutPage() {
       />
 
       {/* Intro story */}
-      <section className="mx-auto grid w-[91.5vw] max-w-[1440px] gap-14 py-24 lg:grid-cols-2 lg:gap-16 lg:py-36 items-stretch">
+      <section className="mx-auto grid w-[91.5vw] max-w-[1440px] gap-12 sm:gap-14 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16 lg:py-36 items-stretch">
         <div className="flex flex-col h-full justify-between">
           <div className="space-y-6">
             <Reveal>
@@ -385,7 +385,7 @@ export default async function AboutPage() {
       {showcaseBlocks.map((block, bIdx) => (
         <section
           key={bIdx}
-          className={`${block.bgStyle === 'paper' ? 'bg-paper' : 'bg-surface'} px-6 py-24 lg:py-36`}
+          className={`${block.bgStyle === 'paper' ? 'bg-paper' : 'bg-surface'} px-4 sm:px-6 py-16 sm:py-24 lg:py-36`}
         >
           <div className="mx-auto max-w-[1440px]">
             <Reveal>
@@ -395,7 +395,7 @@ export default async function AboutPage() {
                 {block.accent && <span className="accent-serif font-normal">{block.accent}</span>}
               </h2>
             </Reveal>
-            <div className="mt-16">
+            <div className="mt-12 sm:mt-16">
               {(block.spaces ?? []).map((s, i) => (
                 <SpaceRow key={s.name + i} space={s} index={i} allGallery={gallery} />
               ))}
@@ -405,7 +405,7 @@ export default async function AboutPage() {
       ))}
 
       {/* Welcome Package Section */}
-      <section className="border-t border-ink/10 bg-surface px-6 py-24 lg:py-36">
+      <section className="border-t border-ink/10 bg-surface px-4 sm:px-6 py-16 sm:py-24 lg:py-36">
         <div className="mx-auto max-w-[1440px]">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left Narrative & Delicacy Tags */}
@@ -488,7 +488,7 @@ export default async function AboutPage() {
 
       {/* Distances (Swapped after Welcome Package) */}
       {distancesToUse.length > 0 && (
-        <section className="mx-auto w-[91.5vw] max-w-[1440px] py-24 lg:py-36">
+        <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 sm:py-24 lg:py-36">
           <Reveal>
             <p className="kicker mb-5">{distancesBlock?.kicker || 'Distances'}</p>
             <h2 className="heading-section max-w-3xl">
@@ -498,11 +498,11 @@ export default async function AboutPage() {
               </span>
             </h2>
           </Reveal>
-          <div className="mt-16 grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-12 sm:mt-16 grid grid-cols-2 gap-3.5 sm:gap-5 md:grid-cols-3 lg:grid-cols-5">
             {distancesToUse.map((d, i) => (
               <Reveal key={d.label + i} delay={i * 70} y={30} className="h-full">
-                <div className="flex h-full flex-col justify-between rounded-2xl border border-ink/10 bg-paper p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-xs">
-                  <p className="text-2xl sm:text-3xl font-medium tracking-tight text-ink">{d.value}</p>
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-ink/10 bg-paper p-4 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-xs">
+                  <p className="text-xl sm:text-2xl lg:text-3xl font-medium tracking-tight text-ink">{d.value}</p>
                   <p className="mt-2 text-xs sm:text-sm text-ink/70 leading-snug">{d.label}</p>
                 </div>
               </Reveal>
