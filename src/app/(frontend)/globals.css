@@ -82,6 +82,15 @@
     @apply mx-auto w-[91.5vw] max-w-[1440px];
   }
 
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* MaisonFav headline voice: huge, tight, semibold sans with serif italic accents */
   .heading-display {
     @apply font-semibold leading-[0.9] tracking-[-0.06em] text-balance;

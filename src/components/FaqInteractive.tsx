@@ -127,11 +127,11 @@ export function FaqInteractive({
   }, [items])
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 max-w-full space-y-7 sm:space-y-8">
       {/* Search Input Bar */}
       {showSearch && (
-        <div className="relative">
-          <div className="relative flex items-center">
+        <div className="relative min-w-0 max-w-full">
+          <div className="relative flex min-w-0 items-center">
             <div className="pointer-events-none absolute left-4.5 flex items-center text-ink/40">
               <IconSearch size={19} stroke={1.8} />
             </div>
@@ -143,7 +143,7 @@ export function FaqInteractive({
                 setOpenIndex(0) // open first matching on search
               }}
               placeholder="Search questions (e.g. heated pool, parking, deposit, pets)..."
-              className="w-full rounded-2xl border border-ink/10 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 transition-colors duration-200 hover:border-ink/25 focus:border-ink/30 focus:outline-hidden focus:ring-0"
+              className="min-w-0 w-full rounded-2xl border border-ink/10 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 transition-colors duration-200 hover:border-ink/25 focus:border-ink/30 focus:outline-hidden focus:ring-0"
             />
             {search && (
               <button
@@ -161,8 +161,8 @@ export function FaqInteractive({
 
       {/* Category Pills / Filter Tabs dynamically distributed without hardcoded grid columns */}
       {showTabs && (
-        <div className="w-full no-scrollbar overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
-          <div className="flex min-w-full flex-nowrap items-center justify-between gap-1 sm:gap-1.5">
+        <div className="no-scrollbar min-w-0 max-w-full overflow-x-auto overscroll-x-contain rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
+          <div className="flex w-max min-w-full flex-nowrap items-center gap-1 sm:gap-1.5">
             {tabs.map((tab) => {
               const isActive = selectedCategory === tab.id
               const count = countsByCategory[tab.id] || 0
@@ -176,7 +176,7 @@ export function FaqInteractive({
                     setSelectedCategory(tab.id)
                     setOpenIndex(0)
                   }}
-                  className={`relative flex flex-1 min-w-max shrink-0 items-center justify-center gap-2 rounded-full py-2 px-3.5 text-center text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
+                  className={`relative flex min-w-max flex-none items-center justify-center gap-2 rounded-full py-2 px-3.5 text-center text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 sm:flex-1 ${
                     isActive
                       ? 'text-white'
                       : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
@@ -216,23 +216,23 @@ export function FaqInteractive({
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {filteredItems.length > 0 ? (
-            <div className="divide-y divide-ink/10 border-y border-ink/10">
+            <div className="min-w-0 divide-y divide-ink/10 border-y border-ink/10">
               {filteredItems.map((item, idx) => {
                 const isOpen = openIndex === idx
                 const panelId = `${baseId}-panel-${idx}`
 
                 return (
-                  <div key={item.question + idx} className="transition-colors duration-200">
-                    <h3>
+                  <div key={item.question + idx} className="min-w-0 transition-colors duration-200">
+                    <h3 className="min-w-0">
                       <button
                         type="button"
                         aria-expanded={isOpen}
                         aria-controls={panelId}
                         onClick={() => setOpenIndex(isOpen ? null : idx)}
-                        className="group flex w-full items-center justify-between gap-4 py-5 text-left transition-colors cursor-pointer"
+                        className="group flex min-w-0 w-full items-start justify-between gap-3 py-5 text-left transition-colors cursor-pointer sm:gap-4"
                       >
                         <span
-                          className={`text-base sm:text-lg font-medium tracking-tight transition-colors duration-200 ${
+                          className={`min-w-0 flex-1 break-words [overflow-wrap:anywhere] text-pretty text-base sm:text-lg font-medium leading-snug tracking-tight transition-colors duration-200 ${
                             isOpen ? 'text-ink font-semibold' : 'text-ink/85 group-hover:text-ink'
                           }`}
                         >
@@ -257,8 +257,8 @@ export function FaqInteractive({
                         isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                       }`}
                     >
-                      <div className="overflow-hidden">
-                        <p className="max-w-[65ch] pb-6 text-sm sm:text-[15px] leading-relaxed text-ink/65">
+                      <div className="min-w-0 overflow-hidden">
+                        <p className="w-full max-w-[65ch] break-words [overflow-wrap:anywhere] text-pretty pb-6 text-sm sm:text-[15px] leading-relaxed text-ink/65">
                           {item.answer}
                         </p>
                       </div>

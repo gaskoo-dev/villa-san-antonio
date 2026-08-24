@@ -114,10 +114,10 @@ export default async function FaqPage() {
       />
 
       {/* Main 2-Column Section: Left Quick Facts + Right Interactive FAQ */}
-      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[380px_1fr] xl:grid-cols-[400px_1fr] lg:gap-16 items-start">
+      <section className="mx-auto min-w-0 w-[91.5vw] max-w-[1440px] py-16 lg:py-28">
+        <div className="grid min-w-0 gap-12 lg:grid-cols-[380px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)] lg:gap-16 items-start">
           {/* Left Column: Sticky Quick Facts Cards */}
-          <div className="lg:sticky lg:top-28 space-y-6">
+          <div className="min-w-0 lg:sticky lg:top-28 space-y-6">
             <Reveal>
               <div>
                 <p className="kicker mb-2.5">
@@ -165,7 +165,7 @@ export default async function FaqPage() {
           </div>
 
           {/* Right Column: Search, Category Tabs & Interactive FAQ Cards */}
-          <div>
+          <div className="min-w-0 max-w-full">
             <Reveal>
               <div className="mb-8">
                 <p className="kicker mb-2.5">

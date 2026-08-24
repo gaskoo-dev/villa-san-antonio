@@ -154,17 +154,19 @@ export function BookingBand(props: BookingBandProps = {}) {
                 return (
                   <div
                     key={idx}
-                    className="rounded-2xl border border-ink/10 bg-paper p-5 transition-all duration-300 hover:border-ink/25 hover:shadow-md"
+                    className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-5 transition-all duration-300 hover:border-ink/25 hover:shadow-md"
                   >
-                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-ink text-white shadow-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-white shadow-sm">
                       <Icon size={19} stroke={1.8} />
                     </div>
-                    <h4 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
-                      {item.title}
-                    </h4>
-                    <p className="mt-1.5 text-[11px] sm:text-xs text-ink/60 leading-relaxed">
-                      {item.desc}
-                    </p>
+                    <div className="min-w-0 flex-1 pt-0.5">
+                      <h4 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
+                        {item.title}
+                      </h4>
+                      <p className="mt-1.5 text-[11px] sm:text-xs text-ink/60 leading-relaxed text-pretty">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
                 )
               })}
