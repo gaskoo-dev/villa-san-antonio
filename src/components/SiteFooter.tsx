@@ -36,13 +36,6 @@ const SOCIAL_ICON_MAP = {
   other: IconLink,
 } as const
 
-const DIRECT_BENEFITS = [
-  'Best direct rate guarantee',
-  'Heated pool & private jacuzzi',
-  'Fully fenced & pet-friendly garden',
-  'Personal host support (Josip)',
-]
-
 export async function SiteFooter({
   cmsNavLinks,
   footerData,
@@ -50,6 +43,34 @@ export async function SiteFooter({
   cmsNavLinks?: Array<{ href: string; label: string }>
   footerData?: Footer | null
 } = {}) {
+  // Top Editorial Section
+  const editorialSubheading =
+    footerData?.editorial?.subheading || 'Villa San Antonio · Dalmatia'
+  const editorialHeading =
+    footerData?.editorial?.heading || 'Your private sanctuary in the Dalmatian hills.'
+  const editorialBio =
+    footerData?.editorial?.shortBio ||
+    'Peaceful Mediterranean seclusion with modern comforts, just minutes from the Adriatic coast.'
+
+  // Column 1: Brand
+  const brandTagline =
+    footerData?.brandTagline ||
+    'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.'
+
+  // Column 2: Direct Booking Perks
+  const directBookingTitle =
+    footerData?.directBooking?.title || 'Direct Booking Perks'
+  const benefits = [
+    footerData?.directBooking?.perk1 || 'Best direct rate guarantee',
+    footerData?.directBooking?.perk2 || 'Heated pool & private jacuzzi',
+    footerData?.directBooking?.perk3 || 'Fully fenced & pet-friendly garden',
+    footerData?.directBooking?.perk4 || 'Personal host support (Josip)',
+  ].filter(Boolean) as string[]
+  const ctaLabel = footerData?.directBooking?.ctaLabel || PRIMARY_CTA_LABEL
+  const ctaLink = footerData?.directBooking?.ctaLink || BOOKING_ANCHOR
+
+  // Column 3: Explore Navigation
+  const exploreTitle = footerData?.exploreTitle || 'Explore'
   const fallbackNavLinks = NAV_LINKS
   const navLinks =
     footerData?.navLinks && footerData.navLinks.length > 0
@@ -58,16 +79,12 @@ export async function SiteFooter({
         ? cmsNavLinks
         : fallbackNavLinks
 
-  const brandTagline =
-    footerData?.brandTagline ||
-    'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.'
-  const ctaLabel = footerData?.primaryCta?.label || PRIMARY_CTA_LABEL
-  const ctaLink = footerData?.primaryCta?.link || BOOKING_ANCHOR
-
-  const email = footerData?.contact?.email || CONTACT_EMAIL
-  const phone = footerData?.contact?.phone || CONTACT_PHONE
-  const address = footerData?.contact?.address || 'Podine 14, near Šibenik'
-  const region = footerData?.contact?.region || 'Dalmatia · Croatia'
+  // Column 4: Contact & Location
+  const contactTitle = footerData?.contactSection?.title || 'Contact & Location'
+  const email = footerData?.contactSection?.email || CONTACT_EMAIL
+  const phone = footerData?.contactSection?.phone || CONTACT_PHONE
+  const address = footerData?.contactSection?.address || 'Podine 14, near Šibenik'
+  const region = footerData?.contactSection?.region || 'Dalmatia · Croatia'
 
   const socialLinks =
     footerData?.socialLinks && footerData.socialLinks.length > 0
@@ -78,6 +95,7 @@ export async function SiteFooter({
           { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
 
+  // Bottom Legal & Policy Links
   const legalLinks =
     footerData?.legalLinks && footerData.legalLinks.length > 0
       ? footerData.legalLinks
@@ -101,14 +119,14 @@ export async function SiteFooter({
         <div className="mb-16 flex flex-col justify-between gap-6 border-b border-white/10 pb-12 md:flex-row md:items-end">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
-              Villa San Antonio · Dalmatia
+              {editorialSubheading}
             </p>
             <h2 className="mt-2 font-serif text-3xl italic font-normal tracking-tight text-white/95 sm:text-4xl lg:text-5xl">
-              Your private sanctuary in the Dalmatian hills.
+              {editorialHeading}
             </h2>
           </div>
           <p className="max-w-xs text-xs leading-relaxed text-white/50 md:text-right">
-            Peaceful Mediterranean seclusion with modern comforts, just minutes from the Adriatic coast.
+            {editorialBio}
           </p>
         </div>
 
@@ -133,10 +151,10 @@ export async function SiteFooter({
           {/* Column 2: Direct Booking Perks & CTA (Col span 4 - Centered) */}
           <div className="lg:col-span-4 lg:mx-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
-              Direct Booking Perks
+              {directBookingTitle}
             </p>
             <ul className="mt-6 space-y-3.5 text-sm text-white/70">
-              {DIRECT_BENEFITS.map((benefit) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-white/10 text-white">
                     <IconCheck size={11} stroke={2.5} />
@@ -162,7 +180,7 @@ export async function SiteFooter({
           {/* Column 3: Navigation Links (Col span 2 - Centered) */}
           <nav aria-label="Footer" className="lg:col-span-2 lg:mx-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
-              Explore
+              {exploreTitle}
             </p>
             <ul className="mt-6 space-y-3">
               {[{ href: '/', label: 'Home' }, ...navLinks].map((link) => (
@@ -186,7 +204,7 @@ export async function SiteFooter({
           {/* Column 4: Contact & Social (Col span 3 - Right side container with left-aligned text) */}
           <div className="flex flex-col lg:col-span-3 lg:ml-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
-              Contact & Location
+              {contactTitle}
             </p>
             <ul className="mt-6 space-y-3 text-sm text-white/70">
               <li>

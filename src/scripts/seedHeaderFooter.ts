@@ -33,19 +33,33 @@ async function seedHeaderFooter() {
   await payload.updateGlobal({
     slug: 'footer',
     data: {
+      editorial: {
+        subheading: 'Villa San Antonio · Dalmatia',
+        heading: 'Your private sanctuary in the Dalmatian hills.',
+        shortBio:
+          'Peaceful Mediterranean seclusion with modern comforts, just minutes from the Adriatic coast.',
+      },
       brandTagline:
         'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.',
-      primaryCta: {
-        label: 'Check availability',
-        link: '/booking',
+      directBooking: {
+        title: 'Direct Booking Perks',
+        perk1: 'Best direct rate guarantee',
+        perk2: 'Heated pool & private jacuzzi',
+        perk3: 'Fully fenced & pet-friendly garden',
+        perk4: 'Personal host support (Josip)',
+        ctaLabel: 'Check availability',
+        ctaLink: '/booking',
       },
+      exploreTitle: 'Explore',
       navLinks: [
+        { label: 'Home', link: '/' },
         { label: 'About Villa', link: '/about-villa' },
         { label: 'Gallery', link: '/gallery' },
         { label: 'FAQ', link: '/faq' },
         { label: 'Contact', link: '/contact-us' },
       ],
-      contact: {
+      contactSection: {
+        title: 'Contact & Location',
         email: 'kontakt@villa-sanantonio.com',
         phone: '+385 91 602 1899',
         address: 'Podine 14, near Šibenik',

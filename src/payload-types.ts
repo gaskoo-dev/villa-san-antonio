@@ -1288,11 +1288,22 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  brandTagline?: string | null;
-  primaryCta?: {
-    label?: string | null;
-    link?: string | null;
+  editorial?: {
+    subheading?: string | null;
+    heading?: string | null;
+    shortBio?: string | null;
   };
+  brandTagline?: string | null;
+  directBooking?: {
+    title?: string | null;
+    perk1?: string | null;
+    perk2?: string | null;
+    perk3?: string | null;
+    perk4?: string | null;
+    ctaLabel?: string | null;
+    ctaLink?: string | null;
+  };
+  exploreTitle?: string | null;
   navLinks?:
     | {
         label: string;
@@ -1300,7 +1311,8 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
-  contact?: {
+  contactSection?: {
+    title?: string | null;
     email?: string | null;
     phone?: string | null;
     address?: string | null;
@@ -1377,13 +1389,26 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  brandTagline?: T;
-  primaryCta?:
+  editorial?:
     | T
     | {
-        label?: T;
-        link?: T;
+        subheading?: T;
+        heading?: T;
+        shortBio?: T;
       };
+  brandTagline?: T;
+  directBooking?:
+    | T
+    | {
+        title?: T;
+        perk1?: T;
+        perk2?: T;
+        perk3?: T;
+        perk4?: T;
+        ctaLabel?: T;
+        ctaLink?: T;
+      };
+  exploreTitle?: T;
   navLinks?:
     | T
     | {
@@ -1391,9 +1416,10 @@ export interface FooterSelect<T extends boolean = true> {
         link?: T;
         id?: T;
       };
-  contact?:
+  contactSection?:
     | T
     | {
+        title?: T;
         email?: T;
         phone?: T;
         address?: T;
