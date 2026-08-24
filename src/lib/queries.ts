@@ -59,8 +59,8 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
 }
 
 export async function getSettings(): Promise<SiteSetting | null> {
-  const payload = await getPayloadClient()
   try {
+    const payload = await getPayloadClient()
     return await payload.findGlobal({ slug: 'site-settings', depth: 0 })
   } catch {
     return null

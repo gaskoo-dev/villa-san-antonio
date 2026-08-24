@@ -61,10 +61,23 @@ export async function SiteFooter({
             <p className="text-xs font-medium uppercase tracking-[0.16rem] text-white/45">Contact</p>
             <ul className="mt-6 space-y-3.5 text-sm text-white/70">
               <li>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="transition-colors hover:text-white">
-                  {CONTACT_EMAIL}
+                <a
+                  href={`mailto:${contact?.email || CONTACT_EMAIL}`}
+                  className="transition-colors hover:text-white"
+                >
+                  {contact?.email || CONTACT_EMAIL}
                 </a>
               </li>
+              {contact?.phone && (
+                <li>
+                  <a
+                    href={`tel:${contact.phone.replace(/[^0-9+]/g, '')}`}
+                    className="transition-colors hover:text-white"
+                  >
+                    {contact.phone}
+                  </a>
+                </li>
+              )}
               <li>
                 {contact?.address ?? 'Podine, near Šibenik'}
                 <br />
