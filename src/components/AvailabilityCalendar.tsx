@@ -5,7 +5,6 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLoader2,
-  IconLock,
   IconRefresh,
 } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
@@ -174,7 +173,7 @@ export function AvailabilityCalendar({
     return (
       <div className="space-y-3">
         <div className="text-center">
-          <h4 className="text-sm font-semibold tracking-wider uppercase text-ink">
+          <h4 className="text-xs font-semibold tracking-[0.14rem] uppercase text-ink/80">
             {MONTH_NAMES[month]} {year}
           </h4>
         </div>
@@ -192,7 +191,7 @@ export function AvailabilityCalendar({
         <div className="grid grid-cols-7 gap-1 text-center text-xs">
           {days.map((day, idx) => {
             if (day === null) {
-              return <div key={`empty-${idx}`} className="h-10 sm:h-11 w-full" />
+              return <div key={`empty-${idx}`} className="h-10 sm:h-10.5 w-full" />
             }
 
             const dateStr = formatDateStr(year, month, day)
@@ -214,21 +213,21 @@ export function AvailabilityCalendar({
               dateStr <= hoveredDate
 
             let stateClass =
-              'text-ink hover:bg-ink/10 hover:border-ink/20 border border-transparent font-medium'
+              'text-ink hover:bg-black/[0.05] hover:border-ink/20 border border-transparent font-medium'
 
             if (isPast) {
               stateClass =
                 'text-ink/20 cursor-not-allowed border border-transparent font-normal'
             } else if (booked) {
               stateClass =
-                'bg-rose-50 text-rose-400 border border-rose-200/80 line-through cursor-not-allowed'
+                'bg-black/[0.03] text-ink/30 border border-transparent line-through cursor-not-allowed select-none'
             } else if (isStart || isEnd) {
               stateClass =
                 'bg-ink text-white font-bold shadow-md scale-105 border border-ink z-10'
             } else if (isSelected) {
               stateClass = 'bg-ink/10 text-ink font-semibold'
             } else if (isHovered) {
-              stateClass = 'bg-ink/5 text-ink border-dashed border-ink/30'
+              stateClass = 'bg-ink/5 text-ink border-dashed border-ink/25'
             }
 
             return (
@@ -239,21 +238,16 @@ export function AvailabilityCalendar({
                 onClick={() => handleDateClick(dateStr)}
                 onMouseEnter={() => !isPast && !booked && setHoveredDate(dateStr)}
                 onMouseLeave={() => setHoveredDate(null)}
-                className={`relative flex h-10 sm:h-11 w-full items-center justify-center rounded-xl text-xs sm:text-sm transition-all duration-150 ${stateClass}`}
+                className={`relative flex h-10 sm:h-10.5 w-full items-center justify-center rounded-xl text-xs sm:text-sm transition-all duration-150 cursor-pointer disabled:cursor-not-allowed ${stateClass}`}
                 title={
                   booked
-                    ? 'Booked on Booking.com / ALV'
+                    ? 'Unavailable / Reserved'
                     : isPast
                       ? 'Past date'
                       : `Select ${dateStr}`
                 }
               >
                 {day}
-                {booked && (
-                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-rose-500 text-[8px] text-white shadow-xs">
-                    <IconLock size={9} stroke={2.5} />
-                  </span>
-                )}
               </button>
             )
           })}
@@ -266,12 +260,12 @@ export function AvailabilityCalendar({
   const secondYear = viewMonth === 11 ? viewYear + 1 : viewYear
 
   return (
-    <div className="rounded-2xl border border-ink/10 bg-surface/50 p-4 sm:p-5 space-y-4">
+    <div className="rounded-2xl border border-ink/10 bg-white/70 p-4 sm:p-5.5 space-y-4">
       {/* Calendar Header with Navigation */}
       <div className="flex items-center justify-between border-b border-ink/10 pb-3">
         <div className="flex items-center gap-2">
           <IconCalendar size={18} stroke={1.8} className="text-ink/70" />
-          <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-ink">
+          <span className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink">
             Availability Calendar
           </span>
           {loading && (
@@ -288,7 +282,7 @@ export function AvailabilityCalendar({
               viewMonth <= today.getMonth()
             }
             aria-label="Previous month"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
           >
             <IconChevronLeft size={16} stroke={2} />
           </button>
@@ -296,7 +290,7 @@ export function AvailabilityCalendar({
             type="button"
             onClick={nextMonth}
             aria-label="Next month"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white cursor-pointer"
           >
             <IconChevronRight size={16} stroke={2} />
           </button>
@@ -323,8 +317,8 @@ export function AvailabilityCalendar({
             <span className="text-ink font-medium">Selected</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-full bg-rose-100 border border-rose-300" />
-            <span className="text-rose-600 font-medium">Booked</span>
+            <span className="h-3 w-3 rounded-full bg-black/[0.06] border border-black/10" />
+            <span className="text-ink/50 line-through">Reserved</span>
           </div>
         </div>
 
@@ -332,7 +326,7 @@ export function AvailabilityCalendar({
           <button
             type="button"
             onClick={() => onSelectRange('', '')}
-            className="inline-flex items-center gap-1 text-[11px] text-ink/60 underline decoration-ink/30 hover:text-ink hover:decoration-ink transition-colors"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-ink/60 underline decoration-ink/30 hover:text-ink hover:decoration-ink transition-colors cursor-pointer"
           >
             <IconRefresh size={12} stroke={2} />
             <span>Clear dates</span>

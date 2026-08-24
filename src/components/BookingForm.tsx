@@ -23,14 +23,14 @@ import { useLocale } from '@/context/LocaleContext'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
-  'w-full rounded-xl border border-ink/15 bg-surface/50 px-4 py-3.5 text-base sm:text-sm text-ink transition-all duration-200 placeholder:text-ink/35 focus:border-ink focus:bg-white focus:outline-none focus:ring-2 focus:ring-ink/10'
+  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
 
-const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/75'
+const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/55'
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
   return (
-    <p role="alert" className="mt-1.5 text-xs font-medium text-rose-600">
+    <p role="alert" className="mt-1.5 text-xs font-medium text-red-600 animate-[var(--animate-fade-in)]">
       {message}
     </p>
   )
@@ -42,10 +42,10 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
     <button
       type="submit"
       disabled={pending}
-      className="group flex flex-1 items-center justify-center gap-3 rounded-xl bg-ink px-6 py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+      className="group relative flex flex-1 items-center justify-center gap-4 rounded-full bg-ink px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
       <span>{pending ? pendingLabel : label}</span>
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:translate-x-0.5">
         <IconArrowRight size={15} stroke={2.5} aria-hidden />
       </span>
     </button>
@@ -77,20 +77,20 @@ export function BookingForm() {
     return (
       <div
         role="status"
-        className="rounded-3xl border border-emerald-200 bg-emerald-50/50 p-8 sm:p-12 shadow-lg text-center space-y-6 animate-[var(--animate-fade-in)]"
+        className="rounded-3xl border border-emerald-900/10 bg-emerald-50/40 p-8 sm:p-12 text-center space-y-6 animate-[var(--animate-fade-in)]"
       >
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 shadow-sm">
-          <IconCircleCheck size={36} stroke={2} />
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md">
+          <IconCircleCheck size={32} stroke={1.8} />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-ink">
+          <h3 className="font-serif text-2xl sm:text-3xl text-ink">
             {t.booking.successTitle}
           </h3>
           <p className="mx-auto max-w-md text-sm sm:text-base leading-relaxed text-ink/70">
             {state.message || t.booking.successMessage}
           </p>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-medium text-ink/70 shadow-xs">
+        <div className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4.5 py-2 text-xs font-medium text-ink/65 shadow-xs">
           <IconCreditCard size={15} stroke={1.8} />
           <span>No payment charged now · 30% deposit upon confirmation</span>
         </div>
@@ -99,15 +99,15 @@ export function BookingForm() {
   }
 
   return (
-    <div className="relative rounded-3xl border border-ink/10 bg-paper p-6 sm:p-9 shadow-lg space-y-6">
+    <div className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6">
       {/* Step Progress Header */}
-      <div className="border-b border-ink/10 pb-5 space-y-3">
+      <div className="border-b border-ink/10 pb-5 space-y-3.5">
         <div className="flex items-center justify-between">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.14rem] text-ink/50">
               Step {step} of 2
             </span>
-            <h3 className="text-lg sm:text-xl font-medium tracking-tight text-ink">
+            <h3 className="text-xl font-medium tracking-tight text-ink">
               {step === 1 ? 'Select Your Dates' : 'Guest Details & Inquiry'}
             </h3>
           </div>
@@ -117,37 +117,33 @@ export function BookingForm() {
           </span>
         </div>
 
-        {/* Step Progress Dots/Pills */}
-        <div className="grid grid-cols-2 gap-2 pt-1">
+        {/* Minimalist Step Progress Navigation */}
+        <div className="flex items-center gap-2 pt-1">
           <button
             type="button"
             onClick={() => setStep(1)}
-            className={`flex items-center gap-2 rounded-xl py-2 px-3 text-xs font-semibold transition-all ${
+            className={`inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
               step === 1
                 ? 'bg-ink text-white shadow-xs'
-                : 'bg-surface text-ink/70 hover:bg-surface/80'
+                : 'bg-black/[0.04] text-ink/60 hover:text-ink hover:bg-black/[0.07]'
             }`}
           >
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[10px]">
-              1
-            </span>
-            <span className="truncate">1. Dates</span>
+            <span className="text-[11px]">01</span>
+            <span>Dates</span>
           </button>
 
           <button
             type="button"
             onClick={() => checkIn && checkOut && setStep(2)}
             disabled={!checkIn || !checkOut}
-            className={`flex items-center gap-2 rounded-xl py-2 px-3 text-xs font-semibold transition-all ${
+            className={`inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs font-semibold uppercase tracking-wider transition-all ${
               step === 2
                 ? 'bg-ink text-white shadow-xs'
-                : 'bg-surface text-ink/70 hover:bg-surface/80 disabled:opacity-40 disabled:cursor-not-allowed'
+                : 'bg-black/[0.04] text-ink/60 hover:text-ink hover:bg-black/[0.07] disabled:opacity-30 disabled:cursor-not-allowed'
             }`}
           >
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[10px]">
-              2
-            </span>
-            <span className="truncate">2. Guest Details</span>
+            <span className="text-[11px]">02</span>
+            <span>Guest Details</span>
           </button>
         </div>
       </div>
@@ -163,8 +159,8 @@ export function BookingForm() {
 
           {/* Selected Stay Highlight Banner */}
           {checkIn && checkOut ? (
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ink/15 bg-surface px-4 py-3.5 text-xs sm:text-sm text-ink shadow-xs">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs sm:text-sm text-ink shadow-xs">
+              <div className="flex items-center gap-2.5">
                 <IconSparkles size={18} className="text-amber-600 shrink-0" />
                 <span>
                   <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
@@ -176,13 +172,13 @@ export function BookingForm() {
               </span>
             </div>
           ) : checkIn ? (
-            <div className="rounded-xl border border-ink/15 bg-surface px-4 py-3 text-xs text-ink/80">
+            <div className="rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs text-ink/80">
               <span>
-                <strong>Check-in:</strong> {checkIn} &rarr; <em>Now click your check-out date on the calendar</em>
+                <strong>Check-in:</strong> {checkIn} &rarr; <em>Now select your departure date on the calendar</em>
               </span>
             </div>
           ) : (
-            <div className="rounded-xl border border-ink/10 bg-surface/40 px-4 py-3 text-center text-xs text-ink/60">
+            <div className="rounded-2xl border border-dashed border-ink/15 bg-paper/30 p-3.5 text-center text-xs text-ink/55">
               Click an available arrival date and departure date on the calendar above
             </div>
           )}
@@ -193,10 +189,14 @@ export function BookingForm() {
               type="button"
               disabled={!checkIn || !checkOut}
               onClick={() => setStep(2)}
-              className="group flex w-full items-center justify-center gap-3 rounded-xl bg-ink px-6 py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+              className="group flex w-full items-center justify-center gap-4 rounded-full bg-ink px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
             >
-              <span>Continue to Guest Details</span>
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5">
+              <span>
+                {checkIn && checkOut
+                  ? `Continue to Guest Details (${nights} ${nights === 1 ? 'night' : 'nights'})`
+                  : 'Select Dates to Continue'}
+              </span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:translate-x-0.5">
                 <IconArrowRight size={15} stroke={2.5} aria-hidden />
               </span>
             </button>
@@ -208,18 +208,18 @@ export function BookingForm() {
       {step === 2 && (
         <div className="space-y-6 animate-[var(--animate-fade-in)]">
           {/* Active Date Recap Banner with Edit action */}
-          <div className="flex items-center justify-between rounded-xl border border-ink/15 bg-surface px-4 py-3 text-xs sm:text-sm text-ink shadow-xs">
+          <div className="flex items-center justify-between rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs sm:text-sm text-ink shadow-xs">
             <div className="flex items-center gap-2">
               <IconCalendar size={16} className="text-ink/70" />
               <span>
-                <strong>Selected:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
                 {nights === 1 ? 'night' : 'nights'})
               </span>
             </div>
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-ink/70 hover:text-ink transition-colors underline decoration-ink/30"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-ink/70 hover:text-ink transition-colors underline decoration-ink/30 cursor-pointer"
             >
               <IconRefresh size={12} stroke={2} />
               <span>Change</span>
@@ -235,8 +235,9 @@ export function BookingForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className={labelClass}>
-                  <IconUser size={14} stroke={2} className="text-ink/60" />
+                  <IconUser size={14} stroke={2} className="text-ink/50" />
                   <span>{locale === 'de' ? 'Vorname' : locale === 'hr' ? 'Ime' : 'First name'}</span>
+                  <span className="text-amber-700">*</span>
                 </label>
                 <input
                   id="firstName"
@@ -252,8 +253,9 @@ export function BookingForm() {
 
               <div>
                 <label htmlFor="lastName" className={labelClass}>
-                  <IconUser size={14} stroke={2} className="text-ink/60" />
+                  <IconUser size={14} stroke={2} className="text-ink/50" />
                   <span>{locale === 'de' ? 'Nachname' : locale === 'hr' ? 'Prezime' : 'Last name'}</span>
+                  <span className="text-amber-700">*</span>
                 </label>
                 <input
                   id="lastName"
@@ -271,8 +273,9 @@ export function BookingForm() {
             {/* Email Address */}
             <div>
               <label htmlFor="email" className={labelClass}>
-                <IconMail size={14} stroke={2} className="text-ink/60" />
+                <IconMail size={14} stroke={2} className="text-ink/50" />
                 <span>{t.booking.email}</span>
+                <span className="text-amber-700">*</span>
               </label>
               <input
                 id="email"
@@ -290,14 +293,14 @@ export function BookingForm() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="col-span-2 sm:col-span-1">
                 <label htmlFor="country" className={labelClass}>
-                  <IconGlobe size={14} stroke={2} className="text-ink/60" />
+                  <IconGlobe size={14} stroke={2} className="text-ink/50" />
                   <span>{locale === 'de' ? 'Land' : locale === 'hr' ? 'Država' : 'Country'}</span>
                 </label>
                 <input
                   id="country"
                   name="country"
                   type="text"
-                  placeholder="Germany, UK..."
+                  placeholder="Germany, Austria..."
                   autoComplete="country-name"
                   className={inputClass}
                 />
@@ -305,8 +308,9 @@ export function BookingForm() {
 
               <div>
                 <label htmlFor="adults" className={labelClass}>
-                  <IconUsers size={14} stroke={2} className="text-ink/60" />
+                  <IconUsers size={14} stroke={2} className="text-ink/50" />
                   <span>{locale === 'de' ? 'Erwachsene' : locale === 'hr' ? 'Odrasli' : 'Adults'}</span>
+                  <span className="text-amber-700">*</span>
                 </label>
                 <input
                   id="adults"
@@ -374,9 +378,9 @@ export function BookingForm() {
             {state.status === 'error' && state.message && (
               <div
                 role="alert"
-                className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs sm:text-sm text-rose-700"
+                className="rounded-2xl border border-red-200 bg-red-50/70 p-4 text-xs sm:text-sm text-red-800 animate-[var(--animate-fade-in)]"
               >
-                {state.message}
+                <p className="font-medium">{state.message}</p>
               </div>
             )}
 
@@ -385,7 +389,7 @@ export function BookingForm() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-ink/15 bg-surface px-4 py-4 text-xs font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ink hover:bg-white"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ink hover:bg-white cursor-pointer"
               >
                 <IconChevronLeft size={16} />
                 <span>Back</span>
@@ -395,8 +399,8 @@ export function BookingForm() {
             </div>
 
             {/* Reassurance trust footer */}
-            <div className="flex items-center justify-center gap-1.5 text-center text-[11px] text-ink/50">
-              <IconLock size={13} stroke={2} className="text-ink/60" />
+            <div className="flex items-center justify-center gap-1.5 text-center text-[11px] text-ink/45 pt-1">
+              <IconLock size={13} stroke={2} className="text-ink/55" />
               <span>Direct inquiry · No instant charges · Dates held securely</span>
             </div>
           </form>

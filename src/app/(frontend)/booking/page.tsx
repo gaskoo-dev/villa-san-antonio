@@ -103,25 +103,25 @@ export default async function BookingPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-10 lg:gap-16 items-start">
           {/* Left Column: Guarantees, Steps & Host Card (Appears second on mobile, first on desktop) */}
           <Reveal className="space-y-6 sm:space-y-8 order-2 lg:order-1">
-            {/* 3-Step Process Timeline */}
-            <div className="space-y-4 rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+            {/* 3-Step Process Timeline - Clean Editorial Unboxed Layout */}
+            <div className="rounded-3xl border border-ink/10 bg-white/80 backdrop-blur-sm p-6 sm:p-7 space-y-5 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50">
                 How direct reservation works
               </h3>
-              <div className="space-y-3">
-                {steps.map((step) => (
+              <div className="divide-y divide-ink/8 space-y-4">
+                {steps.map((step, idx) => (
                   <div
                     key={step.num}
-                    className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-3.5 sm:p-4 transition-all duration-200 hover:border-ink/20 hover:shadow-xs"
+                    className={`flex items-start gap-4 ${idx > 0 ? 'pt-4' : ''}`}
                   >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-ink text-xs font-bold tracking-wider text-white shadow-xs">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-bold tracking-wider text-white shadow-xs">
                       {step.num}
                     </span>
                     <div>
                       <h4 className="text-sm font-semibold text-ink leading-tight">
                         {step.title}
                       </h4>
-                      <p className="mt-1 text-xs text-ink/60 leading-relaxed">
+                      <p className="mt-1 text-xs text-ink/65 leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
@@ -131,23 +131,23 @@ export default async function BookingPage() {
             </div>
 
             {/* Direct Booking Privileges */}
-            <div className="space-y-3 rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+            <div className="rounded-3xl border border-ink/10 bg-white/80 backdrop-blur-sm p-6 sm:p-7 space-y-4 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50">
                 Direct booking privileges
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {privileges.map((item, idx) => {
                   const Icon = item.icon
                   return (
                     <div key={idx} className="flex items-start gap-3.5">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-800">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-100/80 text-emerald-800">
                         <Icon size={16} stroke={2} />
                       </div>
                       <div>
                         <h5 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                           {item.title}
                         </h5>
-                        <p className="mt-0.5 text-xs text-ink/60 leading-relaxed">
+                        <p className="mt-0.5 text-xs text-ink/65 leading-relaxed">
                           {item.desc}
                         </p>
                       </div>
@@ -158,7 +158,7 @@ export default async function BookingPage() {
             </div>
 
             {/* Host Profile & Contact Card */}
-            <div className="rounded-3xl border border-ink/10 bg-surface/50 p-5 sm:p-7 space-y-4">
+            <div className="rounded-3xl border border-ink/10 bg-white/80 backdrop-blur-sm p-6 sm:p-7 space-y-4.5 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-white text-xs font-bold tracking-wider shadow-sm">
@@ -178,30 +178,30 @@ export default async function BookingPage() {
                 </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2.5 pt-3 border-t border-ink/10 text-xs">
+              <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-ink/8 text-xs">
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-4 py-2 font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                 >
-                  <IconBrandWhatsapp size={16} stroke={2} />
+                  <IconBrandWhatsapp size={15} stroke={2} />
                   <span>WhatsApp Chat</span>
                 </a>
 
                 <a
                   href={`tel:${cleanPhone}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper px-3.5 py-2 font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-3.5 py-2 font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
                 >
-                  <IconPhone size={15} stroke={1.8} />
+                  <IconPhone size={14} stroke={1.8} />
                   <span>{CONTACT_PHONE}</span>
                 </a>
 
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper px-3.5 py-2 font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-3.5 py-2 font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white"
                 >
-                  <IconMail size={15} stroke={1.8} />
+                  <IconMail size={14} stroke={1.8} />
                   <span>{CONTACT_EMAIL}</span>
                 </a>
               </div>
@@ -209,15 +209,15 @@ export default async function BookingPage() {
 
             {/* Villa Key Highlights Pill */}
             <div className="flex flex-wrap items-center gap-2 text-xs text-ink/70">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper px-3 py-1">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
                 <IconUsers size={14} className="text-ink/60" />
                 <span>Up to 8 Guests</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper px-3 py-1">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
                 <IconHome size={14} className="text-ink/60" />
                 <span>3 Bedrooms · 4 Baths</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper px-3 py-1">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3 py-1">
                 <IconSparkles size={14} className="text-ink/60" />
                 <span>Heated Pool & Jacuzzi</span>
               </span>
