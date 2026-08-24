@@ -77,33 +77,28 @@ export function ContactForm() {
       <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
       {/* Quick Topic Selector */}
-      <div>
-        <label className="mb-2.5 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
-          How can we help?
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {QUICK_TOPICS.map((topic) => {
-            const isSelected = selectedTopic === topic
-            return (
-              <button
-                key={topic}
-                type="button"
-                onClick={() => {
-                  setSelectedTopic(topic)
-                  setCustomSubject(topic)
-                }}
-                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
-                  isSelected
-                    ? 'bg-ink text-white shadow-xs'
-                    : 'border border-ink/12 bg-paper/60 text-ink/75 hover:border-ink/30 hover:bg-white hover:text-ink'
-                }`}
-              >
-                {isSelected && <IconCheck size={13} stroke={2.5} />}
-                <span>{topic}</span>
-              </button>
-            )
-          })}
-        </div>
+      <div className="flex flex-wrap gap-2">
+        {QUICK_TOPICS.map((topic) => {
+          const isSelected = selectedTopic === topic
+          return (
+            <button
+              key={topic}
+              type="button"
+              onClick={() => {
+                setSelectedTopic(topic)
+                setCustomSubject(topic)
+              }}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
+                isSelected
+                  ? 'bg-ink text-white shadow-xs'
+                  : 'border border-ink/12 bg-paper/60 text-ink/75 hover:border-ink/30 hover:bg-white hover:text-ink'
+              }`}
+            >
+              {isSelected && <IconCheck size={13} stroke={2.5} />}
+              <span>{topic}</span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Name and Email Grid */}
@@ -119,7 +114,7 @@ export function ContactForm() {
             autoComplete="name"
             required
             placeholder="e.g. Elena Rostova"
-            className="w-full rounded-2xl border border-ink/12 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-all duration-200 hover:border-ink/25 hover:bg-paper/80 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-3 focus:ring-ink/5"
+            className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
           />
           <FieldError message={state.errors?.name} />
         </div>
@@ -135,7 +130,7 @@ export function ContactForm() {
             autoComplete="email"
             required
             placeholder="e.g. elena@domain.com"
-            className="w-full rounded-2xl border border-ink/12 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-all duration-200 hover:border-ink/25 hover:bg-paper/80 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-3 focus:ring-ink/5"
+            className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
           />
           <FieldError message={state.errors?.email} />
         </div>
@@ -154,7 +149,7 @@ export function ContactForm() {
           onChange={(e) => setCustomSubject(e.target.value)}
           required
           placeholder="What is your inquiry regarding?"
-          className="w-full rounded-2xl border border-ink/12 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-all duration-200 hover:border-ink/25 hover:bg-paper/80 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-3 focus:ring-ink/5"
+          className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
         />
         <FieldError message={state.errors?.subject} />
       </div>
@@ -170,7 +165,7 @@ export function ContactForm() {
           rows={5}
           required
           placeholder="Tell us your approximate arrival dates, number of guests, or any specific wishes for your Dalmatian holiday..."
-          className="w-full resize-y rounded-2xl border border-ink/12 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-all duration-200 hover:border-ink/25 hover:bg-paper/80 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-3 focus:ring-ink/5"
+          className="w-full resize-y rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
         />
         <FieldError message={state.errors?.message} />
       </div>
@@ -198,12 +193,9 @@ export function ContactForm() {
         </div>
       )}
 
-      {/* Submit Button & Reassurance Note */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+      {/* Submit Button */}
+      <div className="pt-2">
         <SubmitButton />
-        <p className="text-[11px] font-medium tracking-wide text-ink/40">
-          Direct message to Josip & Family · No middlemen
-        </p>
       </div>
     </form>
   )
