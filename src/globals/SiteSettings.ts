@@ -35,7 +35,6 @@ export const SiteSettings: GlobalConfig = {
               type: 'date',
               label: 'Last Calendar Sync',
               admin: {
-                readOnly: true,
                 date: {
                   pickerAppearance: 'dayAndTime',
                   displayFormat: 'dd.MM.yyyy HH:mm',
