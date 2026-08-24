@@ -258,20 +258,20 @@ export function SiteHeader({
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 top-0 z-50 flex h-dvh flex-col justify-between bg-paper px-6 pb-8 pt-5 text-ink lg:hidden overflow-y-auto"
           >
-            {/* Drawer Top Header with Logo & Prominent X Close Button */}
-            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
+            {/* Drawer Top Header with Large Logo & Clean X Close Button */}
+            <div className="flex items-center justify-between border-b border-ink/10 pb-3 pt-1">
               <Link
                 href="/"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Villa San Antonio home"
                 className="relative flex items-center"
               >
-                <div className="relative h-12 w-12">
+                <div className="relative h-16 w-16 sm:h-[72px] sm:w-[72px]">
                   <Image
                     src="/branding/logo-black.png"
                     alt="Villa San Antonio"
-                    width={200}
-                    height={200}
+                    width={300}
+                    height={300}
                     className="h-full w-full object-contain"
                   />
                 </div>
@@ -281,9 +281,9 @@ export function SiteHeader({
                 type="button"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close navigation menu"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-surface text-ink shadow-xs transition-all hover:border-ink hover:bg-ink hover:text-white active:scale-95 cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center text-ink transition-opacity hover:opacity-60 active:scale-90 cursor-pointer p-1"
               >
-                <IconX size={22} stroke={2.2} />
+                <IconX size={28} stroke={1.6} />
               </button>
             </div>
 
