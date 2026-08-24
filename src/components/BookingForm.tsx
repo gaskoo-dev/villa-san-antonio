@@ -453,7 +453,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ink hover:bg-white cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-paper/60 px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-ink/75 transition-colors hover:border-ink/35 hover:text-ink cursor-pointer"
                 >
                   <IconChevronLeft size={16} />
                   <span>Back</span>
