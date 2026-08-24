@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 
-import type { FaqCategory, FaqItem, Footer, GalleryImage, Header, Media, Page, Review, SiteSetting } from '@/payload-types'
+import type { FaqCategory, FaqItem, Footer, GalleryCategory, GalleryImage, Header, Media, Page, Review, SiteSetting } from '@/payload-types'
 import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
@@ -96,7 +96,22 @@ export async function getFaqItems(): Promise<FaqItem[]> {
   }
 }
 
-export type GalleryEntry = GalleryImage & { image: Media }
+export async function getGalleryCategories(): Promise<GalleryCategory[]> {
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'gallery-categories',
+      limit: 50,
+      sort: 'sortOrder',
+      depth: 0,
+    })
+    return docs as GalleryCategory[]
+  } catch {
+    return []
+  }
+}
+
+export type GalleryEntry = GalleryImage & { image: Media; category?: GalleryCategory | number | null }
 
 export async function getGallery(limit = 200): Promise<GalleryEntry[]> {
   try {
@@ -114,3 +129,4 @@ export async function getGallery(limit = 200): Promise<GalleryEntry[]> {
 }
 
 export { gallerySrc, mediaAlt, mediaSrc, type GalleryEntryLike } from './media'
+

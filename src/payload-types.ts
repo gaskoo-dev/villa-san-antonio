@@ -71,6 +71,7 @@ export interface Config {
     pages: Page;
     media: Media;
     'gallery-images': GalleryImage;
+    'gallery-categories': GalleryCategory;
     reviews: Review;
     'faq-items': FaqItem;
     'faq-categories': FaqCategory;
@@ -87,6 +88,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'gallery-images': GalleryImagesSelect<false> | GalleryImagesSelect<true>;
+    'gallery-categories': GalleryCategoriesSelect<false> | GalleryCategoriesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
     'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
@@ -592,10 +594,26 @@ export interface GalleryImage {
    * Overrides the media alt text if filled in
    */
   alt?: string | null;
+  category?: (number | null) | GalleryCategory;
   /**
-   * Featured images are shown larger in the gallery grid
+   * Featured images are prioritized in hero and highlights
    */
   featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-categories".
+ */
+export interface GalleryCategory {
+  id: number;
+  name: string;
+  /**
+   * URL-friendly identifier (e.g. pool-exterior, interior-rooms, bbq-garden)
+   */
+  slug: string;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -677,6 +695,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gallery-images';
         value: number | GalleryImage;
+      } | null)
+    | ({
+        relationTo: 'gallery-categories';
+        value: number | GalleryCategory;
       } | null)
     | ({
         relationTo: 'reviews';
@@ -1128,7 +1150,19 @@ export interface MediaSelect<T extends boolean = true> {
 export interface GalleryImagesSelect<T extends boolean = true> {
   image?: T;
   alt?: T;
+  category?: T;
   featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-categories_select".
+ */
+export interface GalleryCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;

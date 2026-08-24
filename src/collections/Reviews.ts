@@ -7,7 +7,7 @@ export const Reviews: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'country', 'stars', 'source', 'sortOrder'],
-    group: 'Content',
+    group: 'Reviews',
   },
   access: {
     read: publicRead,

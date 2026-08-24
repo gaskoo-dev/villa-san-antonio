@@ -10,8 +10,8 @@ export const GalleryImages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['image', 'sortOrder'],
-    group: 'Content',
+    defaultColumns: ['image', 'alt', 'category', 'featured', 'sortOrder'],
+    group: 'Gallery',
   },
   access: {
     read: publicRead,
@@ -30,8 +30,18 @@ export const GalleryImages: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
+      label: 'Alt Text / Description',
       admin: {
         description: 'Overrides the media alt text if filled in',
+      },
+    },
+    {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'gallery-categories',
+      label: 'Gallery Category',
+      admin: {
+        position: 'sidebar',
       },
     },
     {
@@ -40,7 +50,7 @@ export const GalleryImages: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: 'sidebar',
-        description: 'Featured images are shown larger in the gallery grid',
+        description: 'Featured images are prioritized in hero and highlights',
       },
     },
     {

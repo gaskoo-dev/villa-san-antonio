@@ -1,0 +1,50 @@
+import type { CollectionConfig } from 'payload'
+
+import { adminWrite, publicRead } from '@/access'
+
+export const GalleryCategories: CollectionConfig = {
+  slug: 'gallery-categories',
+  labels: {
+    singular: 'Gallery Category',
+    plural: 'Gallery Categories',
+  },
+  admin: {
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'slug', 'sortOrder'],
+    group: 'Gallery',
+  },
+  access: {
+    read: publicRead,
+    create: adminWrite,
+    update: adminWrite,
+    delete: adminWrite,
+  },
+  defaultSort: 'sortOrder',
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+      label: 'Category Name',
+    },
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      unique: true,
+      label: 'Category Slug (Identifier)',
+      admin: {
+        description: 'URL-friendly identifier (e.g. pool-exterior, interior-rooms, bbq-garden)',
+      },
+    },
+    {
+      name: 'sortOrder',
+      type: 'number',
+      defaultValue: 100,
+      label: 'Display Order',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+  ],
+}

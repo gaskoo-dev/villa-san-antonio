@@ -13,6 +13,7 @@ import { Reviews } from './collections/Reviews'
 import { FAQItems } from './collections/FAQItems'
 import { FAQCategories } from './collections/FAQCategories'
 import { GalleryImages } from './collections/GalleryImages'
+import { GalleryCategories } from './collections/GalleryCategories'
 import { BookingInquiries } from './collections/BookingInquiries'
 import { ContactMessages } from './collections/ContactMessages'
 import { Header } from './globals/Header'
@@ -34,6 +35,7 @@ export default buildConfig({
     Pages,
     Media,
     GalleryImages,
+    GalleryCategories,
     Reviews,
     FAQItems,
     FAQCategories,
