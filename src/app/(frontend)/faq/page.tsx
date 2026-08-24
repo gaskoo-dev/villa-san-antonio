@@ -45,7 +45,7 @@ export default async function FaqPage() {
   const quickFacts = [
     {
       icon: IconClock,
-      title: 'Check-in / Out',
+      title: 'Check-in / Check-out',
       value: '16:00 / 10:00',
       subtitle: 'Flexible upon prior request',
     },
@@ -53,7 +53,7 @@ export default async function FaqPage() {
       icon: IconShieldCheck,
       title: 'Private Parking',
       value: '3 Covered Spaces',
-      subtitle: 'Free gated parking on-site',
+      subtitle: 'Free gated on-site parking',
     },
     {
       icon: IconPool,
@@ -85,56 +85,70 @@ export default async function FaqPage() {
         }}
       />
 
-      {/* 01 · Quick Facts Bento Strip */}
-      <section className="border-b border-ink/10 bg-surface/70 py-12 lg:py-16">
-        <div className="mx-auto w-[91.5vw] max-w-[1440px]">
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-            {quickFacts.map((fact, idx) => {
-              const Icon = fact.icon
-              return (
-                <Reveal key={fact.title} delay={idx * 60} className="h-full">
-                  <div className="flex h-full flex-col justify-between rounded-2xl border border-ink/10 bg-paper p-5 sm:p-6 transition-all duration-300 hover:border-ink/25 hover:shadow-xs">
-                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-white shadow-xs">
-                      <Icon size={20} stroke={1.8} />
+      {/* Main 2-Column Section: Left Quick Facts + Right Interactive FAQ */}
+      <section className="mx-auto w-[91.5vw] max-w-[1440px] py-16 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-[380px_1fr] xl:grid-cols-[400px_1fr] lg:gap-16 items-start">
+          {/* Left Column: Sticky Quick Facts Cards */}
+          <div className="lg:sticky lg:top-28 space-y-6">
+            <Reveal>
+              <div>
+                <p className="kicker mb-2.5">At a glance</p>
+                <h2 className="heading-section text-2xl sm:text-3xl font-medium tracking-tight text-ink">
+                  Key facts <span className="accent-serif font-normal text-ink">before arrival.</span>
+                </h2>
+                <p className="mt-3 text-xs sm:text-sm text-ink/65 leading-relaxed">
+                  Quick summary of our key house standards and amenities to help you plan your Dalmatian holiday.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="space-y-3 sm:space-y-3.5">
+              {quickFacts.map((fact, idx) => {
+                const Icon = fact.icon
+                return (
+                  <Reveal key={fact.title} delay={idx * 50}>
+                    <div className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-4.5 sm:p-5 transition-all duration-300 hover:border-ink/25 hover:shadow-xs">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-white shadow-xs">
+                        <Icon size={19} stroke={1.8} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-ink/50">
+                          {fact.title}
+                        </p>
+                        <p className="mt-0.5 text-base font-semibold tracking-tight text-ink">
+                          {fact.value}
+                        </p>
+                        <p className="mt-0.5 text-xs text-ink/60">{fact.subtitle}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-ink/50">
-                        {fact.title}
-                      </p>
-                      <p className="mt-1 text-lg sm:text-xl font-medium tracking-tight text-ink">
-                        {fact.value}
-                      </p>
-                      <p className="mt-1 text-xs text-ink/60">{fact.subtitle}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              )
-            })}
+                  </Reveal>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Right Column: Search, Category Tabs & Interactive FAQ Cards */}
+          <div>
+            <Reveal>
+              <div className="mb-8">
+                <p className="kicker mb-2.5">House Guide & Details</p>
+                <h2 className="heading-section text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-ink">
+                  Frequently asked <span className="accent-serif font-normal text-ink">questions.</span>
+                </h2>
+                <p className="mt-3 max-w-xl text-sm sm:text-base text-ink/65 leading-relaxed">
+                  Everything you need to know about staying at Villa San Antonio. Filter by category or search below.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <FaqInteractive items={faqItems} />
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 02 · Main Interactive FAQ Section */}
-      <section className="mx-auto w-[91.5vw] max-w-[960px] py-16 lg:py-28">
-        <Reveal>
-          <div className="text-center mb-10 sm:mb-12">
-            <p className="kicker mb-3">House Guide & Details</p>
-            <h2 className="heading-section text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-ink">
-              Frequently asked{' '}
-              <span className="accent-serif font-normal text-ink">questions.</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-ink/65">
-              Everything you need to know about staying at Villa San Antonio. Filter by category or search for specific amenities below.
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal delay={80}>
-          <FaqInteractive items={faqItems} />
-        </Reveal>
-      </section>
-
-      {/* 03 · Direct Booking CTA Banner */}
+      {/* Direct Booking CTA Banner */}
       <BookingBand {...(bookingBlock || {})} />
     </>
   )
