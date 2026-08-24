@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
 
-const DEFAULT_CATEGORIES = [
+const CATEGORIES_DATA = [
   {
     name: 'Exterior & Pool',
     slug: 'exterior-pool',
@@ -25,13 +25,14 @@ const DEFAULT_CATEGORIES = [
   },
 ]
 
-async function seedGalleryCategories() {
-  console.log('🌱 Seeding Gallery Categories...')
+async function seedAndCategorizeGallery() {
+  console.log('🌱 Ensuring Gallery Categories and categorizing all 92 images...')
   const payload = await getPayload({ config })
 
-  const createdCategories: Record<string, number> = {}
+  const categoryMap: Record<string, number> = {}
 
-  for (const cat of DEFAULT_CATEGORIES) {
+  // 1. Ensure categories exist
+  for (const cat of CATEGORIES_DATA) {
     const existing = await payload.find({
       collection: 'gallery-categories',
       where: {
@@ -43,58 +44,67 @@ async function seedGalleryCategories() {
     })
 
     if (existing.docs.length > 0) {
-      console.log(`  ✓ Category already exists: "${cat.name}"`)
-      createdCategories[cat.slug] = existing.docs[0].id
+      categoryMap[cat.slug] = existing.docs[0].id
     } else {
       const doc = await payload.create({
         collection: 'gallery-categories',
         data: cat,
       })
-      console.log(`  + Created Category: "${cat.name}" (ID: ${doc.id})`)
-      createdCategories[cat.slug] = doc.id
+      categoryMap[cat.slug] = doc.id
     }
   }
 
-  // Optionally assign unassigned gallery images to the default category (Exterior & Pool)
-  const images = await payload.find({
+  console.log('Categories Map:', categoryMap)
+
+  // 2. Fetch all gallery images
+  const galleryDocs = await payload.find({
     collection: 'gallery-images',
     limit: 300,
-    depth: 0,
+    depth: 1,
   })
 
-  console.log(`Found ${images.docs.length} gallery images. Categorizing unassigned images...`)
-  let updatedCount = 0
+  console.log(`Found ${galleryDocs.docs.length} gallery images to categorize...`)
 
-  for (const img of images.docs) {
-    if (!img.category) {
-      // Determine category based on alt text or filename if possible
-      const alt = (img.alt || '').toLowerCase()
-      let targetCategoryId = createdCategories['exterior-pool']
+  let updated = 0
+  for (const img of galleryDocs.docs) {
+    const media = typeof img.image === 'object' && img.image ? img.image : null
+    const filename = media?.filename || ''
+    const numMatch = filename.match(/villa-san-antonio-sibenik-(\d+)/)
+    const num = numMatch ? parseInt(numMatch[1], 10) : null
 
-      if (alt.includes('bed') || alt.includes('room') || alt.includes('interior') || alt.includes('bath') || alt.includes('kitchen') || alt.includes('living')) {
-        targetCategoryId = createdCategories['interior-bedrooms']
-      } else if (alt.includes('bbq') || alt.includes('grill') || alt.includes('dining') || alt.includes('tavern') || alt.includes('konoba')) {
-        targetCategoryId = createdCategories['bbq-dining']
-      } else if (alt.includes('sunset') || alt.includes('view') || alt.includes('hill') || alt.includes('landscape') || alt.includes('nature') || alt.includes('dalmatia')) {
-        targetCategoryId = createdCategories['surroundings-views']
+    let targetCatSlug = 'exterior-pool'
+
+    if (num !== null) {
+      if (num >= 1 && num <= 30) {
+        targetCatSlug = 'exterior-pool'
+      } else if (num >= 31 && num <= 65) {
+        targetCatSlug = 'interior-bedrooms'
+      } else if (num >= 66 && num <= 80) {
+        targetCatSlug = 'bbq-dining'
+      } else {
+        targetCatSlug = 'surroundings-views'
       }
-
-      await payload.update({
-        collection: 'gallery-images',
-        id: img.id,
-        data: {
-          category: targetCategoryId,
-        },
-      })
-      updatedCount++
+    } else if (filename.startsWith('DSC')) {
+      targetCatSlug = 'surroundings-views'
     }
+
+    const targetCategoryId = categoryMap[targetCatSlug]
+
+    await payload.update({
+      collection: 'gallery-images',
+      id: img.id,
+      data: {
+        category: targetCategoryId,
+      },
+    })
+    updated++
   }
 
-  console.log(`✅ Seeded Gallery Categories and categorized ${updatedCount} images!`)
+  console.log(`✅ Successfully updated category for all ${updated} gallery images!`)
   process.exit(0)
 }
 
-seedGalleryCategories().catch((err) => {
-  console.error('❌ Error seeding Gallery Categories:', err)
+seedAndCategorizeGallery().catch((err) => {
+  console.error('❌ Error categorizing gallery images:', err)
   process.exit(1)
 })
