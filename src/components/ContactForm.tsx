@@ -1,18 +1,14 @@
 'use client'
 
-import { IconArrowUpRight, IconCheck, IconCircleCheck, IconLoader2, IconSparkles } from '@tabler/icons-react'
-import { useActionState, useState } from 'react'
+import { IconArrowUpRight, IconCircleCheck, IconLoader2, IconSparkles } from '@tabler/icons-react'
+import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { submitContactMessage } from '@/actions/inquiries'
 import { emptyFormState } from '@/lib/form-state'
 
-const QUICK_TOPICS = [
-  'Booking & Availability',
-  'Heated Pool & Facilities',
-  'House Rules & Pets',
-  'General Inquiry',
-]
+const inputClass =
+  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
@@ -45,8 +41,6 @@ function SubmitButton() {
 
 export function ContactForm() {
   const [state, formAction] = useActionState(submitContactMessage, emptyFormState)
-  const [selectedTopic, setSelectedTopic] = useState<string>('Booking & Availability')
-  const [customSubject, setCustomSubject] = useState<string>('Booking & Availability')
 
   if (state.status === 'success') {
     return (
@@ -76,31 +70,6 @@ export function ContactForm() {
       {/* Honeypot for spam bots */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
-      {/* Quick Topic Selector */}
-      <div className="flex flex-wrap gap-2">
-        {QUICK_TOPICS.map((topic) => {
-          const isSelected = selectedTopic === topic
-          return (
-            <button
-              key={topic}
-              type="button"
-              onClick={() => {
-                setSelectedTopic(topic)
-                setCustomSubject(topic)
-              }}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 cursor-pointer ${
-                isSelected
-                  ? 'bg-ink text-white shadow-xs'
-                  : 'border border-ink/12 bg-paper/60 text-ink/75 hover:border-ink/30 hover:bg-white hover:text-ink'
-              }`}
-            >
-              {isSelected && <IconCheck size={13} stroke={2.5} />}
-              <span>{topic}</span>
-            </button>
-          )
-        })}
-      </div>
-
       {/* Name and Email Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
@@ -114,7 +83,7 @@ export function ContactForm() {
             autoComplete="name"
             required
             placeholder="e.g. Elena Rostova"
-            className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
+            className={inputClass}
           />
           <FieldError message={state.errors?.name} />
         </div>
@@ -130,7 +99,7 @@ export function ContactForm() {
             autoComplete="email"
             required
             placeholder="e.g. elena@domain.com"
-            className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
+            className={inputClass}
           />
           <FieldError message={state.errors?.email} />
         </div>
@@ -145,11 +114,9 @@ export function ContactForm() {
           id="subject"
           name="subject"
           type="text"
-          value={customSubject}
-          onChange={(e) => setCustomSubject(e.target.value)}
           required
           placeholder="What is your inquiry regarding?"
-          className="w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
+          className={inputClass}
         />
         <FieldError message={state.errors?.subject} />
       </div>
@@ -165,7 +132,7 @@ export function ContactForm() {
           rows={5}
           required
           placeholder="Tell us your approximate arrival dates, number of guests, or any specific wishes for your Dalmatian holiday..."
-          className="w-full resize-y rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/40 focus:border-ink focus:outline-none"
+          className={`${inputClass} resize-y`}
         />
         <FieldError message={state.errors?.message} />
       </div>
