@@ -9,6 +9,7 @@ export const CONTACT_PHONE = '+385 91 602 1899'
 export const NAV_LINKS = [
   { href: '/about-villa', label: 'About Villa' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/discover', label: 'Discover' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact-us', label: 'Contact' },
 ] as const

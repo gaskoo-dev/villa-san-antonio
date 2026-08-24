@@ -44,6 +44,7 @@ export function SiteHeader({
   const fallbackNavLinks = [
     { href: '/about-villa', label: t.nav.about, newTab: false },
     { href: '/gallery', label: t.nav.gallery, newTab: false },
+    { href: '/discover', label: t.nav.discover, newTab: false },
     { href: '/faq', label: t.nav.faq, newTab: false },
     { href: '/contact-us', label: t.nav.contact, newTab: false },
   ]

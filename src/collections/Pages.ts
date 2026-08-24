@@ -5,6 +5,7 @@ import { slugField } from '@/fields/slug'
 import { BookingBandBlock } from '@/blocks/BookingBandBlock'
 import { BookingSectionBlock } from '@/blocks/BookingSectionBlock'
 import { ContactBlock } from '@/blocks/ContactBlock'
+import { DiscoverSectionBlock } from '@/blocks/DiscoverSectionBlock'
 import { DistancesBlock } from '@/blocks/DistancesBlock'
 import { FaqSectionBlock } from '@/blocks/FaqSectionBlock'
 import { FaqShortBlock } from '@/blocks/FaqShortBlock'
@@ -66,6 +67,7 @@ export const Pages: CollectionConfig = {
                 FaqSectionBlock,
                 ContactBlock,
                 BookingSectionBlock,
+                DiscoverSectionBlock,
               ],
               admin: {
                 initCollapsed: true,

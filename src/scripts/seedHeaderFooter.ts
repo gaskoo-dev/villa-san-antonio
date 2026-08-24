@@ -18,6 +18,7 @@ async function seedHeaderFooter() {
       navItems: [
         { label: 'About Villa', link: '/about-villa', newTab: false },
         { label: 'Gallery', link: '/gallery', newTab: false },
+        { label: 'Discover', link: '/discover', newTab: false },
         { label: 'FAQ', link: '/faq', newTab: false },
         { label: 'Contact', link: '/contact-us', newTab: false },
       ],
@@ -55,6 +56,7 @@ async function seedHeaderFooter() {
         { label: 'Home', link: '/' },
         { label: 'About Villa', link: '/about-villa' },
         { label: 'Gallery', link: '/gallery' },
+        { label: 'Discover', link: '/discover' },
         { label: 'FAQ', link: '/faq' },
         { label: 'Contact', link: '/contact-us' },
       ],

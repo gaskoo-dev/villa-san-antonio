@@ -11,6 +11,7 @@ export type TranslationSchema = {
   nav: {
     about: string
     gallery: string
+    discover: string
     faq: string
     contact: string
     checkAvailability: string
@@ -105,6 +106,7 @@ export const translations: Record<Locale, TranslationSchema> = {
     nav: {
       about: 'About Villa',
       gallery: 'Gallery',
+      discover: 'Discover',
       faq: 'FAQ',
       contact: 'Contact',
       checkAvailability: 'Check availability',
@@ -242,6 +244,7 @@ export const translations: Record<Locale, TranslationSchema> = {
     nav: {
       about: 'Über die Villa',
       gallery: 'Galerie',
+      discover: 'Entdecken',
       faq: 'FAQ',
       contact: 'Kontakt',
       checkAvailability: 'Verfügbarkeit prüfen',
@@ -379,6 +382,7 @@ export const translations: Record<Locale, TranslationSchema> = {
     nav: {
       about: 'O Vili',
       gallery: 'Galerija',
+      discover: 'Istražite',
       faq: 'Česta pitanja',
       contact: 'Kontakt',
       checkAvailability: 'Provjeri dostupnost',

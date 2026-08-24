@@ -524,6 +524,43 @@ export interface Page {
             blockName?: string | null;
             blockType: 'bookingSection';
           }
+        | {
+            kicker?: string | null;
+            title: string;
+            accent?: string | null;
+            lead?: string | null;
+            experiences?:
+              | {
+                  title: string;
+                  category: 'nature' | 'adventure' | 'gastro' | 'culture' | 'beaches';
+                  tag?: string | null;
+                  badge?: string | null;
+                  externalLink?: string | null;
+                  desc: string;
+                  image?: (number | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
+            destinationsTitle?: string | null;
+            destinationsLead?: string | null;
+            destinations?:
+              | {
+                  name: string;
+                  category?: string | null;
+                  distance?: string | null;
+                  driveTime?: string | null;
+                  desc?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            conciergeTitle?: string | null;
+            conciergeText?: string | null;
+            conciergeButtonLabel?: string | null;
+            conciergePhone?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'discoverSection';
+          }
       )[]
     | null;
   meta?: {

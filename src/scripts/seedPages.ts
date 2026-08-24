@@ -28,6 +28,7 @@ async function seedPages() {
   const faqHeroMedia = findMedia('-005') || mediaDocs[2]?.id
   const contactHeroMedia = findMedia('-006') || mediaDocs[3]?.id
   const bookingHeroMedia = findMedia('-033') || mediaDocs[4]?.id
+  const discoverHeroMedia = findMedia('-028') || mediaDocs[5]?.id
   const sharedBookingBand = {
     blockType: 'bookingBand',
     title: 'Hold your dates',
@@ -517,6 +518,40 @@ async function seedPages() {
         title: 'Direct Booking & Availability · Villa San Antonio Šibenik',
         description:
           'Book Villa San Antonio directly with the owner for guaranteed best rates, 0% booking fees, and live availability.',
+      },
+    },
+    {
+      title: 'Discover Dalmatia & Local Area',
+      slug: 'discover',
+      layout: [
+        {
+          blockType: 'hero-sub',
+          title: 'Discover the best of',
+          accent: 'Dalmatia.',
+          lead:
+            'Positioned in the peaceful Šibenik hinterland, Villa San Antonio is the ultimate gateway to Krka National Park, Adriatic beaches, UNESCO heritage, and authentic local flavours.',
+          breadcrumbLabel: 'Discover',
+          image: discoverHeroMedia,
+        },
+        {
+          blockType: 'discoverSection',
+          kicker: 'Dalmatian Riviera & Hinterland',
+          title: 'Between cascading waterfalls,',
+          accent: 'historic forts & Adriatic sea.',
+          lead:
+            'From cascading national park waterfalls and UNESCO stone fortresses to secluded island coves and authentic wine cellars — all within minutes of Villa San Antonio.',
+          conciergeTitle: 'Personal Host Recommendations & Concierge',
+          conciergeText:
+            'Josip and the family can personally arrange private boat excursions to Kornati, authentic peka dinners, winery visits, or provide insider cycling and hiking routes starting right from the villa.',
+          conciergeButtonLabel: 'Ask Josip on WhatsApp',
+          conciergePhone: '+385 91 602 1899',
+        },
+        sharedBookingBand,
+      ],
+      meta: {
+        title: 'Discover Šibenik, Krka & Dalmatia · Villa San Antonio',
+        description:
+          'Explore the top attractions around Villa San Antonio: Krka National Park waterfalls, UNESCO fortresses, Kornati boat tours, Primošten vineyards, and pristine Adriatic beaches.',
       },
     },
   ]
