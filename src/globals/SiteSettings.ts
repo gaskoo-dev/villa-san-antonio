@@ -24,6 +24,15 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'syncCalendarNow',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/SyncCalendarButton#SyncCalendarButton',
+        },
+      },
+    },
+    {
       name: 'calendarNoStore',
       type: 'checkbox',
       label: 'Real-Time Sync (cache: no-store)',
@@ -66,7 +75,7 @@ export const SiteSettings: GlobalConfig = {
           pickerAppearance: 'dayAndTime',
           displayFormat: 'dd.MM.yyyy HH:mm',
         },
-        description: 'Timestamp when the calendar feed was last retrieved and synced.',
+        description: 'Timestamp when the calendar feed was last retrieved and synced from the iCal link.',
       },
     },
   ],

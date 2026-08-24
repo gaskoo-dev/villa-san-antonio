@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getPayloadClient, getSettings } from '@/lib/queries'
+import { getSettings } from '@/lib/queries'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 900 // Cache for 15 minutes
@@ -59,19 +59,6 @@ export async function GET() {
     const icalRes = await fetch(customIcalUrl, fetchOptions)
 
     if (icalRes.ok) {
-      // Record last sync timestamp in site-settings
-      getPayloadClient()
-        .then((payload) =>
-          payload.updateGlobal({
-            slug: 'site-settings',
-            data: {
-              calendarIcalUrl: customIcalUrl,
-              calendarLastSyncedAt: new Date().toISOString(),
-            },
-          })
-        )
-        .catch(() => {})
-
       const icsText = await icalRes.text()
       const events = icsText.split('BEGIN:VEVENT')
 
