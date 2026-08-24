@@ -5,12 +5,16 @@ import {
   IconBrandTiktok,
   IconBrandWhatsapp,
   IconBrandYoutube,
+  IconCheck,
+  IconChevronRight,
   IconLink,
+  IconMail,
+  IconMapPin,
+  IconPhone,
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { BackToTop } from '@/components/BackToTop'
 import {
   BOOKING_ANCHOR,
   CONTACT_EMAIL,
@@ -32,6 +36,13 @@ const SOCIAL_ICON_MAP = {
   other: IconLink,
 } as const
 
+const DIRECT_BENEFITS = [
+  'Best direct rate guarantee',
+  'Heated pool & private jacuzzi',
+  'Fully fenced & pet-friendly garden',
+  'Personal host support (Josip)',
+]
+
 export async function SiteFooter({
   cmsNavLinks,
   footerData,
@@ -49,7 +60,7 @@ export async function SiteFooter({
 
   const brandTagline =
     footerData?.brandTagline ||
-    'A private retreat for families and friends, tucked into the quiet Dalmatian hills near Šibenik.'
+    'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.'
   const ctaLabel = footerData?.primaryCta?.label || PRIMARY_CTA_LABEL
   const ctaLink = footerData?.primaryCta?.link || BOOKING_ANCHOR
 
@@ -64,74 +75,145 @@ export async function SiteFooter({
       : [
           { platform: 'instagram' as const, label: 'Instagram', url: 'https://www.instagram.com' },
           { platform: 'facebook' as const, label: 'Facebook', url: 'https://www.facebook.com' },
+          { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
 
-  const bottomTicker = footerData?.bottomTicker || 'Airport 45km · Beach 10km · Krka 15km'
+  const bottomTicker = footerData?.bottomTicker || 'Airport 45km · Beach 10km · Krka 15km · Šibenik 12km'
   const copyright = footerData?.copyright || `${SITE_NAME}. All rights reserved.`
 
   return (
-    <footer className="bg-ink px-6 pb-8 pt-20 text-white lg:pt-28">
-      <div className="mx-auto max-w-[1440px]">
-        <div className="grid gap-12 border-b border-white/15 pb-16 lg:grid-cols-[2fr_1fr_1fr]">
+    <footer className="relative overflow-hidden bg-ink text-white">
+      {/* Top ambient luxury glow */}
+      <div
+        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-3/4 max-w-4xl rounded-full bg-white/[0.03] blur-3xl"
+        aria-hidden="true"
+      />
+
+      <div className="container-page relative z-10 px-6 pb-10 pt-20 lg:pt-28">
+        {/* Editorial Heading Section */}
+        <div className="mb-16 flex flex-col justify-between gap-6 border-b border-white/10 pb-12 md:flex-row md:items-end">
           <div>
-            <Image
-              src="/branding/logo-white.png"
-              alt="Villa San Antonio"
-              width={500}
-              height={500}
-              className="h-[124px] w-[124px]"
-            />
-            <p className="mt-6 max-w-sm text-sm leading-6 text-white/50">{brandTagline}</p>
-            <Link
-              href={ctaLink}
-              className="mt-8 inline-flex items-center gap-4 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-xs font-medium uppercase tracking-wider text-ink transition-transform duration-300 ease-[var(--ease-reveal)] hover:-translate-y-0.5"
-            >
-              {ctaLabel}
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white">
-                <IconArrowUpRight size={18} stroke={2} aria-hidden />
-              </span>
-            </Link>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+              Villa San Antonio · Dalmatia
+            </p>
+            <h2 className="mt-2 font-serif text-3xl italic font-normal tracking-tight text-white/95 sm:text-4xl lg:text-5xl">
+              Your private sanctuary in the Dalmatian hills.
+            </h2>
+          </div>
+          <p className="max-w-xs text-xs leading-relaxed text-white/50 md:text-right">
+            Peaceful Mediterranean seclusion with modern comforts, just minutes from the Adriatic coast.
+          </p>
+        </div>
+
+        {/* 4-Column Balanced Grid */}
+        <div className="grid gap-12 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          {/* Column 1: Brand & CTA (Col span 4) */}
+          <div className="flex flex-col justify-between lg:col-span-4">
+            <div>
+              <Link href="/" aria-label="Villa San Antonio home" className="inline-block transition-opacity hover:opacity-85">
+                <Image
+                  src="/branding/logo-white.png"
+                  alt="Villa San Antonio"
+                  width={500}
+                  height={500}
+                  className="h-20 w-20 object-contain"
+                />
+              </Link>
+              <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
+                {brandTagline}
+              </p>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                href={ctaLink}
+                className="group inline-flex items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2 text-xs font-semibold uppercase tracking-[0.14rem] text-ink shadow-lg transition-all duration-300 hover:bg-paper hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>{ctaLabel}</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
+                  <IconArrowUpRight size={17} stroke={2.2} aria-hidden />
+                </span>
+              </Link>
+            </div>
           </div>
 
-          <nav aria-label="Footer">
-            <p className="text-xs font-medium uppercase tracking-[0.16rem] text-white/45">Explore</p>
-            <ul className="mt-6 space-y-3.5">
+          {/* Column 2: Direct Booking Perks (Col span 3) */}
+          <div className="lg:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+              Direct Booking Perks
+            </p>
+            <ul className="mt-6 space-y-3.5 text-sm text-white/70">
+              {DIRECT_BENEFITS.map((benefit) => (
+                <li key={benefit} className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-white/10 text-white">
+                    <IconCheck size={11} stroke={2.5} />
+                  </span>
+                  <span className="leading-snug">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Navigation Links (Col span 2) */}
+          <nav aria-label="Footer" className="lg:col-span-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+              Explore
+            </p>
+            <ul className="mt-6 space-y-3">
               {[{ href: '/', label: 'Home' }, ...navLinks].map((link) => (
                 <li key={link.href + link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 transition-colors hover:text-white">
-                    {link.label}
+                  <Link
+                    href={link.href}
+                    className="group inline-flex items-center gap-1 text-sm text-white/70 transition-all duration-200 hover:text-white hover:translate-x-1"
+                  >
+                    <IconChevronRight
+                      size={13}
+                      stroke={2}
+                      className="opacity-0 transition-opacity duration-200 group-hover:opacity-70"
+                    />
+                    <span>{link.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.16rem] text-white/45">Contact</p>
-            <ul className="mt-6 space-y-3.5 text-sm text-white/70">
+          {/* Column 4: Contact & Social (Col span 3) */}
+          <div className="lg:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+              Contact & Location
+            </p>
+            <ul className="mt-6 space-y-3 text-sm text-white/70">
               <li>
                 <a
                   href={`mailto:${email}`}
-                  className="transition-colors hover:text-white"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
                 >
-                  {email}
+                  <IconMail size={16} stroke={1.7} className="opacity-60" />
+                  <span>{email}</span>
                 </a>
               </li>
               <li>
                 <a
                   href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-                  className="transition-colors hover:text-white"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
                 >
-                  {phone}
+                  <IconPhone size={16} stroke={1.7} className="opacity-60" />
+                  <span>{phone}</span>
                 </a>
               </li>
-              <li>
-                {address}
-                <br />
-                {region}
+              <li className="flex items-start gap-2 pt-1">
+                <IconMapPin size={16} stroke={1.7} className="mt-0.5 shrink-0 opacity-60" />
+                <span className="leading-relaxed">
+                  {address}
+                  <br />
+                  <span className="text-white/50">{region}</span>
+                </span>
               </li>
             </ul>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+
+            {/* Tactile Luxury Social Buttons */}
+            <div className="mt-6 flex flex-wrap items-center gap-2.5">
               {socialLinks.map((social) => {
                 const IconComponent =
                   (social.platform && SOCIAL_ICON_MAP[social.platform as keyof typeof SOCIAL_ICON_MAP]) ||
@@ -143,9 +225,9 @@ export async function SiteFooter({
                     target="_blank"
                     rel="noreferrer"
                     aria-label={social.label || `Villa San Antonio on ${social.platform}`}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white/60 transition-colors hover:border-white hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/70 transition-all duration-200 hover:border-white hover:bg-white hover:text-ink hover:scale-110 active:scale-95 shadow-sm"
                   >
-                    <IconComponent size={18} stroke={1.5} />
+                    <IconComponent size={17} stroke={1.6} />
                   </a>
                 )
               })}
@@ -153,11 +235,11 @@ export async function SiteFooter({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-4 pt-6 text-xs text-white/40 sm:flex-row sm:items-center">
+        {/* Bottom Bar with Ticker and Copyright */}
+        <div className="flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/40 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} {copyright}</p>
-          <div className="flex items-center gap-6">
-            <p>{bottomTicker}</p>
-            <BackToTop inline />
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 font-mono text-[11px] tracking-wider text-white/50">
+            <span>{bottomTicker}</span>
           </div>
         </div>
       </div>
