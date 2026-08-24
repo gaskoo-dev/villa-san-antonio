@@ -465,6 +465,30 @@ export interface Page {
             blockName?: string | null;
             blockType: 'faqSection';
           }
+        | {
+            kicker?: string | null;
+            title?: string | null;
+            accent?: string | null;
+            lead?: string | null;
+            email?: string | null;
+            phone?: string | null;
+            whatsappNumber?: string | null;
+            whatsappLabel?: string | null;
+            locationAddress?: string | null;
+            googleMapsUrl?: string | null;
+            showFaqCard?: boolean | null;
+            faqCardTitle?: string | null;
+            faqCardText?: string | null;
+            faqCardLinkLabel?: string | null;
+            faqCardLinkUrl?: string | null;
+            enableMap?: boolean | null;
+            mapLatitude?: number | null;
+            mapLongitude?: number | null;
+            mapZoom?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contactSection';
+          }
       )[]
     | null;
   meta?: {

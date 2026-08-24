@@ -12,6 +12,7 @@ import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 type HeroSubBlock = Extract<LayoutBlock, { blockType: 'hero-sub' }>
+type ContactSectionBlock = Extract<LayoutBlock, { blockType: 'contactSection' }>
 type BookingBandBlock = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
@@ -29,6 +30,7 @@ export default async function ContactPage() {
   ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
+  const contactBlock = pageDoc?.layout?.find((b): b is ContactSectionBlock => b.blockType === 'contactSection')
   const bookingBlock = pageDoc?.layout?.find((b): b is BookingBandBlock => b.blockType === 'bookingBand')
   const heroMedia = typeof heroSub?.image === 'object' && heroSub?.image ? (heroSub.image as Media) : null
   const fallbackHeroImg = gallery[2] ?? gallery[0]
@@ -37,14 +39,22 @@ export default async function ContactPage() {
     ? (mediaSrc(heroMedia, 'desktop') ?? mediaSrc(heroMedia) ?? '')
     : (mediaSrc(fallbackHeroImg?.image, 'desktop') ?? mediaSrc(fallbackHeroImg?.image) ?? '')
 
-  const email = CONTACT_EMAIL
-  const phone = CONTACT_PHONE
+  // Dynamic Contact Data from CMS ContactBlock
+  const email = contactBlock?.email || CONTACT_EMAIL
+  const phone = contactBlock?.phone || CONTACT_PHONE
   const cleanPhone = phone.replace(/[^0-9+]/g, '')
-  const whatsappUrl = `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent('Hello Josip, I would like to inquire about Villa San Antonio.')}`
+  const whatsappNum = (contactBlock?.whatsappNumber || phone).replace(/[^0-9+]/g, '')
+  const whatsappUrl = `https://wa.me/${whatsappNum.replace('+', '')}?text=${encodeURIComponent('Hello Josip, I would like to inquire about Villa San Antonio.')}`
+  const whatsappLabel = contactBlock?.whatsappLabel || 'Chat on WhatsApp'
 
-  const fullLocation = 'Podine 14, 22000 Šibenik, Dalmatia · Croatia'
-  const lat = 43.6470678
-  const lng = 16.0546611
+  const fullLocation = contactBlock?.locationAddress || 'Podine 14, 22000 Šibenik, Dalmatia · Croatia'
+  const mapsUrl = contactBlock?.googleMapsUrl || 'https://maps.app.goo.gl/Xm8sAH7drKf2pADaA'
+  const lat = contactBlock?.mapLatitude || 43.6470678
+  const lng = contactBlock?.mapLongitude || 16.0546611
+  const zoom = contactBlock?.mapZoom || 13
+
+  const showFaqCard = contactBlock?.showFaqCard !== false
+  const enableMap = contactBlock?.enableMap !== false
 
   return (
     <>
@@ -66,11 +76,19 @@ export default async function ContactPage() {
       <section className="mx-auto grid w-[91.5vw] max-w-[1440px] gap-10 sm:gap-14 pb-16 sm:pb-24 pt-12 sm:pt-16 lg:grid-cols-[1fr_1.4fr] lg:gap-24 lg:pb-36">
         <div>
           <Reveal>
-            <h2 className="text-4xl font-medium leading-[0.94] tracking-[-0.05em] sm:text-5xl">
-              Get in <span className="accent-serif font-normal">touch.</span>
+            {contactBlock?.kicker && (
+              <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50 mb-2">
+                {contactBlock.kicker}
+              </p>
+            )}
+            <h2 className="text-4xl font-medium leading-[0.94] tracking-[-0.05em] sm:text-5xl text-ink">
+              {contactBlock?.title || 'Get in'}{' '}
+              <span className="accent-serif font-normal text-ink">
+                {contactBlock?.accent || 'touch.'}
+              </span>
             </h2>
             <p className="mt-4 sm:mt-6 max-w-sm text-sm leading-6 text-ink/60">
-              We answer every message personally, usually within 30 minutes.
+              {contactBlock?.lead || 'We answer every message personally, usually within 30 minutes.'}
             </p>
 
             <ul className="mt-8 sm:mt-12 space-y-6 sm:space-y-8">
@@ -111,7 +129,7 @@ export default async function ContactPage() {
                       className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition-transform hover:scale-105 active:scale-95"
                     >
                       <IconBrandWhatsapp size={14} />
-                      <span>Chat on WhatsApp</span>
+                      <span>{whatsappLabel}</span>
                     </a>
                   </div>
                 </div>
@@ -125,7 +143,7 @@ export default async function ContactPage() {
                 <div>
                   <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/50">Location</p>
                   <a
-                    href="https://maps.app.goo.gl/Xm8sAH7drKf2pADaA"
+                    href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-1 inline-block text-sm text-ink hover:underline"
@@ -136,22 +154,24 @@ export default async function ContactPage() {
               </li>
             </ul>
 
-            {/* Quick FAQ Helper Card */}
-            <div className="mt-8 sm:mt-12 rounded-2xl border border-ink/10 bg-paper/60 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
-                Need immediate answers?
-              </p>
-              <p className="mt-1 text-xs text-ink/70 leading-relaxed">
-                Check our house guide for check-in hours, heated pool details, and pet rules.
-              </p>
-              <a
-                href="/faq"
-                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-ink underline decoration-1 underline-offset-4 hover:opacity-75"
-              >
-                <span>Browse Frequently Asked Questions</span>
-                <span>→</span>
-              </a>
-            </div>
+            {/* Optional FAQ Helper Card */}
+            {showFaqCard && (
+              <div className="mt-8 sm:mt-12 rounded-2xl border border-ink/10 bg-paper/60 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+                  {contactBlock?.faqCardTitle || 'Need immediate answers?'}
+                </p>
+                <p className="mt-1 text-xs text-ink/70 leading-relaxed">
+                  {contactBlock?.faqCardText || 'Check our house guide for check-in hours, heated pool details, and pet rules.'}
+                </p>
+                <a
+                  href={contactBlock?.faqCardLinkUrl || '/faq'}
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-ink underline decoration-1 underline-offset-4 hover:opacity-75"
+                >
+                  <span>{contactBlock?.faqCardLinkLabel || 'Browse Frequently Asked Questions'}</span>
+                  <span>→</span>
+                </a>
+              </div>
+            )}
           </Reveal>
         </div>
 
@@ -165,23 +185,25 @@ export default async function ContactPage() {
       </section>
 
       {/* Dynamic Google Maps Location Section */}
-      <section className="h-[300px] sm:h-[420px] w-full border-t border-ink/10 relative">
-        <a
-          href="https://maps.app.goo.gl/Xm8sAH7drKf2pADaA"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute inset-0 block cursor-pointer"
-          aria-label="Open Villa San Antonio in Google Maps"
-        >
-          <iframe
-            src={`https://maps.google.com/maps?q=${lat},${lng}+(Villa+San+Antonio)&hl=en&z=13&output=embed`}
-            title="Villa San Antonio location map"
-            className="pointer-events-none h-full w-full border-0"
-            loading="lazy"
-            tabIndex={-1}
-          />
-        </a>
-      </section>
+      {enableMap && (
+        <section className="h-[300px] sm:h-[420px] w-full border-t border-ink/10 relative">
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 block cursor-pointer"
+            aria-label="Open Villa San Antonio in Google Maps"
+          >
+            <iframe
+              src={`https://maps.google.com/maps?q=${lat},${lng}+(Villa+San+Antonio)&hl=en&z=${zoom}&output=embed`}
+              title="Villa San Antonio location map"
+              className="pointer-events-none h-full w-full border-0"
+              loading="lazy"
+              tabIndex={-1}
+            />
+          </a>
+        </section>
+      )}
 
       <BookingBand {...(bookingBlock || {})} />
     </>
