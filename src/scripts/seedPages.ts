@@ -374,6 +374,45 @@ async function seedPages() {
           breadcrumbLabel: 'FAQ',
           image: faqHeroMedia,
         },
+        {
+          blockType: 'faqSection',
+          leftKicker: 'At a glance',
+          leftTitle: 'Key facts',
+          leftAccent: 'before arrival.',
+          leftLead:
+            'Quick summary of our key house standards and amenities to help you plan your Dalmatian holiday.',
+          quickFacts: [
+            {
+              icon: 'clock',
+              title: 'Check-in / Check-out',
+              value: '16:00 / 10:00',
+              subtitle: 'Flexible upon prior request',
+            },
+            {
+              icon: 'shield',
+              title: 'Private Parking',
+              value: '3 Covered Spaces',
+              subtitle: 'Free gated on-site parking',
+            },
+            {
+              icon: 'pool',
+              title: 'Heated Pool',
+              value: '36 m² with Waterfall',
+              subtitle: 'Private & illuminated at night',
+            },
+            {
+              icon: 'paw',
+              title: 'Pets & Garden',
+              value: 'Welcome on Request',
+              subtitle: '800 m² fully fenced estate',
+            },
+          ],
+          rightKicker: 'House Guide & Details',
+          rightTitle: 'Frequently asked',
+          rightAccent: 'questions.',
+          rightLead:
+            'Everything you need to know about staying at Villa San Antonio. Filter by category or search below.',
+        },
         sharedBookingBand,
       ],
       meta: {

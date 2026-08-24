@@ -429,6 +429,28 @@ export interface Page {
             blockName?: string | null;
             blockType: 'faqShort';
           }
+        | {
+            leftKicker?: string | null;
+            leftTitle?: string | null;
+            leftAccent?: string | null;
+            leftLead?: string | null;
+            quickFacts?:
+              | {
+                  icon?: ('clock' | 'shield' | 'pool' | 'paw' | 'wifi' | 'flame' | 'users') | null;
+                  title: string;
+                  value: string;
+                  subtitle?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            rightKicker?: string | null;
+            rightTitle?: string | null;
+            rightAccent?: string | null;
+            rightLead?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faqSection';
+          }
       )[]
     | null;
   meta?: {
@@ -984,6 +1006,29 @@ export interface PagesSelect<T extends boolean = true> {
               accent?: T;
               subtext?: T;
               items?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faqSection?:
+          | T
+          | {
+              leftKicker?: T;
+              leftTitle?: T;
+              leftAccent?: T;
+              leftLead?: T;
+              quickFacts?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    value?: T;
+                    subtitle?: T;
+                    id?: T;
+                  };
+              rightKicker?: T;
+              rightTitle?: T;
+              rightAccent?: T;
+              rightLead?: T;
               id?: T;
               blockName?: T;
             };

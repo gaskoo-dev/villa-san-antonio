@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { adminWrite, publicRead } from '@/access'
 import { BookingBandBlock } from '@/blocks/BookingBandBlock'
 import { DistancesBlock } from '@/blocks/DistancesBlock'
+import { FaqSectionBlock } from '@/blocks/FaqSectionBlock'
 import { FaqShortBlock } from '@/blocks/FaqShortBlock'
 import { GalleryBlock } from '@/blocks/GalleryBlock'
 import { HeroBlock } from '@/blocks/HeroBlock'
@@ -59,6 +60,7 @@ export const Pages: CollectionConfig = {
                 GalleryBlock,
                 ReviewsBlock,
                 FaqShortBlock,
+                FaqSectionBlock,
               ],
               admin: {
                 initCollapsed: true,

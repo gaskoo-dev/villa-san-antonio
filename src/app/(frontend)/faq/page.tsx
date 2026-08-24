@@ -1,8 +1,11 @@
 import {
   IconClock,
+  IconFlame,
   IconPaw,
   IconPool,
   IconShieldCheck,
+  IconUsers,
+  IconWifi,
 } from '@tabler/icons-react'
 import type { Metadata } from 'next'
 import React from 'react'
@@ -16,6 +19,7 @@ import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 type HeroSubBlock = Extract<LayoutBlock, { blockType: 'hero-sub' }>
+type FaqSectionBlock = Extract<LayoutBlock, { blockType: 'faqSection' }>
 type BookingBandBlock = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
@@ -26,6 +30,16 @@ export const metadata: Metadata = {
     'Detailed answers regarding check-in times, heated pool temperature, covered parking, WiFi, payment terms, and pet policies for Villa San Antonio.',
 }
 
+const ICON_MAP = {
+  clock: IconClock,
+  shield: IconShieldCheck,
+  pool: IconPool,
+  paw: IconPaw,
+  wifi: IconWifi,
+  flame: IconFlame,
+  users: IconUsers,
+} as const
+
 export default async function FaqPage() {
   const [pageDoc, faqItems, gallery] = await Promise.all([
     getPageBySlug('faq'),
@@ -34,7 +48,9 @@ export default async function FaqPage() {
   ])
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
+  const faqBlock = pageDoc?.layout?.find((b): b is FaqSectionBlock => b.blockType === 'faqSection')
   const bookingBlock = pageDoc?.layout?.find((b): b is BookingBandBlock => b.blockType === 'bookingBand')
+
   const heroMedia = typeof heroSub?.image === 'object' && heroSub?.image ? (heroSub.image as Media) : null
   const fallbackHeroImg = gallery[3] ?? gallery[0]
 
@@ -42,32 +58,37 @@ export default async function FaqPage() {
     ? (mediaSrc(heroMedia, 'desktop') ?? mediaSrc(heroMedia) ?? '')
     : (mediaSrc(fallbackHeroImg?.image, 'desktop') ?? mediaSrc(fallbackHeroImg?.image) ?? '')
 
-  const quickFacts = [
+  const defaultQuickFacts = [
     {
-      icon: IconClock,
+      icon: 'clock' as const,
       title: 'Check-in / Check-out',
       value: '16:00 / 10:00',
       subtitle: 'Flexible upon prior request',
     },
     {
-      icon: IconShieldCheck,
+      icon: 'shield' as const,
       title: 'Private Parking',
       value: '3 Covered Spaces',
       subtitle: 'Free gated on-site parking',
     },
     {
-      icon: IconPool,
+      icon: 'pool' as const,
       title: 'Heated Pool',
       value: '36 m² with Waterfall',
       subtitle: 'Private & illuminated at night',
     },
     {
-      icon: IconPaw,
+      icon: 'paw' as const,
       title: 'Pets & Garden',
       value: 'Welcome on Request',
       subtitle: '800 m² fully fenced estate',
     },
   ]
+
+  const quickFactsToRender =
+    faqBlock?.quickFacts && faqBlock.quickFacts.length > 0
+      ? faqBlock.quickFacts
+      : defaultQuickFacts
 
   return (
     <>
@@ -92,24 +113,31 @@ export default async function FaqPage() {
           <div className="lg:sticky lg:top-28 space-y-6">
             <Reveal>
               <div>
-                <p className="kicker mb-2.5">At a glance</p>
+                <p className="kicker mb-2.5">
+                  {faqBlock?.leftKicker || 'At a glance'}
+                </p>
                 <h2 className="heading-section text-2xl sm:text-3xl font-medium tracking-tight text-ink">
-                  Key facts <span className="accent-serif font-normal text-ink">before arrival.</span>
+                  {faqBlock?.leftTitle || 'Key facts'}{' '}
+                  <span className="accent-serif font-normal text-ink">
+                    {faqBlock?.leftAccent || 'before arrival.'}
+                  </span>
                 </h2>
                 <p className="mt-3 text-xs sm:text-sm text-ink/65 leading-relaxed">
-                  Quick summary of our key house standards and amenities to help you plan your Dalmatian holiday.
+                  {faqBlock?.leftLead ||
+                    'Quick summary of our key house standards and amenities to help you plan your Dalmatian holiday.'}
                 </p>
               </div>
             </Reveal>
 
             <div className="space-y-3 sm:space-y-3.5">
-              {quickFacts.map((fact, idx) => {
-                const Icon = fact.icon
+              {quickFactsToRender.map((fact, idx) => {
+                const IconComponent =
+                  (fact.icon && ICON_MAP[fact.icon as keyof typeof ICON_MAP]) || IconClock
                 return (
-                  <Reveal key={fact.title} delay={idx * 50}>
+                  <Reveal key={fact.title + idx} delay={idx * 50}>
                     <div className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-paper p-4.5 sm:p-5 transition-all duration-300 hover:border-ink/25 hover:shadow-xs">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-white shadow-xs">
-                        <Icon size={19} stroke={1.8} />
+                        <IconComponent size={19} stroke={1.8} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-ink/50">
@@ -118,7 +146,9 @@ export default async function FaqPage() {
                         <p className="mt-0.5 text-base font-semibold tracking-tight text-ink">
                           {fact.value}
                         </p>
-                        <p className="mt-0.5 text-xs text-ink/60">{fact.subtitle}</p>
+                        {fact.subtitle && (
+                          <p className="mt-0.5 text-xs text-ink/60">{fact.subtitle}</p>
+                        )}
                       </div>
                     </div>
                   </Reveal>
@@ -131,12 +161,18 @@ export default async function FaqPage() {
           <div>
             <Reveal>
               <div className="mb-8">
-                <p className="kicker mb-2.5">House Guide & Details</p>
+                <p className="kicker mb-2.5">
+                  {faqBlock?.rightKicker || 'House Guide & Details'}
+                </p>
                 <h2 className="heading-section text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-ink">
-                  Frequently asked <span className="accent-serif font-normal text-ink">questions.</span>
+                  {faqBlock?.rightTitle || 'Frequently asked'}{' '}
+                  <span className="accent-serif font-normal text-ink">
+                    {faqBlock?.rightAccent || 'questions.'}
+                  </span>
                 </h2>
                 <p className="mt-3 max-w-xl text-sm sm:text-base text-ink/65 leading-relaxed">
-                  Everything you need to know about staying at Villa San Antonio. Filter by category or search below.
+                  {faqBlock?.rightLead ||
+                    'Everything you need to know about staying at Villa San Antonio. Filter by category or search below.'}
                 </p>
               </div>
             </Reveal>
