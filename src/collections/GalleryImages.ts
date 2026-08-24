@@ -20,6 +20,36 @@ export const GalleryImages: CollectionConfig = {
     delete: adminWrite,
   },
   defaultSort: 'sortOrder',
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        if (data && (!data.alt || data.alt.trim() === '')) {
+          if (data.category) {
+            try {
+              const categoryId =
+                typeof data.category === 'object' && data.category !== null
+                  ? (data.category as { id: number }).id
+                  : (data.category as number)
+              const catDoc = await req.payload.findByID({
+                collection: 'gallery-categories',
+                id: categoryId,
+              })
+              if (catDoc?.name) {
+                data.alt = `Villa San Antonio — ${catDoc.name}`
+              } else {
+                data.alt = 'Villa San Antonio'
+              }
+            } catch {
+              data.alt = 'Villa San Antonio'
+            }
+          } else {
+            data.alt = 'Villa San Antonio'
+          }
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'image',
