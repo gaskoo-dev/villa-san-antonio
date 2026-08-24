@@ -4,7 +4,6 @@ import React from 'react'
 
 import { BackToTop } from '@/components/BackToTop'
 import { CursorDot } from '@/components/CursorDot'
-import { PageTransition } from '@/components/PageTransition'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
 import { LocaleProvider } from '@/context/LocaleContext'
@@ -59,9 +58,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
         <LocaleProvider>
           <CursorDot />
           <SiteHeader headerData={headerData} />
-          <main id="content">
-            <PageTransition>{children}</PageTransition>
-          </main>
+          <main id="content">{children}</main>
           <SiteFooter footerData={footerData} />
           <BackToTop />
         </LocaleProvider>
