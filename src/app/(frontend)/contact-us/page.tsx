@@ -135,12 +135,29 @@ export default async function ContactPage() {
                 </div>
               </li>
             </ul>
+
+            {/* Quick FAQ Helper Card */}
+            <div className="mt-8 sm:mt-12 rounded-2xl border border-ink/10 bg-paper/60 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+                Need immediate answers?
+              </p>
+              <p className="mt-1 text-xs text-ink/70 leading-relaxed">
+                Check our house guide for check-in hours, heated pool details, and pet rules.
+              </p>
+              <a
+                href="/faq"
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-ink underline decoration-1 underline-offset-4 hover:opacity-75"
+              >
+                <span>Browse Frequently Asked Questions</span>
+                <span>→</span>
+              </a>
+            </div>
           </Reveal>
         </div>
 
         <div>
           <Reveal delay={100}>
-            <div className="rounded-3xl border border-ink/10 bg-white p-5 sm:p-8 md:p-12 shadow-sm">
+            <div className="rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 md:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.04)]">
               <ContactForm />
             </div>
           </Reveal>
