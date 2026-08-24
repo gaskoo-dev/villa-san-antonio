@@ -316,7 +316,7 @@ export function GalleryGrid({
                   type="button"
                   onClick={close}
                   aria-label="Close photo viewer (Esc)"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white shadow-xl transition-all duration-200 hover:border-white hover:bg-white hover:text-ink hover:scale-105 active:scale-95"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
                 >
                   <IconX size={18} stroke={2.2} />
                 </button>
@@ -356,9 +356,9 @@ export function GalleryGrid({
                   show(-1)
                 }}
                 aria-label="Previous photo"
-                className="absolute left-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md shadow-2xl transition-all duration-200 hover:scale-110 hover:bg-white hover:text-ink sm:left-4"
+                className="absolute left-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95 sm:left-6"
               >
-                <IconChevronLeft size={20} stroke={2.2} />
+                <IconChevronLeft size={22} stroke={2.2} />
               </button>
               <button
                 type="button"
@@ -367,9 +367,9 @@ export function GalleryGrid({
                   show(1)
                 }}
                 aria-label="Next photo"
-                className="absolute right-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md shadow-2xl transition-all duration-200 hover:scale-110 hover:bg-white hover:text-ink sm:right-4"
+                className="absolute right-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95 sm:right-6"
               >
-                <IconChevronRight size={20} stroke={2.2} />
+                <IconChevronRight size={22} stroke={2.2} />
               </button>
             </div>
 
