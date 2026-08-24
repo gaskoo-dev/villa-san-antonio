@@ -71,13 +71,21 @@ export async function SiteFooter({
 
   // Column 3: Explore Navigation
   const exploreTitle = footerData?.exploreTitle || 'Explore'
-  const fallbackNavLinks = NAV_LINKS
-  const navLinks =
+  const fallbackNavLinks = [{ href: '/', label: 'Home' }, ...NAV_LINKS]
+  const rawNavLinks =
     footerData?.navLinks && footerData.navLinks.length > 0
       ? footerData.navLinks.map((item) => ({ href: item.link, label: item.label }))
       : cmsNavLinks && cmsNavLinks.length > 0
         ? cmsNavLinks
         : fallbackNavLinks
+
+  // Deduplicate navigation links by href
+  const seenHrefs = new Set<string>()
+  const navLinks = rawNavLinks.filter((link) => {
+    if (!link.href || seenHrefs.has(link.href)) return false
+    seenHrefs.add(link.href)
+    return true
+  })
 
   // Column 4: Contact & Location
   const contactTitle = footerData?.contactSection?.title || 'Contact & Location'
@@ -183,7 +191,7 @@ export async function SiteFooter({
               {exploreTitle}
             </p>
             <ul className="mt-6 space-y-3">
-              {[{ href: '/', label: 'Home' }, ...navLinks].map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href + link.label}>
                   <Link
                     href={link.href}
