@@ -61,7 +61,7 @@ export function PageIntro({
 
         {/* Huge Cinematic Headline */}
         <Reveal y={24} delay={40}>
-          <h1 className="max-w-4xl text-4xl font-medium tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl leading-[0.95]">
+          <h1 className="max-w-4xl text-3xl font-medium tracking-tight text-white sm:text-5xl lg:text-7xl xl:text-8xl leading-[0.98] sm:leading-[0.95]">
             {title} <span className="accent-serif font-normal text-white">{accent}</span>
           </h1>
         </Reveal>
@@ -69,7 +69,7 @@ export function PageIntro({
         {/* Lead Subtitle */}
         {lead && (
           <Reveal y={20} delay={100}>
-            <p className="max-w-2xl text-base font-light leading-relaxed text-white/85 sm:text-lg lg:text-xl">
+            <p className="max-w-2xl text-sm font-light leading-relaxed text-white/85 sm:text-base lg:text-lg">
               {lead}
             </p>
           </Reveal>
