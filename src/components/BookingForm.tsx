@@ -37,6 +37,21 @@ function FieldError({ message }: { message?: string }) {
   )
 }
 
+function formatHumanDate(dateStr: string, locale: string = 'hr'): string {
+  if (!dateStr) return ''
+  const [year, month, day] = dateStr.split('-').map(Number)
+  if (!year || !month || !day) return dateStr
+  const d = new Date(year, month - 1, day)
+
+  const langCode = locale === 'hr' ? 'hr-HR' : locale === 'de' ? 'de-DE' : 'en-GB'
+
+  return new Intl.DateTimeFormat(langCode, {
+    day: 'numeric',
+    month: locale === 'en' ? 'short' : 'long',
+    year: 'numeric',
+  }).format(d)
+}
+
 function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus()
   return (
@@ -186,7 +201,8 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   <div className="flex items-center gap-2.5">
                     <IconSparkles size={18} className="text-amber-700 shrink-0" />
                     <span>
-                      <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                      <strong>Selected:</strong> {formatHumanDate(checkIn, locale)} &rarr;{' '}
+                      {formatHumanDate(checkOut, locale)} ({nights}{' '}
                       {nights === 1 ? 'night' : 'nights'})
                     </span>
                   </div>
@@ -199,7 +215,8 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   <div className="flex items-center gap-2.5">
                     <IconSparkles size={18} className="text-amber-600 shrink-0" />
                     <span>
-                      <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                      <strong>Selected Stay:</strong> {formatHumanDate(checkIn, locale)} &rarr;{' '}
+                      {formatHumanDate(checkOut, locale)} ({nights}{' '}
                       {nights === 1 ? 'night' : 'nights'})
                     </span>
                   </div>
@@ -211,7 +228,8 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
             ) : checkIn ? (
               <div className="rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs text-ink/80">
                 <span>
-                  <strong>Check-in:</strong> {checkIn} &rarr; <em>Select departure date (minimum {minNights} nights)</em>
+                  <strong>Check-in:</strong> {formatHumanDate(checkIn, locale)} &rarr;{' '}
+                  <em>Select departure date (minimum {minNights} nights)</em>
                 </span>
               </div>
             ) : (
@@ -257,7 +275,8 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               <div className="flex items-center gap-2">
                 <IconCalendar size={16} className="text-ink/70" />
                 <span>
-                  <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                  <strong>Selected Stay:</strong> {formatHumanDate(checkIn, locale)} &rarr;{' '}
+                  {formatHumanDate(checkOut, locale)} ({nights}{' '}
                   {nights === 1 ? 'night' : 'nights'})
                 </span>
               </div>
