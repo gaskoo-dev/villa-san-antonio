@@ -159,10 +159,10 @@ export function FaqInteractive({
         </div>
       )}
 
-      {/* Category Pills / Filter Tabs evenly distributed across full width matching search bar */}
+      {/* Category Pills / Filter Tabs dynamically distributed without hardcoded grid columns */}
       {showTabs && (
         <div className="w-full no-scrollbar overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
-          <div className="flex min-w-full items-center justify-between gap-1 sm:grid sm:grid-cols-5 sm:gap-1.5">
+          <div className="flex min-w-full flex-nowrap items-center justify-between gap-1 sm:gap-1.5">
             {tabs.map((tab) => {
               const isActive = selectedCategory === tab.id
               const count = countsByCategory[tab.id] || 0
@@ -176,7 +176,7 @@ export function FaqInteractive({
                     setSelectedCategory(tab.id)
                     setOpenIndex(0)
                   }}
-                  className={`relative flex flex-1 shrink-0 items-center justify-center gap-2 rounded-full py-2.5 px-3 text-center text-xs font-semibold uppercase tracking-[0.12rem] transition-all duration-300 ${
+                  className={`relative flex flex-1 min-w-max shrink-0 items-center justify-center gap-2 rounded-full py-2 px-3.5 text-center text-xs font-semibold uppercase tracking-[0.12rem] whitespace-nowrap transition-all duration-300 ${
                     isActive
                       ? 'text-white'
                       : 'text-ink/60 hover:text-ink hover:bg-black/[0.04]'
