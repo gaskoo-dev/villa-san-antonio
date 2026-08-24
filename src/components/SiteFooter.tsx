@@ -78,7 +78,14 @@ export async function SiteFooter({
           { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
 
-  const bottomTicker = footerData?.bottomTicker || 'Airport 45km · Beach 10km · Krka 15km · Šibenik 12km'
+  const legalLinks =
+    footerData?.legalLinks && footerData.legalLinks.length > 0
+      ? footerData.legalLinks
+      : [
+          { label: 'Privacy Policy', link: '/privacy-policy' },
+          { label: 'Cookie Policy', link: '/cookie-policy' },
+          { label: 'Terms & Conditions', link: '/terms' },
+        ]
   const copyright = footerData?.copyright || `${SITE_NAME}. All rights reserved.`
 
   return (
@@ -235,11 +242,19 @@ export async function SiteFooter({
           </div>
         </div>
 
-        {/* Bottom Bar with Ticker and Copyright */}
+        {/* Bottom Bar with Legal Policy Links and Copyright */}
         <div className="flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/40 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} {copyright}</p>
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 font-mono text-[11px] tracking-wider text-white/50">
-            <span>{bottomTicker}</span>
+          <div className="flex flex-wrap items-center gap-5 sm:gap-6 text-xs text-white/50">
+            {legalLinks.map((item) => (
+              <Link
+                key={item.link + item.label}
+                href={item.link}
+                className="transition-colors hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

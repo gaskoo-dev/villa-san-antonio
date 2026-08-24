@@ -34,7 +34,7 @@ async function seedHeaderFooter() {
     slug: 'footer',
     data: {
       brandTagline:
-        'A private retreat for families and friends, tucked into the quiet Dalmatian hills near Šibenik.',
+        'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.',
       primaryCta: {
         label: 'Check availability',
         link: '/booking',
@@ -68,7 +68,11 @@ async function seedHeaderFooter() {
           url: 'https://wa.me/385916021899',
         },
       ],
-      bottomTicker: 'Airport 45km · Beach 10km · Krka 15km',
+      legalLinks: [
+        { label: 'Privacy Policy', link: '/privacy-policy' },
+        { label: 'Cookie Policy', link: '/cookie-policy' },
+        { label: 'Terms & Conditions', link: '/terms' },
+      ],
       copyright: 'Villa San Antonio. All rights reserved.',
     },
   })

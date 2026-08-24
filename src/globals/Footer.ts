@@ -18,7 +18,7 @@ export const Footer: GlobalConfig = {
       type: 'textarea',
       label: 'Brand Tagline',
       defaultValue:
-        'A private retreat for families and friends, tucked into the quiet Dalmatian hills near Šibenik.',
+        'Where slow mornings meet warm evenings. A private retreat for families & friends, tucked into the quiet Dalmatian hills near Šibenik.',
     },
     {
       name: 'primaryCta',
@@ -132,13 +132,27 @@ export const Footer: GlobalConfig = {
       ],
     },
     {
-      name: 'bottomTicker',
-      type: 'text',
-      label: 'Bottom Ticker Text',
-      defaultValue: 'Airport 45km · Beach 10km · Krka 15km',
-      admin: {
-        description: 'Displayed at the bottom right next to Back to Top button.',
+      name: 'legalLinks',
+      type: 'array',
+      label: 'Legal & Policy Links (Bottom Bar)',
+      labels: {
+        singular: 'Policy Link',
+        plural: 'Policy Links',
       },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          label: 'Link Label',
+        },
+        {
+          name: 'link',
+          type: 'text',
+          required: true,
+          label: 'URL / Path',
+        },
+      ],
     },
     {
       name: 'copyright',

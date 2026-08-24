@@ -1314,10 +1314,13 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Displayed at the bottom right next to Back to Top button.
-   */
-  bottomTicker?: string | null;
+  legalLinks?:
+    | {
+        label: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
   copyright?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1404,7 +1407,13 @@ export interface FooterSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
-  bottomTicker?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
   copyright?: T;
   updatedAt?: T;
   createdAt?: T;
