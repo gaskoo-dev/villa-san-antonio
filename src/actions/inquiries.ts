@@ -1,6 +1,6 @@
 'use server'
 
-import { getPayloadClient } from '@/lib/queries'
+import { getPayloadClient, getSettings } from '@/lib/queries'
 import type { FormState } from '@/lib/form-state'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -15,6 +15,9 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
   if (str(data, 'company')) {
     return { status: 'success', message: 'Request received.' }
   }
+
+  const siteSettings = await getSettings()
+  const minNights = typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3
 
   const errors: Record<string, string> = {}
   const firstName = str(data, 'firstName')
@@ -32,6 +35,16 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
   if (!checkIn) errors.checkIn = 'Select a check-in date.'
   if (!checkOut) errors.checkOut = 'Select a check-out date.'
   if (checkIn && checkOut && checkOut <= checkIn) errors.checkOut = 'Check-out must be after check-in.'
+
+  if (checkIn && checkOut && checkOut > checkIn) {
+    const d1 = new Date(checkIn)
+    const d2 = new Date(checkOut)
+    const diffTime = d2.getTime() - d1.getTime()
+    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    if (nights < minNights) {
+      errors.checkOut = `Minimum stay is ${minNights} nights.`
+    }
+  }
   if (!Number.isFinite(adults) || adults < 1) errors.adults = 'At least one adult.'
   if (!Number.isFinite(kids) || kids < 0) errors.kids = 'Invalid number.'
 

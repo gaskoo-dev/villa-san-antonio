@@ -1398,6 +1398,10 @@ export interface SiteSetting {
    */
   calendarIcalUrl?: string | null;
   /**
+   * Minimum number of consecutive nights required for a direct reservation (e.g. 3 or 7 nights).
+   */
+  minNights?: number | null;
+  /**
    * Timestamp when the calendar feed was last retrieved and synced.
    */
   calendarLastSyncedAt?: string | null;
@@ -1501,6 +1505,7 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   calendarIcalUrl?: T;
+  minNights?: T;
   calendarLastSyncedAt?: T;
   updatedAt?: T;
   createdAt?: T;

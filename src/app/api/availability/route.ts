@@ -154,6 +154,7 @@ export async function GET() {
   return NextResponse.json({
     success: true,
     lastUpdated: new Date().toISOString(),
+    minNights: typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3,
     totalRanges: bookedRanges.length,
     bookedRanges: bookedRanges.sort((a, b) => a.start.localeCompare(b.start)),
     disabledDates: Array.from(disabledDateSet).sort(),

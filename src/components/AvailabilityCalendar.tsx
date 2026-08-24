@@ -34,18 +34,23 @@ interface AvailabilityData {
 export function AvailabilityCalendar({
   checkIn,
   checkOut,
+  minNights = 3,
   onSelectRange,
 }: {
   checkIn: string
   checkOut: string
+  minNights?: number
   onSelectRange: (start: string, end: string) => void
 }) {
   const [data, setData] = useState<AvailabilityData>({
     bookedRanges: [],
     disabledDates: [],
   })
+  const [apiMinNights, setApiMinNights] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
   const [hoveredDate, setHoveredDate] = useState<string | null>(null)
+
+  const effectiveMinNights = apiMinNights || minNights
 
   // Current viewing month (0-indexed) & transition direction
   const today = new Date()
@@ -65,6 +70,9 @@ export function AvailabilityCalendar({
             bookedRanges: json.bookedRanges || [],
             disabledDates: json.disabledDates || [],
           })
+          if (typeof json.minNights === 'number') {
+            setApiMinNights(json.minNights)
+          }
         }
       } catch (err) {
         console.error('Failed to load availability:', err)
@@ -271,6 +279,9 @@ export function AvailabilityCalendar({
           <IconCalendar size={18} stroke={1.8} className="text-ink/70" />
           <span className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink">
             Availability Calendar
+          </span>
+          <span className="hidden sm:inline-flex items-center rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase text-ink/55">
+            Min. {effectiveMinNights} nights
           </span>
           {loading && (
             <IconLoader2 size={14} className="animate-spin text-ink/50" />

@@ -15,7 +15,7 @@ import { BookingForm } from '@/components/BookingForm'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { CONTACT_EMAIL, CONTACT_PHONE } from '@/lib/content'
-import { getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { getGallery, getPageBySlug, getSettings, mediaSrc } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -33,7 +33,12 @@ export const metadata: Metadata = {
 }
 
 export default async function BookingPage() {
-  const [pageDoc, gallery] = await Promise.all([getPageBySlug('booking'), getGallery()])
+  const [pageDoc, gallery, siteSettings] = await Promise.all([
+    getPageBySlug('booking'),
+    getGallery(),
+    getSettings(),
+  ])
+  const minNights = typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3
   const fallbackHeroImg = gallery[1] ?? gallery[0]
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
@@ -226,7 +231,7 @@ export default async function BookingPage() {
 
           {/* Right Column: Multi-Step Booking Form (Appears first on mobile) */}
           <Reveal delay={120} className="order-1 lg:order-2">
-            <BookingForm />
+            <BookingForm minNights={minNights} />
           </Reveal>
         </div>
       </section>

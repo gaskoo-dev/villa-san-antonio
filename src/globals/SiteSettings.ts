@@ -24,6 +24,17 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'minNights',
+      type: 'number',
+      label: 'Minimum Nights for Booking',
+      defaultValue: 3,
+      min: 1,
+      max: 30,
+      admin: {
+        description: 'Minimum number of consecutive nights required for a direct reservation (e.g. 3 or 7 nights).',
+      },
+    },
+    {
       name: 'calendarLastSyncedAt',
       type: 'date',
       label: 'Last Calendar Sync',

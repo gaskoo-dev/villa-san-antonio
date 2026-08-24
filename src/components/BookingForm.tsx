@@ -53,7 +53,7 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
   )
 }
 
-export function BookingForm() {
+export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   const { t, locale } = useLocale()
   const [state, formAction] = useActionState(submitBookingInquiry, emptyFormState)
   const [step, setStep] = useState<1 | 2>(1)
@@ -140,8 +140,8 @@ export function BookingForm() {
 
           <button
             type="button"
-            onClick={() => checkIn && checkOut && setStep(2)}
-            disabled={!checkIn || !checkOut}
+            onClick={() => checkIn && checkOut && nights >= minNights && setStep(2)}
+            disabled={!checkIn || !checkOut || nights < minNights}
             className={`relative inline-flex items-center gap-2 rounded-full py-1.5 px-4 text-xs font-semibold uppercase tracking-wider transition-colors ${
               step === 2
                 ? 'text-white'
@@ -175,32 +175,48 @@ export function BookingForm() {
             <AvailabilityCalendar
               checkIn={checkIn}
               checkOut={checkOut}
+              minNights={minNights}
               onSelectRange={handleSelectRange}
             />
 
             {/* Selected Stay Highlight Banner */}
             {checkIn && checkOut ? (
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs sm:text-sm text-ink shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <IconSparkles size={18} className="text-amber-600 shrink-0" />
-                  <span>
-                    <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
-                    {nights === 1 ? 'night' : 'nights'})
+              nights < minNights ? (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50/70 p-4 text-xs sm:text-sm text-amber-900 shadow-xs animate-[var(--animate-fade-in)]">
+                  <div className="flex items-center gap-2.5">
+                    <IconSparkles size={18} className="text-amber-700 shrink-0" />
+                    <span>
+                      <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                      {nights === 1 ? 'night' : 'nights'})
+                    </span>
+                  </div>
+                  <span className="text-[11px] uppercase tracking-wider text-amber-800 font-semibold">
+                    Minimum stay is {minNights} nights
                   </span>
                 </div>
-                <span className="text-[11px] uppercase tracking-wider text-emerald-700 font-semibold">
-                  Dates Available
-                </span>
-              </div>
+              ) : (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs sm:text-sm text-ink shadow-xs animate-[var(--animate-fade-in)]">
+                  <div className="flex items-center gap-2.5">
+                    <IconSparkles size={18} className="text-amber-600 shrink-0" />
+                    <span>
+                      <strong>Selected Stay:</strong> {checkIn} &rarr; {checkOut} ({nights}{' '}
+                      {nights === 1 ? 'night' : 'nights'})
+                    </span>
+                  </div>
+                  <span className="text-[11px] uppercase tracking-wider text-emerald-700 font-semibold">
+                    Dates Available
+                  </span>
+                </div>
+              )
             ) : checkIn ? (
               <div className="rounded-2xl border border-ink/15 bg-paper/60 p-4 text-xs text-ink/80">
                 <span>
-                  <strong>Check-in:</strong> {checkIn} &rarr; <em>Now select your departure date on the calendar</em>
+                  <strong>Check-in:</strong> {checkIn} &rarr; <em>Select departure date (minimum {minNights} nights)</em>
                 </span>
               </div>
             ) : (
               <div className="rounded-2xl border border-dashed border-ink/15 bg-paper/30 p-3.5 text-center text-xs text-ink/55">
-                Click an available arrival date and departure date on the calendar above
+                Select arrival and departure dates on the calendar (minimum {minNights} nights stay)
               </div>
             )}
 
@@ -208,14 +224,16 @@ export function BookingForm() {
             <div>
               <button
                 type="button"
-                disabled={!checkIn || !checkOut}
+                disabled={!checkIn || !checkOut || nights < minNights}
                 onClick={() => setStep(2)}
                 className="group flex w-full items-center justify-center gap-4 rounded-full bg-ink px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
               >
                 <span>
-                  {checkIn && checkOut
-                    ? `Continue to Guest Details (${nights} ${nights === 1 ? 'night' : 'nights'})`
-                    : 'Select Dates to Continue'}
+                  {!checkIn || !checkOut
+                    ? 'Select Dates to Continue'
+                    : nights < minNights
+                      ? `Minimum stay is ${minNights} nights (${nights} selected)`
+                      : `Continue to Guest Details (${nights} ${nights === 1 ? 'night' : 'nights'})`}
                 </span>
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:translate-x-0.5">
                   <IconArrowRight size={15} stroke={2.5} aria-hidden />
