@@ -1,6 +1,6 @@
 'use client'
 
-import { IconHelp, IconSearch, IconX } from '@tabler/icons-react'
+import { IconHelp, IconPlus, IconSearch, IconX } from '@tabler/icons-react'
 import { useId, useMemo, useState } from 'react'
 
 export type FaqItemData = {
@@ -18,17 +18,10 @@ const CATEGORY_TABS = [
   { id: 'rules', label: 'Rules & Pets' },
 ] as const
 
-const CATEGORY_LABELS: Record<string, string> = {
-  stay: 'Arrival & Stay',
-  pool: 'Pool & Amenities',
-  booking: 'Booking & Payment',
-  rules: 'Rules & Pets',
-}
-
 export function FaqInteractive({ items }: { items: FaqItemData[] }) {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(4) // Open "How do I book..." or first matching
   const baseId = useId()
 
   // Auto-categorize items if category is missing or default
@@ -39,13 +32,41 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
       }
       const q = (item.question + ' ' + item.answer).toLowerCase()
       let inferredCategory = 'stay'
-      if (q.includes('pool') || q.includes('heat') || q.includes('bbq') || q.includes('grill') || q.includes('garden') || q.includes('jacuzzi')) {
+      if (
+        q.includes('pool') ||
+        q.includes('heat') ||
+        q.includes('bbq') ||
+        q.includes('grill') ||
+        q.includes('garden') ||
+        q.includes('jacuzzi')
+      ) {
         inferredCategory = 'pool'
-      } else if (q.includes('book') || q.includes('pay') || q.includes('card') || q.includes('deposit') || q.includes('refund') || q.includes('cancel') || q.includes('price')) {
+      } else if (
+        q.includes('book') ||
+        q.includes('pay') ||
+        q.includes('card') ||
+        q.includes('deposit') ||
+        q.includes('refund') ||
+        q.includes('cancel') ||
+        q.includes('price')
+      ) {
         inferredCategory = 'booking'
-      } else if (q.includes('pet') || q.includes('dog') || q.includes('smoke') || q.includes('party') || q.includes('rule') || q.includes('guest')) {
+      } else if (
+        q.includes('pet') ||
+        q.includes('dog') ||
+        q.includes('smoke') ||
+        q.includes('party') ||
+        q.includes('rule') ||
+        q.includes('guest')
+      ) {
         inferredCategory = 'rules'
-      } else if (q.includes('park') || q.includes('wifi') || q.includes('check-in') || q.includes('arrive') || q.includes('location')) {
+      } else if (
+        q.includes('park') ||
+        q.includes('wifi') ||
+        q.includes('check-in') ||
+        q.includes('arrive') ||
+        q.includes('location')
+      ) {
         inferredCategory = 'stay'
       }
       return { ...item, category: inferredCategory }
@@ -90,8 +111,8 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
               setSearch(e.target.value)
               setOpenIndex(0) // open first matching on search
             }}
-            placeholder="Search questions (e.g. heated pool, parking, 30% deposit, pets)..."
-            className="w-full rounded-2xl border border-ink/12 bg-paper py-4.5 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 shadow-xs transition-all duration-200 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-ink/10"
+            placeholder="Search questions (e.g. heated pool, parking, deposit, pets)..."
+            className="w-full rounded-2xl border border-ink/12 bg-paper py-4 pl-12 pr-11 text-sm sm:text-base text-ink placeholder:text-ink/40 shadow-xs transition-all duration-200 focus:border-ink focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-ink/10"
           />
           {search && (
             <button
@@ -119,7 +140,7 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
                 setSelectedCategory(tab.id)
                 setOpenIndex(0)
               }}
-              className={`inline-flex items-center gap-2 rounded-full px-4.5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200 ${
                 isActive
                   ? 'bg-ink text-white shadow-xs'
                   : 'border border-ink/10 bg-paper text-ink/70 hover:border-ink/25 hover:text-ink hover:bg-white'
@@ -138,55 +159,42 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
         })}
       </div>
 
-      {/* Accordion Bento Cards */}
+      {/* Clean Minimalist Accordion (identical to Home page) */}
       {filteredItems.length > 0 ? (
-        <div className="space-y-3.5">
+        <div className="divide-y divide-ink/10 border-y border-ink/10">
           {filteredItems.map((item, idx) => {
             const isOpen = openIndex === idx
             const panelId = `${baseId}-panel-${idx}`
-            const categoryLabel = CATEGORY_LABELS[item.category || 'stay'] || 'General'
 
             return (
-              <div
-                key={item.question + idx}
-                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
-                  isOpen
-                    ? 'border-ink/20 bg-paper shadow-md ring-1 ring-ink/5'
-                    : 'border-ink/10 bg-paper/80 hover:border-ink/25 hover:bg-paper hover:shadow-xs'
-                }`}
-              >
-                <button
-                  type="button"
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="flex w-full items-start justify-between gap-4 p-5 sm:p-6 text-left transition-colors"
-                >
-                  <div className="space-y-1.5 pr-2">
-                    <span className="inline-block rounded-md bg-ink/6 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink/60">
-                      {categoryLabel}
-                    </span>
-                    <h3
+              <div key={item.question + idx} className="transition-colors duration-200">
+                <h3>
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpenIndex(isOpen ? null : idx)}
+                    className="group flex w-full items-center justify-between gap-4 py-5 text-left transition-colors"
+                  >
+                    <span
                       className={`text-base sm:text-lg font-medium tracking-tight transition-colors duration-200 ${
-                        isOpen ? 'text-ink font-semibold' : 'text-ink/90'
+                        isOpen ? 'text-ink font-semibold' : 'text-ink/85 group-hover:text-ink'
                       }`}
                     >
                       {item.question}
-                    </h3>
-                  </div>
-
-                  <span
-                    className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
-                      isOpen
-                        ? 'rotate-45 bg-ink text-white border-ink shadow-xs'
-                        : 'border-ink/15 text-ink/60 bg-surface/50 group-hover:border-ink'
-                    }`}
-                    aria-hidden
-                  >
-                    <span className="text-lg leading-none font-light">+</span>
-                  </span>
-                </button>
-
+                    </span>
+                    <span
+                      className={`flex h-7.5 w-7.5 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                        isOpen
+                          ? 'rotate-45 bg-ink text-white border-ink shadow-xs'
+                          : 'border-ink/20 text-ink/60 bg-transparent group-hover:border-ink group-hover:bg-ink group-hover:text-white'
+                      }`}
+                      aria-hidden
+                    >
+                      <IconPlus size={16} stroke={2} />
+                    </span>
+                  </button>
+                </h3>
                 <div
                   id={panelId}
                   role="region"
@@ -195,11 +203,9 @@ export function FaqInteractive({ items }: { items: FaqItemData[] }) {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="border-t border-ink/8 px-5 pb-6 pt-4 sm:px-6">
-                      <p className="text-sm sm:text-[15px] leading-relaxed text-ink/75">
-                        {item.answer}
-                      </p>
-                    </div>
+                    <p className="max-w-[65ch] pb-6 text-sm sm:text-[15px] leading-relaxed text-ink/65">
+                      {item.answer}
+                    </p>
                   </div>
                 </div>
               </div>
