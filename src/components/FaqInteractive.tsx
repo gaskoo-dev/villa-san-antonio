@@ -162,7 +162,7 @@ export function FaqInteractive({
       {/* Category Pills / Filter Tabs dynamically distributed without hardcoded grid columns */}
       {showTabs && (
         <div className="w-full no-scrollbar overflow-x-auto rounded-full border border-black/[0.08] bg-black/[0.03] p-1.5 backdrop-blur-sm">
-          <div className="flex min-w-full flex-nowrap items-center justify-between gap-1 sm:gap-1.5">
+          <div className="flex w-max sm:w-full flex-nowrap items-center sm:justify-between gap-1 sm:gap-1.5">
             {tabs.map((tab) => {
               const isActive = selectedCategory === tab.id
               const count = countsByCategory[tab.id] || 0

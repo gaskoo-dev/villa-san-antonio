@@ -209,7 +209,7 @@ export function SiteHeader({
             onClick={() => setMenuOpen(!menuOpen)}
             className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
               overHero
-                ? 'border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:border-white/50'
+                ? 'border-white/25 text-white hover:border-white'
                 : 'border-ink/15 text-ink hover:border-ink/40'
             }`}
           >
