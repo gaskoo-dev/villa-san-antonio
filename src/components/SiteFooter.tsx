@@ -123,7 +123,7 @@ export async function SiteFooter({
                   alt="Villa San Antonio"
                   width={500}
                   height={500}
-                  className="h-20 w-20 object-contain"
+                  className="h-28 w-28 lg:h-[120px] lg:w-[120px] object-contain"
                 />
               </Link>
               <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
