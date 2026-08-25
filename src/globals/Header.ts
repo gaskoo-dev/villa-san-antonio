@@ -46,6 +46,11 @@ export const Header: GlobalConfig = {
         singular: 'Link',
         plural: 'Links',
       },
+      admin: {
+        components: {
+          RowLabel: '@/components/admin/HeaderLinkRowLabel#HeaderLinkRowLabel',
+        },
+      },
       fields: [
         {
           name: 'label',

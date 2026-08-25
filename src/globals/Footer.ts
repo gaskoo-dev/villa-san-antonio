@@ -109,6 +109,11 @@ export const Footer: GlobalConfig = {
         singular: 'Link',
         plural: 'Links',
       },
+      admin: {
+        components: {
+          RowLabel: '@/components/admin/FooterLinkRowLabels#FooterLinkRowLabel',
+        },
+      },
       fields: [
         {
           name: 'label',
@@ -169,6 +174,11 @@ export const Footer: GlobalConfig = {
         singular: 'Social Link',
         plural: 'Social Links',
       },
+      admin: {
+        components: {
+          RowLabel: '@/components/admin/FooterLinkRowLabels#FooterSocialLinkRowLabel',
+        },
+      },
       fields: [
         {
           name: 'platform',
@@ -206,6 +216,11 @@ export const Footer: GlobalConfig = {
       labels: {
         singular: 'Policy Link',
         plural: 'Policy Links',
+      },
+      admin: {
+        components: {
+          RowLabel: '@/components/admin/FooterLinkRowLabels#FooterLinkRowLabel',
+        },
       },
       fields: [
         {

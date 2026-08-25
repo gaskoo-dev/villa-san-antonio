@@ -33,8 +33,7 @@ async function seedPages() {
     blockType: 'bookingBand',
     title: 'Hold your dates',
     accent: 'for this summer.',
-    body:
-      'Direct contact with the owner. Best rates guaranteed, personal check-in, and zero booking commission.',
+    body: 'Direct contact with the owner. Best rates guaranteed, personal check-in, and zero booking commission.',
     primaryCtaLabel: 'Check Availability & Book',
     primaryCtaLink: '/booking',
     whatsappLabel: 'WhatsApp Chat',
@@ -87,8 +86,7 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Three bedrooms, heated pool,',
           accent: 'total silence.',
-          lead:
-            'Villa San Antonio is a private family-run estate tucked in the quiet Dalmatian karst of Podine, twenty minutes from the Adriatic Sea.',
+          lead: 'Villa San Antonio is a private family-run estate tucked in the quiet Dalmatian karst of Podine, twenty minutes from the Adriatic Sea.',
           breadcrumbLabel: 'About Villa',
           image: aboutHeroMedia,
         },
@@ -103,20 +101,16 @@ async function seedPages() {
             'https://maps.google.com/maps?q=43.6470678,16.0546611+(Villa+San+Antonio)&hl=en&z=13&output=embed',
           mapDirectUrl: 'https://maps.app.goo.gl/Xm8sAH7drKf2pADaA',
           mapAddress: 'Podine 14, Šibenik',
-          lead:
-            'Welcome to Villa San Antonio, your private retreat in the peaceful Šibenik hinterland, created for guests who want complete privacy, authentic Dalmatian ambience, and effortless comfort close to the coast and Krka National Park.',
+          lead: 'Welcome to Villa San Antonio, your private retreat in the peaceful Šibenik hinterland, created for guests who want complete privacy, authentic Dalmatian ambience, and effortless comfort close to the coast and Krka National Park.',
           paragraphs: [
             {
-              text:
-                'The villa is designed for relaxed holidays with family or friends: up to 8 guests in 3 stylish bedrooms and 4 bathrooms, bright indoor living spaces, and everything you need for a worry-free stay.',
+              text: 'The villa is designed for relaxed holidays with family or friends: up to 8 guests in 3 stylish bedrooms and 4 bathrooms, bright indoor living spaces, and everything you need for a worry-free stay.',
             },
             {
-              text:
-                'Outside is the heart of the experience: a large heated pool with a waterfall feature, a sun deck, and a fully fenced yard that keeps the atmosphere calm, safe, and truly private.',
+              text: 'Outside is the heart of the experience: a large heated pool with a waterfall feature, a sun deck, and a fully fenced yard that keeps the atmosphere calm, safe, and truly private.',
             },
             {
-              text:
-                'For unforgettable evenings, enjoy the outdoor kitchen and BBQ area, plus activities for all ages: a kids’ playground, trampoline, table tennis, bicycles and more. Private parking is on-site, and pets are welcome with a surcharge.',
+              text: 'For unforgettable evenings, enjoy the outdoor kitchen and BBQ area, plus activities for all ages: a kids’ playground, trampoline, table tennis, bicycles and more. Private parking is on-site, and pets are welcome with a surcharge.',
             },
           ],
           highlights: [
@@ -254,7 +248,8 @@ async function seedPages() {
             {
               name: 'Stone BBQ House',
               category: 'bbq-house',
-              subtitle: 'Authentic Dalmatian stone tavern with open grill fireplace and dining table.',
+              subtitle:
+                'Authentic Dalmatian stone tavern with open grill fireplace and dining table.',
               images: findMedias(['-075', '-076', '-077', '-078', '-079', '-080', '-081']),
               features: [
                 { label: 'Traditional Dalmatian peka fireplace' },
@@ -297,8 +292,7 @@ async function seedPages() {
           kicker: 'Welcome package',
           headline: 'A welcome worthy',
           accent: 'of the drive.',
-          body:
-            'Start your vacation with our exclusive Welcome Package, featuring homemade brandy, fine wine, prosciutto and cheese. This perfect combination of local delicacies offers an authentic experience and immediately immerses you in the pleasures of our region. Ideal for relaxation and socializing, making it the perfect start to your holiday.',
+          body: 'Start your vacation with our exclusive Welcome Package, featuring homemade brandy, fine wine, prosciutto and cheese. This perfect combination of local delicacies offers an authentic experience and immediately immerses you in the pleasures of our region. Ideal for relaxation and socializing, making it the perfect start to your holiday.',
           delicacies: [
             { label: 'Homemade brandy' },
             { label: 'Fine local wine' },
@@ -338,8 +332,7 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Atmosphere in',
           accent: 'still frames.',
-          lead:
-            '80+ moments of summer at Villa San Antonio. The pool at noon, the fire room at dusk, and the quiet hills all around.',
+          lead: '80+ moments of summer at Villa San Antonio. The pool at noon, the fire room at dusk, and the quiet hills all around.',
           breadcrumbLabel: 'Gallery',
           image: galleryHeroMedia,
         },
@@ -359,8 +352,7 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Clear answers for your',
           accent: 'summer stay.',
-          lead:
-            'Check-in times, pool heating, pet policy, booking terms, and directions. Everything you need to know in one place.',
+          lead: 'Check-in times, pool heating, pet policy, booking terms, and directions. Everything you need to know in one place.',
           breadcrumbLabel: 'FAQ',
           image: faqHeroMedia,
         },
@@ -419,8 +411,7 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Direct line to your',
           accent: 'Dalmatian hosts.',
-          lead:
-            'Reach out to Josip and the family directly for special requests, flexible dates, and instant local assistance.',
+          lead: 'Reach out to Josip and the family directly for special requests, flexible dates, and instant local assistance.',
           breadcrumbLabel: 'Contact',
           image: contactHeroMedia,
         },
@@ -438,7 +429,8 @@ async function seedPages() {
           googleMapsUrl: 'https://maps.app.goo.gl/Xm8sAH7drKf2pADaA',
           showFaqCard: true,
           faqCardTitle: 'Need immediate answers?',
-          faqCardText: 'Check our house guide for check-in hours, heated pool details, and pet rules.',
+          faqCardText:
+            'Check our house guide for check-in hours, heated pool details, and pet rules.',
           faqCardLinkLabel: 'Browse Frequently Asked Questions',
           faqCardLinkUrl: '/faq',
           enableMap: true,
@@ -462,8 +454,7 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Direct booking with',
           accent: '0% fees.',
-          lead:
-            'Reserve Villa San Antonio directly with the owners. Best rate guaranteed, personal check-in, transparent 30% deposit, and instant booking confirmation.',
+          lead: 'Reserve Villa San Antonio directly with the owners. Best rate guaranteed, personal check-in, transparent 30% deposit, and instant booking confirmation.',
           breadcrumbLabel: 'Booking',
           image: bookingHeroMedia,
         },
@@ -528,23 +519,15 @@ async function seedPages() {
           blockType: 'hero-sub',
           title: 'Discover the best of',
           accent: 'Dalmatia.',
-          lead:
-            'Positioned in the peaceful Šibenik hinterland, Villa San Antonio is the ultimate gateway to Krka National Park, Adriatic beaches, UNESCO heritage, and authentic local flavours.',
+          lead: 'Positioned in the peaceful Šibenik hinterland, Villa San Antonio is the ultimate gateway to Krka National Park, Adriatic beaches, UNESCO heritage, and authentic local flavours.',
           breadcrumbLabel: 'Discover',
           image: discoverHeroMedia,
         },
         {
-          blockType: 'discoverSection',
-          kicker: 'Dalmatian Riviera & Hinterland',
-          title: 'Between cascading waterfalls,',
-          accent: 'historic forts & Adriatic sea.',
-          lead:
-            'From cascading national park waterfalls and UNESCO stone fortresses to secluded island coves and authentic wine cellars — all within minutes of Villa San Antonio.',
-          conciergeTitle: 'Personal Host Recommendations & Concierge',
-          conciergeText:
-            'Josip and the family can personally arrange private boat excursions to Kornati, authentic peka dinners, winery visits, or provide insider cycling and hiking routes starting right from the villa.',
-          conciergeButtonLabel: 'Ask Josip on WhatsApp',
-          conciergePhone: '+385 91 602 1899',
+          blockType: 'regionalDrivesText',
+          kicker: 'Regional Map & Travel Times',
+          title: 'Everything within effortless driving distance.',
+          text: 'Located in Podine (Šibenik hinterland), Villa San Antonio provides complete sanctuary without isolation — scenic highways and coastal roads take you anywhere in minutes.',
         },
         sharedBookingBand,
       ],

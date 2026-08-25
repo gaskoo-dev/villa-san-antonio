@@ -1,11 +1,10 @@
 'use client'
 
-import { IconChevronLeft, IconChevronRight, IconX, IconZoomIn } from '@tabler/icons-react'
+import { IconZoomIn } from '@tabler/icons-react'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { useMemo, useState } from 'react'
 
+import { LightboxModal, type LightboxItem } from '@/components/LightboxModal'
 import { gallerySrc, mediaAlt, type GalleryEntryLike } from '@/lib/media'
 
 export function GalleryStrip({
@@ -16,31 +15,21 @@ export function GalleryStrip({
   speed?: number
 }) {
   const [active, setActive] = useState<number | null>(null)
-  const reduce = useReducedMotion()
-  const closeRef = useRef<HTMLButtonElement>(null)
 
-  const close = useCallback(() => setActive(null), [])
-  const show = useCallback(
-    (dir: 1 | -1) =>
-      setActive((i) => (i === null ? null : (i + dir + images.length) % images.length)),
-    [images.length],
+  const lightboxItems = useMemo<LightboxItem[]>(
+    () =>
+      images.map((img, idx) => ({
+        id: img.id ?? idx,
+        src: gallerySrc(img, 'desktop'),
+        thumbnailSrc: gallerySrc(img, 'thumbnail'),
+        alt: mediaAlt(img) || 'Villa San Antonio',
+        title: img.caption || mediaAlt(img) || 'Villa San Antonio',
+        category:
+          (typeof img.category === 'object' && img.category?.name) ||
+          undefined,
+      })),
+    [images],
   )
-
-  useEffect(() => {
-    if (active === null) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close()
-      if (e.key === 'ArrowRight') show(1)
-      if (e.key === 'ArrowLeft') show(-1)
-    }
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    closeRef.current?.focus()
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [active, close, show])
 
   if (images.length === 0) return null
 
@@ -48,8 +37,6 @@ export function GalleryStrip({
   const baseList = images.length < 8 ? [...images, ...images] : images
   // Duplicate for seamless 50% translation infinite marquee loop
   const marqueeList = [...baseList, ...baseList]
-
-  const current = active !== null ? images[active] : null
 
   return (
     <>
@@ -98,92 +85,17 @@ export function GalleryStrip({
         </div>
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
-      <AnimatePresence>
-        {current && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Photo viewer"
-            initial={reduce ? { opacity: 0 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={close}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md sm:p-8"
-          >
-            <motion.figure
-              key={current.id ?? active}
-              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.985 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-h-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Image
-                src={gallerySrc(current)}
-                alt={mediaAlt(current)}
-                width={1600}
-                height={1600}
-                sizes="90vw"
-                className="max-h-[82dvh] w-auto rounded-xl object-contain shadow-2xl"
-                priority
-              />
-            </motion.figure>
-
-            {/* Close Button */}
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={close}
-              aria-label="Close photo viewer"
-              className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110"
-            >
-              <IconX size={18} stroke={2.2} />
-            </button>
-
-            {/* Previous Photo Button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                show(-1)
-              }}
-              aria-label="Previous photo"
-              className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 sm:left-8"
-            >
-              <IconChevronLeft size={18} stroke={2.2} />
-            </button>
-
-            {/* Next Photo Button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                show(1)
-              }}
-              aria-label="Next photo"
-              className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 sm:right-8"
-            >
-              <IconChevronRight size={18} stroke={2.2} />
-            </button>
-
-            {/* Bottom Controls Bar */}
-            <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-3">
-              <span className="rounded-full bg-black/70 px-4 py-1.5 text-xs font-medium tracking-wider text-white/80 backdrop-blur-md">
-                {(active ?? 0) + 1} / {images.length}
-              </span>
-              <Link
-                href="/gallery"
-                onClick={close}
-                className="hidden rounded-full bg-white/15 px-4 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black sm:inline-block"
-              >
-                View Full Gallery →
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Cinematic Fullscreen Lightbox Modal */}
+      <LightboxModal
+        isOpen={active !== null}
+        activeIndex={active}
+        items={lightboxItems}
+        onClose={() => setActive(null)}
+        onNavigate={setActive}
+        showViewAllGallery={true}
+        viewAllGalleryHref="/gallery"
+        viewAllGalleryLabel="View Full Gallery →"
+      />
     </>
   )
 }

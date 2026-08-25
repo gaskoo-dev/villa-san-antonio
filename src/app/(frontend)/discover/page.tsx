@@ -3,12 +3,19 @@ import type { Metadata } from 'next'
 import { BookingBand } from '@/components/BookingBand'
 import { DiscoverExperiences, type DiscoverSectionData } from '@/components/DiscoverExperiences'
 import { PageIntro } from '@/components/PageIntro'
-import { getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import {
+  getDiscoverCategories,
+  getDiscoverItems,
+  getDrives,
+  getGallery,
+  getPageBySlug,
+  mediaSrc,
+} from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 type HeroSubBlock = Extract<LayoutBlock, { blockType: 'hero-sub' }>
-type DiscoverSectionBlockType = Extract<LayoutBlock, { blockType: 'discoverSection' }>
+type RegionalDrivesTextBlockType = Extract<LayoutBlock, { blockType: 'regionalDrivesText' }>
 type BookingBandBlockType = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
@@ -23,43 +30,38 @@ export const metadata: Metadata = {
 }
 
 export default async function DiscoverPage() {
-  const [pageDoc, gallery] = await Promise.all([
+  const [pageDoc, gallery, categories, experiences, destinations] = await Promise.all([
     getPageBySlug('discover'),
     getGallery(),
+    getDiscoverCategories(),
+    getDiscoverItems(),
+    getDrives(),
   ])
 
   const fallbackHeroImg = gallery[2] ?? gallery[0]
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
-  const heroMedia = typeof heroSub?.image === 'object' && heroSub?.image ? (heroSub.image as Media) : null
+  const heroMedia =
+    typeof heroSub?.image === 'object' && heroSub?.image ? (heroSub.image as Media) : null
 
   const heroSrc = heroMedia
     ? (mediaSrc(heroMedia, 'desktop') ?? mediaSrc(heroMedia) ?? '')
     : (mediaSrc(fallbackHeroImg?.image, 'desktop') ?? mediaSrc(fallbackHeroImg?.image) ?? '')
 
-  const discoverBlock = pageDoc?.layout?.find(
-    (b): b is DiscoverSectionBlockType => b.blockType === 'discoverSection'
-  )
-
   const bookingBandBlock = pageDoc?.layout?.find(
-    (b): b is BookingBandBlockType => b.blockType === 'bookingBand'
+    (b): b is BookingBandBlockType => b.blockType === 'bookingBand',
+  )
+  const regionalDrivesText = pageDoc?.layout?.find(
+    (b): b is RegionalDrivesTextBlockType => b.blockType === 'regionalDrivesText',
   )
 
   const discoverData: DiscoverSectionData = {
-    kicker: discoverBlock?.kicker || 'Dalmatian Riviera & Hinterland',
-    title: discoverBlock?.title || 'Between cascading waterfalls,',
-    accent: discoverBlock?.accent || 'historic forts & Adriatic sea.',
-    lead:
-      discoverBlock?.lead ||
-      'From cascading national park waterfalls and UNESCO stone fortresses to secluded island coves and authentic wine cellars — all within minutes of Villa San Antonio.',
-    experiences: discoverBlock?.experiences ?? null,
-    destinationsTitle: discoverBlock?.destinationsTitle ?? null,
-    destinationsLead: discoverBlock?.destinationsLead ?? null,
-    destinations: discoverBlock?.destinations ?? null,
-    conciergeTitle: discoverBlock?.conciergeTitle ?? null,
-    conciergeText: discoverBlock?.conciergeText ?? null,
-    conciergeButtonLabel: discoverBlock?.conciergeButtonLabel ?? null,
-    conciergePhone: discoverBlock?.conciergePhone ?? null,
+    categories,
+    experiences,
+    destinationsKicker: regionalDrivesText?.kicker ?? null,
+    destinationsTitle: regionalDrivesText?.title ?? null,
+    destinationsLead: regionalDrivesText?.text ?? null,
+    destinations,
   }
 
   return (

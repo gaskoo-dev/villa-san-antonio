@@ -5,7 +5,6 @@ import { slugField } from '@/fields/slug'
 import { BookingBandBlock } from '@/blocks/BookingBandBlock'
 import { BookingSectionBlock } from '@/blocks/BookingSectionBlock'
 import { ContactBlock } from '@/blocks/ContactBlock'
-import { DiscoverSectionBlock } from '@/blocks/DiscoverSectionBlock'
 import { DistancesBlock } from '@/blocks/DistancesBlock'
 import { FaqSectionBlock } from '@/blocks/FaqSectionBlock'
 import { FaqShortBlock } from '@/blocks/FaqShortBlock'
@@ -15,6 +14,7 @@ import { HeroSubBlock } from '@/blocks/HeroSubBlock'
 import { PerspectiveBlock } from '@/blocks/PerspectiveBlock'
 import { PlacesBlock } from '@/blocks/PlacesBlock'
 import { QuoteBlock } from '@/blocks/QuoteBlock'
+import { RegionalDrivesTextBlock } from '@/blocks/RegionalDrivesTextBlock'
 import { ReviewsBlock } from '@/blocks/ReviewsBlock'
 import { SpacesShowcaseBlock } from '@/blocks/SpacesShowcaseBlock'
 import { StoryHighlightsBlock } from '@/blocks/StoryHighlightsBlock'
@@ -61,13 +61,13 @@ export const Pages: CollectionConfig = {
                 PerspectiveBlock,
                 QuoteBlock,
                 PlacesBlock,
+                RegionalDrivesTextBlock,
                 GalleryBlock,
                 ReviewsBlock,
                 FaqShortBlock,
                 FaqSectionBlock,
                 ContactBlock,
                 BookingSectionBlock,
-                DiscoverSectionBlock,
               ],
               admin: {
                 initCollapsed: true,

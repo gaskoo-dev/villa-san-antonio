@@ -1,9 +1,8 @@
 'use client'
 
-import { IconChevronLeft, IconChevronRight, IconX, IconZoomIn } from '@tabler/icons-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { IconChevronLeft, IconChevronRight, IconZoomIn } from '@tabler/icons-react'
 import Image from 'next/image'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { A11y, EffectFade, Keyboard, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper'
@@ -11,6 +10,8 @@ import type { Swiper as SwiperClass } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/pagination'
+
+import { LightboxModal, type LightboxItem } from '@/components/LightboxModal'
 
 export type SlideImage = {
   src: string
@@ -33,53 +34,30 @@ export function RoomImageSlider({
   const swiperRef = useRef<SwiperClass | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const closeRef = useRef<HTMLButtonElement>(null)
 
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index)
-  }
-
-  const closeLightbox = useCallback(() => {
-    setLightboxIndex(null)
-  }, [])
-
-  const lightboxPrev = useCallback(() => {
-    setLightboxIndex((prev) => (prev === null ? null : (prev - 1 + images.length) % images.length))
-  }, [images.length])
-
-  const lightboxNext = useCallback(() => {
-    setLightboxIndex((prev) => (prev === null ? null : (prev + 1) % images.length))
-  }, [images.length])
-
-  // Keyboard navigation for Lightbox
-  useEffect(() => {
-    if (lightboxIndex === null) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeLightbox()
-      if (e.key === 'ArrowRight') lightboxNext()
-      if (e.key === 'ArrowLeft') lightboxPrev()
-    }
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    closeRef.current?.focus()
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [lightboxIndex, closeLightbox, lightboxNext, lightboxPrev])
+  const lightboxItems = useMemo<LightboxItem[]>(
+    () =>
+      images.map((slide, idx) => ({
+        id: idx,
+        src: slide.src,
+        thumbnailSrc: slide.src,
+        alt: slide.alt || `${title} photo ${idx + 1}`,
+        title: slide.alt || title,
+        category: title,
+      })),
+    [images, title],
+  )
 
   if (!images || images.length === 0) {
     return null
   }
-
-  const currentLightboxImage = lightboxIndex !== null ? images[lightboxIndex] : null
 
   // If only 1 image, render clean clickable image without Swiper controls
   if (images.length === 1) {
     return (
       <>
         <div
-          onClick={() => openLightbox(0)}
+          onClick={() => setLightboxIndex(0)}
           className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-surface/50 ${tall ? 'aspect-[4/5]' : aspectRatio}`}
         >
           <Image
@@ -95,51 +73,15 @@ export function RoomImageSlider({
           </div>
         </div>
 
-        {/* Lightbox Modal */}
-        <AnimatePresence>
-          {currentLightboxImage && (
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              aria-label={`${title} photo viewer`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={closeLightbox}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 p-4 backdrop-blur-md sm:p-8"
-            >
-              <motion.figure
-                key={lightboxIndex}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="relative max-h-full flex items-center justify-center"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={currentLightboxImage.src}
-                  alt={currentLightboxImage.alt || title}
-                  width={1600}
-                  height={1600}
-                  sizes="90vw"
-                  className="max-h-[85dvh] w-auto rounded-xl object-contain shadow-2xl"
-                  priority
-                />
-              </motion.figure>
-
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={closeLightbox}
-                aria-label="Close photo viewer"
-                className="absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
-              >
-                <IconX size={18} stroke={2.2} />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Cinematic Fullscreen Lightbox Modal */}
+        <LightboxModal
+          isOpen={lightboxIndex !== null}
+          activeIndex={lightboxIndex}
+          items={lightboxItems}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+          showViewAllGallery={false}
+        />
       </>
     )
   }
@@ -166,7 +108,7 @@ export function RoomImageSlider({
           {images.map((slide, i) => (
             <SwiperSlide
               key={slide.src + i}
-              onClick={() => openLightbox(i)}
+              onClick={() => setLightboxIndex(i)}
               className="relative h-full w-full cursor-pointer group/slide"
             >
               <Image
@@ -235,87 +177,15 @@ export function RoomImageSlider({
         </div>
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
-      <AnimatePresence>
-        {currentLightboxImage && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${title} photo viewer`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={closeLightbox}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 p-4 backdrop-blur-md sm:p-8"
-          >
-            <motion.figure
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-h-full flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Image
-                src={currentLightboxImage.src}
-                alt={currentLightboxImage.alt || title}
-                width={1600}
-                height={1600}
-                sizes="90vw"
-                className="max-h-[85dvh] w-auto rounded-xl object-contain shadow-2xl"
-                priority
-              />
-            </motion.figure>
-
-            {/* Counter badge in Lightbox - centered at bottom */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 rounded-full bg-black/60 px-4 py-1.5 text-xs font-medium tracking-widest text-white backdrop-blur-md shadow-lg border border-white/10 pointer-events-none">
-              {lightboxIndex !== null ? lightboxIndex + 1 : 1} / {images.length}
-            </div>
-
-            {/* Close Button */}
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={closeLightbox}
-              aria-label="Close photo viewer"
-              className="absolute top-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
-            >
-              <IconX size={18} stroke={2.2} />
-            </button>
-
-            {/* Previous Photo Button */}
-            {images.length > 1 && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  lightboxPrev()
-                }}
-                aria-label="Previous photo"
-                className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white shadow-2xl backdrop-blur-md transition-all duration-200 hover:scale-110 hover:bg-white hover:text-ink active:scale-95 cursor-pointer"
-              >
-                <IconChevronLeft size={22} stroke={2} />
-              </button>
-            )}
-
-            {/* Next Photo Button */}
-            {images.length > 1 && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  lightboxNext()
-                }}
-                aria-label="Next photo"
-                className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white shadow-2xl backdrop-blur-md transition-all duration-200 hover:scale-110 hover:bg-white hover:text-ink active:scale-95 cursor-pointer"
-              >
-                <IconChevronRight size={22} stroke={2} />
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Cinematic Fullscreen Lightbox Modal */}
+      <LightboxModal
+        isOpen={lightboxIndex !== null}
+        activeIndex={lightboxIndex}
+        items={lightboxItems}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+        showViewAllGallery={false}
+      />
     </>
   )
 }

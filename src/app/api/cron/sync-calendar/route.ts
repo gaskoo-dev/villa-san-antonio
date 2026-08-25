@@ -76,17 +76,26 @@ export async function handleSync() {
   }
 }
 
-export async function GET(req: Request) {
+function hasValidCronSecret(req: Request): boolean {
+  const cronSecret = process.env.CRON_SECRET
+  const authHeader = req.headers.get('authorization')
+
+  return Boolean(cronSecret && authHeader === `Bearer ${cronSecret}`)
+}
+
+async function hasAuthenticatedPayloadUser(req: Request): Promise<boolean> {
+  const payload = await getPayloadClient()
+  const { user } = await payload.auth({ headers: req.headers })
+
+  return Boolean(user)
+}
+
+async function runSync() {
   try {
-    const authHeader = req.headers.get('authorization')
-    const cronSecret = process.env.CRON_SECRET
-
-    if (cronSecret && authHeader && authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const result = await handleSync()
-    return NextResponse.json(result)
+    return NextResponse.json(result, {
+      headers: { 'Cache-Control': 'no-store' },
+    })
   } catch (error) {
     console.error('Calendar sync failed:', error)
     return NextResponse.json(
@@ -94,11 +103,41 @@ export async function GET(req: Request) {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      {
+        status: 500,
+        headers: { 'Cache-Control': 'no-store' },
+      },
     )
   }
 }
 
+export async function GET(req: Request) {
+  if (!process.env.CRON_SECRET) {
+    return NextResponse.json(
+      { error: 'Calendar cron is not configured' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
+
+  if (!hasValidCronSecret(req)) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
+
+  return runSync()
+}
+
 export async function POST(req: Request) {
-  return GET(req)
+  const isAuthorized = hasValidCronSecret(req) || (await hasAuthenticatedPayloadUser(req))
+
+  if (!isAuthorized) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
+
+  return runSync()
 }

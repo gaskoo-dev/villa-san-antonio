@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     pages: Page;
+    'discover-posts': DiscoverPost;
+    'discover-categories': DiscoverCategory;
+    'drives-distances': DrivesDistance;
     media: Media;
     'gallery-images': GalleryImage;
     'gallery-categories': GalleryCategory;
@@ -86,6 +89,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    'discover-posts': DiscoverPostsSelect<false> | DiscoverPostsSelect<true>;
+    'discover-categories': DiscoverCategoriesSelect<false> | DiscoverCategoriesSelect<true>;
+    'drives-distances': DrivesDistancesSelect<false> | DrivesDistancesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'gallery-images': GalleryImagesSelect<false> | GalleryImagesSelect<true>;
     'gallery-categories': GalleryCategoriesSelect<false> | GalleryCategoriesSelect<true>;
@@ -403,6 +409,14 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            title: string;
+            text: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'regionalDrivesText';
+          }
+        | {
+            kicker?: string | null;
             title?: string | null;
             accent?: string | null;
             /**
@@ -512,6 +526,9 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Upload a personal portrait photo of Josip / Hosts. If empty, initials will be shown.
+             */
             hostImage?: (number | null) | Media;
             hostName?: string | null;
             hostSubtitle?: string | null;
@@ -523,43 +540,6 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'bookingSection';
-          }
-        | {
-            kicker?: string | null;
-            title: string;
-            accent?: string | null;
-            lead?: string | null;
-            experiences?:
-              | {
-                  title: string;
-                  category: 'nature' | 'adventure' | 'gastro' | 'culture' | 'beaches';
-                  tag?: string | null;
-                  badge?: string | null;
-                  externalLink?: string | null;
-                  desc: string;
-                  image?: (number | null) | Media;
-                  id?: string | null;
-                }[]
-              | null;
-            destinationsTitle?: string | null;
-            destinationsLead?: string | null;
-            destinations?:
-              | {
-                  name: string;
-                  category?: string | null;
-                  distance?: string | null;
-                  driveTime?: string | null;
-                  desc?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            conciergeTitle?: string | null;
-            conciergeText?: string | null;
-            conciergeButtonLabel?: string | null;
-            conciergePhone?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'discoverSection';
           }
       )[]
     | null;
@@ -672,10 +652,87 @@ export interface FaqCategory {
   id: number;
   name: string;
   /**
-   * URL-friendly identifier (e.g. stay, pool, booking, rules)
+   * URL-friendly identifier (auto-generated from Name, click Unlock to edit)
    */
   slug: string;
   sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Create one post per local experience. Drag rows by the handle in the list to change their frontend order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discover-posts".
+ */
+export interface DiscoverPost {
+  id: number;
+  _order?: string | null;
+  title: string;
+  categoryRef: number | DiscoverCategory;
+  tag?: string | null;
+  badge?: string | null;
+  externalLink?: string | null;
+  /**
+   * Direct Google Maps destination URL
+   */
+  mapsUrl?: string | null;
+  desc: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Categories shown as filters on the Discover page. Drag rows to change their frontend order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discover-categories".
+ */
+export interface DiscoverCategory {
+  id: number;
+  _order?: string | null;
+  name: string;
+  /**
+   * Used as the frontend filter identifier.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Create one post per destination. Drag rows by the handle in the list to change their frontend order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drives-distances".
+ */
+export interface DrivesDistance {
+  id: number;
+  _order?: string | null;
+  name: string;
+  category?: string | null;
+  distance: string;
+  driveTime: string;
+  mapsUrl?: string | null;
+  desc?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -707,7 +764,7 @@ export interface GalleryCategory {
   id: number;
   name: string;
   /**
-   * URL-friendly identifier (e.g. pool-exterior, interior-rooms, bbq-garden)
+   * URL-friendly identifier (auto-generated from Name, click Unlock to edit)
    */
   slug: string;
   sortOrder?: number | null;
@@ -783,6 +840,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'discover-posts';
+        value: number | DiscoverPost;
+      } | null)
+    | ({
+        relationTo: 'discover-categories';
+        value: number | DiscoverCategory;
+      } | null)
+    | ({
+        relationTo: 'drives-distances';
+        value: number | DrivesDistance;
       } | null)
     | ({
         relationTo: 'media';
@@ -916,6 +985,10 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     url?: T;
                   };
+              coordsText?: T;
+              scrollLabel?: T;
+              instagramUrl?: T;
+              facebookUrl?: T;
               id?: T;
               blockName?: T;
             };
@@ -1109,6 +1182,15 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        regionalDrivesText?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
         galleryStrip?:
           | T
           | {
@@ -1175,6 +1257,63 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        contactSection?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              accent?: T;
+              lead?: T;
+              email?: T;
+              phone?: T;
+              whatsappNumber?: T;
+              whatsappLabel?: T;
+              locationAddress?: T;
+              googleMapsUrl?: T;
+              showFaqCard?: T;
+              faqCardTitle?: T;
+              faqCardText?: T;
+              faqCardLinkLabel?: T;
+              faqCardLinkUrl?: T;
+              enableMap?: T;
+              mapLatitude?: T;
+              mapLongitude?: T;
+              mapZoom?: T;
+              id?: T;
+              blockName?: T;
+            };
+        bookingSection?:
+          | T
+          | {
+              stepsTitle?: T;
+              steps?:
+                | T
+                | {
+                    num?: T;
+                    title?: T;
+                    desc?: T;
+                    id?: T;
+                  };
+              privilegesTitle?: T;
+              privileges?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    desc?: T;
+                    id?: T;
+                  };
+              hostImage?: T;
+              hostName?: T;
+              hostSubtitle?: T;
+              badgeText?: T;
+              whatsappLabel?: T;
+              whatsappNumber?: T;
+              phone?: T;
+              email?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1184,6 +1323,54 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
       };
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discover-posts_select".
+ */
+export interface DiscoverPostsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  categoryRef?: T;
+  tag?: T;
+  badge?: T;
+  externalLink?: T;
+  mapsUrl?: T;
+  desc?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discover-categories_select".
+ */
+export interface DiscoverCategoriesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "drives-distances_select".
+ */
+export interface DrivesDistancesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  category?: T;
+  distance?: T;
+  driveTime?: T;
+  mapsUrl?: T;
+  desc?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1470,7 +1657,7 @@ export interface SiteSetting {
    */
   calendarNoStore?: boolean | null;
   /**
-   * How many minutes availability data is cached in memory (default: 15 minutes).
+   * How many minutes availability data is cached in memory (default: 15 minutes). Ignored when Real-Time Sync (no-store) is enabled.
    */
   calendarCacheMinutes?: number | null;
   /**
@@ -1478,7 +1665,7 @@ export interface SiteSetting {
    */
   minNights?: number | null;
   /**
-   * Timestamp when the calendar feed was last retrieved and synced.
+   * Timestamp when the calendar feed was last retrieved and synced from the iCal link.
    */
   calendarLastSyncedAt?: string | null;
   updatedAt?: string | null;

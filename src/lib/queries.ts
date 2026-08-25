@@ -1,6 +1,22 @@
 import { getPayload } from 'payload'
 
-import type { FaqCategory, FaqItem, Footer, GalleryCategory, GalleryImage, Header, Media, Page, Review, SiteSetting } from '@/payload-types'
+import type {
+  DestinationItem,
+  DiscoverCategoryItem,
+  ExperienceItem,
+} from '@/components/DiscoverExperiences'
+import type {
+  FaqCategory,
+  FaqItem,
+  Footer,
+  GalleryCategory,
+  GalleryImage,
+  Header,
+  Media,
+  Page,
+  Review,
+  SiteSetting,
+} from '@/payload-types'
 import config from '@/payload.config'
 
 export const getPayloadClient = () => getPayload({ config })
@@ -111,7 +127,10 @@ export async function getGalleryCategories(): Promise<GalleryCategory[]> {
   }
 }
 
-export type GalleryEntry = GalleryImage & { image: Media; category?: GalleryCategory | number | null }
+export type GalleryEntry = GalleryImage & {
+  image: Media
+  category?: GalleryCategory | number | null
+}
 
 export async function getGallery(limit = 200): Promise<GalleryEntry[]> {
   try {
@@ -128,5 +147,56 @@ export async function getGallery(limit = 200): Promise<GalleryEntry[]> {
   }
 }
 
-export { gallerySrc, mediaAlt, mediaSrc, type GalleryEntryLike } from './media'
+export async function getDiscoverItems(): Promise<ExperienceItem[]> {
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'discover-posts',
+      limit: 100,
+      sort: '_order',
+      depth: 2,
+    })
+    if (docs.length > 0) {
+      return docs.map((doc) => ({
+        ...doc,
+        category: doc.categoryRef,
+      })) as unknown as ExperienceItem[]
+    }
+  } catch {}
 
+  return []
+}
+
+export async function getDiscoverCategories(): Promise<DiscoverCategoryItem[]> {
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'discover-categories',
+      limit: 100,
+      sort: '_order',
+      depth: 0,
+    })
+    return docs as DiscoverCategoryItem[]
+  } catch {
+    return []
+  }
+}
+
+export async function getDrives(): Promise<DestinationItem[]> {
+  try {
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'drives-distances',
+      limit: 100,
+      sort: '_order',
+      depth: 0,
+    })
+    if (docs.length > 0) {
+      return docs as unknown as DestinationItem[]
+    }
+  } catch {}
+
+  return []
+}
+
+export { gallerySrc, mediaAlt, mediaSrc, type GalleryEntryLike } from './media'
