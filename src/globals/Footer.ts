@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { PUBLIC_PATHS, revalidateGlobalPaths } from '@/hooks/revalidate'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -11,6 +12,9 @@ export const Footer: GlobalConfig = {
   access: {
     read: publicRead,
     update: adminWrite,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalPaths(PUBLIC_PATHS)],
   },
   fields: [
     {

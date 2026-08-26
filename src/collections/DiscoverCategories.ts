@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
 import { slugField } from '@/fields/slug'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const discoverCategoryRevalidation = revalidateCollectionPaths(['/discover'])
 
 export const DiscoverCategories: CollectionConfig = {
   slug: 'discover-categories',
@@ -26,6 +29,10 @@ export const DiscoverCategories: CollectionConfig = {
     delete: adminWrite,
   },
   orderable: true,
+  hooks: {
+    afterChange: [discoverCategoryRevalidation.afterChange],
+    afterDelete: [discoverCategoryRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'name',

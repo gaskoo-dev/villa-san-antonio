@@ -16,6 +16,9 @@ import {
   SuperscriptFeature,
   UnderlineFeature,
 } from '@payloadcms/richtext-lexical'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const discoverRevalidation = revalidateCollectionPaths(['/discover'])
 
 export const DiscoverPosts: CollectionConfig = {
   slug: 'discover-posts',
@@ -40,6 +43,10 @@ export const DiscoverPosts: CollectionConfig = {
     delete: adminWrite,
   },
   orderable: true,
+  hooks: {
+    afterChange: [discoverRevalidation.afterChange],
+    afterDelete: [discoverRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'title',

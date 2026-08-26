@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { revalidateGlobalPaths } from '@/hooks/revalidate'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -11,6 +12,9 @@ export const SiteSettings: GlobalConfig = {
   access: {
     read: publicRead,
     update: adminWrite,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalPaths(['/booking'])],
   },
   fields: [
     {

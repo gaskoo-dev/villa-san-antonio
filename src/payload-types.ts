@@ -108,7 +108,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de' | 'hr') | ('en' | 'de' | 'hr')[];
   globals: {
     header: Header;
     footer: Footer;
@@ -119,7 +119,7 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'en' | 'de' | 'hr';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -179,6 +179,9 @@ export interface User {
 export interface Page {
   id: number;
   title: string;
+  /**
+   * Available sections are limited to this page template and render in the template order shown on the website.
+   */
   layout?:
     | (
         | {
@@ -377,15 +380,6 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'perspective';
-          }
-        | {
-            quote: string;
-            author?: string | null;
-            role?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'quote';
           }
         | {
             kicker?: string | null;
@@ -1148,16 +1142,6 @@ export interface PagesSelect<T extends boolean = true> {
                     detail?: T;
                     id?: T;
                   };
-              id?: T;
-              blockName?: T;
-            };
-        quote?:
-          | T
-          | {
-              quote?: T;
-              author?: T;
-              role?: T;
-              backgroundImage?: T;
               id?: T;
               blockName?: T;
             };

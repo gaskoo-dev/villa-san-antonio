@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
 import { slugField } from '@/fields/slug'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const faqCategoryRevalidation = revalidateCollectionPaths(['/faq'])
 
 export const FAQCategories: CollectionConfig = {
   slug: 'faq-categories',
@@ -21,6 +24,10 @@ export const FAQCategories: CollectionConfig = {
     delete: adminWrite,
   },
   defaultSort: 'sortOrder',
+  hooks: {
+    afterChange: [faqCategoryRevalidation.afterChange],
+    afterDelete: [faqCategoryRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'name',

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
@@ -6,7 +7,9 @@ import { GalleryGrid } from '@/components/GalleryGrid'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { GALLERY_INTRO } from '@/lib/content'
+import { buildPageMetadata } from '@/lib/metadata'
 import { getGallery, getGalleryCategories, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -15,18 +18,26 @@ type BookingBandBlock = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'Gallery',
   description:
     'The pool at dusk, the BBQ evenings, the quiet bedrooms. Browse through the whole of Villa San Antonio in photographs.',
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('gallery', locale), fallbackMetadata, '/gallery')
+}
+
 export default async function GalleryPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, gallery, categories] = await Promise.all([
-    getPageBySlug('gallery'),
-    getGallery(200),
-    getGalleryCategories(),
+    getPageBySlug('gallery', locale),
+    getGallery(200, locale),
+    getGalleryCategories(locale),
   ])
+
+  if (!pageDoc) notFound()
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
   const bookingBlock = pageDoc?.layout?.find((b): b is BookingBandBlock => b.blockType === 'bookingBand')

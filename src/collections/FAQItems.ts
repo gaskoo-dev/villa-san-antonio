@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const faqRevalidation = revalidateCollectionPaths(['/', '/faq'])
 
 export const FAQItems: CollectionConfig = {
   slug: 'faq-items',
@@ -20,6 +23,10 @@ export const FAQItems: CollectionConfig = {
     delete: adminWrite,
   },
   defaultSort: 'sortOrder',
+  hooks: {
+    afterChange: [faqRevalidation.afterChange],
+    afterDelete: [faqRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'question',

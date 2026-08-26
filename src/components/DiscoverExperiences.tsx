@@ -740,16 +740,29 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
     }
   }, [isModalRendered, closeExperienceModal])
 
+  const allowStaticFallbacks = process.env.NEXT_PUBLIC_DISCOVER_STATIC_FALLBACKS === 'true'
   const experiences =
-    data?.experiences && data.experiences.length > 0 ? data.experiences : FALLBACK_EXPERIENCES
+    data?.experiences && data.experiences.length > 0
+      ? data.experiences
+      : allowStaticFallbacks
+        ? FALLBACK_EXPERIENCES
+        : []
   const categories =
-    data?.categories && data.categories.length > 0 ? data.categories : FALLBACK_CATEGORIES
+    data?.categories && data.categories.length > 0
+      ? data.categories
+      : allowStaticFallbacks
+        ? FALLBACK_CATEGORIES
+        : []
   const categoryTabs: DiscoverCategoryItem[] = [
     { slug: 'all', name: 'All Experiences' },
     ...categories,
   ]
   const destinations =
-    data?.destinations && data.destinations.length > 0 ? data.destinations : FALLBACK_DESTINATIONS
+    data?.destinations && data.destinations.length > 0
+      ? data.destinations
+      : allowStaticFallbacks
+        ? FALLBACK_DESTINATIONS
+        : []
 
   const filteredExperiences =
     activeTab === 'all'
@@ -811,9 +824,10 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
         </div>
 
         {/* Experiences Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredExperiences.map((exp, idx) => {
+        {filteredExperiences.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8">
+            <AnimatePresence mode="popLayout">
+              {filteredExperiences.map((exp, idx) => {
               const images = getExperienceImages(exp)
               const cardSnippet = getCardSnippet(exp.desc, 3)
 
@@ -889,9 +903,15 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
                   </div>
                 </motion.div>
               )
-            })}
-          </AnimatePresence>
-        </div>
+              })}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-dashed border-ink/20 bg-paper/50 px-6 py-16 text-center">
+            <p className="font-serif text-2xl text-ink">No Discover posts are published yet.</p>
+            <p className="mt-2 text-sm text-ink/60">Add posts and categories in Payload CMS.</p>
+          </div>
+        )}
 
         {/* Destinations & Travel Times Matrix */}
         <Reveal className="rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-7 sm:p-10 lg:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-8">
@@ -908,8 +928,9 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {destinations.map((dest, idx) => (
+          {destinations.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              {destinations.map((dest, idx) => (
               <a
                 key={dest.name || idx}
                 href={dest.mapsUrl || `https://maps.google.com/?q=${encodeURIComponent(dest.name)}`}
@@ -940,8 +961,13 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
                   <span className="font-semibold text-ink/85">{dest.distance}</span>
                 </div>
               </a>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-ink/20 px-5 py-10 text-center text-sm text-ink/60">
+              No drives and distances are published yet.
+            </div>
+          )}
         </Reveal>
       </section>
 

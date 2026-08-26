@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const drivesRevalidation = revalidateCollectionPaths(['/discover'])
 
 export const DrivesDistances: CollectionConfig = {
   slug: 'drives-distances',
@@ -25,6 +28,10 @@ export const DrivesDistances: CollectionConfig = {
     delete: adminWrite,
   },
   orderable: true,
+  hooks: {
+    afterChange: [drivesRevalidation.afterChange],
+    afterDelete: [drivesRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'name',

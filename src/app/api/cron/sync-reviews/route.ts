@@ -9,8 +9,13 @@ export async function GET(req: Request) {
     const authHeader = req.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 
-    // If CRON_SECRET is set in environment, verify bearer authorization
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    // Fail closed: a missing secret is a deployment configuration error, not
+    // permission to expose a database-writing sync endpoint publicly.
+    if (!cronSecret) {
+      return NextResponse.json({ error: 'Review cron is not configured' }, { status: 503 })
+    }
+
+    if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

@@ -8,6 +8,7 @@ import {
   IconWifi,
 } from '@tabler/icons-react'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
@@ -15,6 +16,8 @@ import { FaqInteractive } from '@/components/FaqInteractive'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { getFaqCategories, getFaqItems, getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { buildPageMetadata } from '@/lib/metadata'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { FaqItem, Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -24,10 +27,15 @@ type BookingBandBlock = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'Frequently Asked Questions & House Guide | Villa San Antonio Šibenik',
   description:
     'Detailed answers regarding check-in times, heated pool temperature, covered parking, WiFi, payment terms, and pet policies for Villa San Antonio.',
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('faq', locale), fallbackMetadata, '/faq')
 }
 
 const ICON_MAP = {
@@ -41,12 +49,15 @@ const ICON_MAP = {
 } as const
 
 export default async function FaqPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, allFaqItems, faqCategories, gallery] = await Promise.all([
-    getPageBySlug('faq'),
-    getFaqItems(),
-    getFaqCategories(),
-    getGallery(),
+    getPageBySlug('faq', locale),
+    getFaqItems(locale),
+    getFaqCategories(locale),
+    getGallery(200, locale),
   ])
+
+  if (!pageDoc) notFound()
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
   const faqBlock = pageDoc?.layout?.find((b): b is FaqSectionBlock => b.blockType === 'faqSection')

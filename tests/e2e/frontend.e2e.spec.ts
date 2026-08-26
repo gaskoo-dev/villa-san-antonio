@@ -1,20 +1,26 @@
-import { test, expect, Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
-test.describe('Frontend', () => {
-  let page: Page
+test.describe('Frontend CMS integration', () => {
+  test('renders the CMS-driven homepage', async ({ page }) => {
+    await page.goto('/')
 
-  test.beforeAll(async ({ browser }, testInfo) => {
-    const context = await browser.newContext()
-    page = await context.newPage()
+    await expect(page).toHaveTitle(/Villa San Antonio/i)
+    await expect(page.locator('h1').first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /discover/i }).first()).toBeVisible()
   })
 
-  test('can go on homepage', async ({ page }) => {
-    await page.goto('http://localhost:3000')
-
-    await expect(page).toHaveTitle(/Payload Blank Template/)
-
-    const heading = page.locator('h1').first()
-
-    await expect(heading).toHaveText('Welcome to your new project.')
-  })
+  for (const pathname of [
+    '/about-villa',
+    '/booking',
+    '/contact-us',
+    '/discover',
+    '/faq',
+    '/gallery',
+  ]) {
+    test(`renders ${pathname} without a server error`, async ({ page }) => {
+      const response = await page.goto(pathname)
+      expect(response?.ok()).toBe(true)
+      await expect(page.locator('h1').first()).toBeVisible()
+    })
+  }
 })

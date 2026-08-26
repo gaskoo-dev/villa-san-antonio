@@ -1,6 +1,7 @@
 import { IconArrowUpRight, IconBed, IconCheck, IconFlame, IconMapPin, IconPaw, IconPool, IconSparkles, IconSun, IconUsers } from '@tabler/icons-react'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
@@ -8,7 +9,9 @@ import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { RoomImageSlider, type SlideImage } from '@/components/RoomImageSlider'
 import { ABOUT_INTRO, WELCOME_PACKAGE } from '@/lib/content'
+import { buildPageMetadata } from '@/lib/metadata'
 import { getGallery, getPageBySlug, mediaSrc, type GalleryEntry } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -31,10 +34,15 @@ const HIGHLIGHT_ICON_MAP = {
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'About the Villa',
   description:
     'Heated pool with waterfall, BBQ house with fireplace, three quiet bedrooms and a fully fenced garden. Everything Villa San Antonio offers, inside and out.',
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('about-villa', locale), fallbackMetadata, '/about-villa')
 }
 
 type SpaceItem = {
@@ -177,10 +185,13 @@ const DEFAULT_DISTANCES = [
 ]
 
 export default async function AboutPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, gallery] = await Promise.all([
-    getPageBySlug('about-villa'),
-    getGallery(),
+    getPageBySlug('about-villa', locale),
+    getGallery(200, locale),
   ])
+
+  if (!pageDoc) notFound()
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
   const storyBlock = pageDoc?.layout?.find((b): b is StoryHighlightsBlock => b.blockType === 'storyHighlights')

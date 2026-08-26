@@ -1,5 +1,6 @@
 import { IconBrandWhatsapp, IconMail, IconMapPin, IconPhone } from '@tabler/icons-react'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
@@ -7,7 +8,9 @@ import { ContactForm } from '@/components/ContactForm'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { CONTACT_EMAIL, CONTACT_INTRO, CONTACT_PHONE } from '@/lib/content'
+import { buildPageMetadata } from '@/lib/metadata'
 import { getGallery, getPageBySlug, mediaSrc } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -17,17 +20,25 @@ type BookingBandBlock = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'Contact Us | Direct line to Villa San Antonio hosts',
   description:
     'Questions, booking inquiries or special requests for Villa San Antonio? Write to us and get a personal reply within 30 minutes.',
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('contact-us', locale), fallbackMetadata, '/contact-us')
+}
+
 export default async function ContactPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, gallery] = await Promise.all([
-    getPageBySlug('contact-us'),
-    getGallery(),
+    getPageBySlug('contact-us', locale),
+    getGallery(200, locale),
   ])
+
+  if (!pageDoc) notFound()
 
   const heroSub = pageDoc?.layout?.find((b): b is HeroSubBlock => b.blockType === 'hero-sub')
   const contactBlock = pageDoc?.layout?.find((b): b is ContactSectionBlock => b.blockType === 'contactSection')

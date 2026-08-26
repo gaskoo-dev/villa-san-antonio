@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { PUBLIC_PATHS, revalidateGlobalPaths } from '@/hooks/revalidate'
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -11,6 +12,9 @@ export const Header: GlobalConfig = {
   access: {
     read: publicRead,
     update: adminWrite,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalPaths(PUBLIC_PATHS)],
   },
   fields: [
     {
@@ -33,7 +37,7 @@ export const Header: GlobalConfig = {
         {
           name: 'enableLanguages',
           type: 'checkbox',
-          label: 'Show Language Switcher (EN / DE / HR / PL / IT)',
+          label: 'Show Language Switcher (EN / DE / HR)',
           defaultValue: true,
         },
       ],

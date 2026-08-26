@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import {
   IconBrandWhatsapp,
   IconCheck,
@@ -14,7 +15,9 @@ import { BookingForm } from '@/components/BookingForm'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { CONTACT_EMAIL, CONTACT_PHONE } from '@/lib/content'
+import { buildPageMetadata } from '@/lib/metadata'
 import { getGallery, getPageBySlug, getSettings, mediaSrc } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { Media, Page } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -23,13 +26,18 @@ type BookingSectionBlockType = Extract<LayoutBlock, { blockType: 'bookingSection
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'Direct Booking & Availability | Villa San Antonio Šibenik',
   description:
     'Book Villa San Antonio directly with the owner for guaranteed best rates, 0% booking fees, and live availability. Heated pool, 3 bedrooms, private estate near Šibenik, Croatia.',
   alternates: {
     canonical: 'https://villa-sanantonio.com/booking',
   },
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('booking', locale), fallbackMetadata, '/booking')
 }
 
 const DEFAULT_STEPS = [
@@ -85,11 +93,14 @@ function getPrivilegeIcon(key?: string | null) {
 }
 
 export default async function BookingPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, gallery, siteSettings] = await Promise.all([
-    getPageBySlug('booking'),
-    getGallery(),
+    getPageBySlug('booking', locale),
+    getGallery(200, locale),
     getSettings(),
   ])
+
+  if (!pageDoc) notFound()
   const minNights = typeof siteSettings?.minNights === 'number' ? siteSettings.minNights : 3
   const fallbackHeroImg = gallery[1] ?? gallery[0]
 

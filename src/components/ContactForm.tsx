@@ -86,6 +86,7 @@ export function ContactForm() {
             id="name"
             name="name"
             type="text"
+            maxLength={120}
             autoComplete="name"
             required
             placeholder="e.g. Elena Rostova"
@@ -102,6 +103,7 @@ export function ContactForm() {
             id="cemail"
             name="email"
             type="email"
+            maxLength={254}
             autoComplete="email"
             required
             placeholder="e.g. elena@domain.com"
@@ -120,6 +122,7 @@ export function ContactForm() {
           id="subject"
           name="subject"
           type="text"
+          maxLength={200}
           required
           placeholder="What is your inquiry regarding?"
           className={inputClass}
@@ -136,6 +139,7 @@ export function ContactForm() {
           id="message"
           name="message"
           rows={5}
+          maxLength={5000}
           required
           placeholder="Tell us your approximate arrival dates, number of guests, or any specific wishes for your Dalmatian holiday..."
           className={`${inputClass} resize-y`}

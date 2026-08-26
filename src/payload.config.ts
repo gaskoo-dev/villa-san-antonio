@@ -22,6 +22,8 @@ import { DrivesDistances } from './collections/DrivesDistances'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
 import { SiteSettings } from './globals/SiteSettings'
+import { withLocalizedContent } from './fields/localizeContentFields'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,29 +37,39 @@ export default buildConfig({
   },
   collections: [
     Users,
-    Pages,
-    DiscoverPosts,
-    DiscoverCategories,
-    DrivesDistances,
-    Media,
-    GalleryImages,
-    GalleryCategories,
+    withLocalizedContent(Pages),
+    withLocalizedContent(DiscoverPosts),
+    withLocalizedContent(DiscoverCategories),
+    withLocalizedContent(DrivesDistances),
+    withLocalizedContent(Media),
+    withLocalizedContent(GalleryImages),
+    withLocalizedContent(GalleryCategories),
     Reviews,
-    FAQItems,
-    FAQCategories,
+    withLocalizedContent(FAQItems),
+    withLocalizedContent(FAQCategories),
     BookingInquiries,
     ContactMessages,
   ],
-  globals: [Header, Footer, SiteSettings],
+  globals: [withLocalizedContent(Header), withLocalizedContent(Footer), SiteSettings],
+  localization: {
+    locales: ['en', 'de', 'hr'],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
+    migrationDir: path.resolve(dirname, 'migrations'),
+    // Schema changes are migration-driven. Set this only for an explicitly
+    // disposable development database; never let tests push into a shared DB.
+    push: process.env.PAYLOAD_ALLOW_SCHEMA_PUSH === 'true',
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [

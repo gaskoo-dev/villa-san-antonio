@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { adminWrite, anyoneCanCreate } from '@/access'
+import { adminWrite } from '@/access'
 
 export const ContactMessages: CollectionConfig = {
   slug: 'contact-messages',
@@ -15,7 +15,9 @@ export const ContactMessages: CollectionConfig = {
   },
   access: {
     read: adminWrite,
-    create: anyoneCanCreate,
+    // Public submissions go through the validated Server Action. Keeping the
+    // collection private prevents direct REST/GraphQL spam writes.
+    create: adminWrite,
     update: adminWrite,
     delete: adminWrite,
   },
@@ -24,7 +26,7 @@ export const ContactMessages: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'name', type: 'text', required: true },
+        { name: 'name', type: 'text', required: true, maxLength: 120 },
         { name: 'email', type: 'email', required: true },
       ],
     },
@@ -32,11 +34,13 @@ export const ContactMessages: CollectionConfig = {
       name: 'subject',
       type: 'text',
       required: true,
+      maxLength: 200,
     },
     {
       name: 'message',
       type: 'textarea',
       required: true,
+      maxLength: 5000,
     },
     {
       name: 'consent',
@@ -62,8 +66,8 @@ export const ContactMessages: CollectionConfig = {
   ],
   hooks: {
     beforeValidate: [
-      ({ data }) => {
-        if (data && typeof data === 'object') {
+      ({ data, operation }) => {
+        if (operation === 'create' && data && typeof data === 'object') {
           delete data.status
         }
         return data

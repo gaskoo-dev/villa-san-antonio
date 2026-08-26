@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
 import { slugField } from '@/fields/slug'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const galleryCategoryRevalidation = revalidateCollectionPaths(['/gallery'])
 
 export const GalleryCategories: CollectionConfig = {
   slug: 'gallery-categories',
@@ -21,6 +24,10 @@ export const GalleryCategories: CollectionConfig = {
     delete: adminWrite,
   },
   defaultSort: 'sortOrder',
+  hooks: {
+    afterChange: [galleryCategoryRevalidation.afterChange],
+    afterDelete: [galleryCategoryRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'name',

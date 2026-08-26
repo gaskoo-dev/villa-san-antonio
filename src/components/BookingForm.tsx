@@ -303,6 +303,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     id="firstName"
                     name="firstName"
                     type="text"
+                    maxLength={80}
                     placeholder="e.g. Michael"
                     autoComplete="given-name"
                     required
@@ -321,6 +322,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     id="lastName"
                     name="lastName"
                     type="text"
+                    maxLength={80}
                     placeholder="e.g. Weber"
                     autoComplete="family-name"
                     required
@@ -341,6 +343,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   id="email"
                   name="email"
                   type="email"
+                  maxLength={254}
                   placeholder="your-email@example.com"
                   autoComplete="email"
                   required
@@ -360,6 +363,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     id="country"
                     name="country"
                     type="text"
+                    maxLength={100}
                     placeholder="Germany, Austria..."
                     autoComplete="country-name"
                     className={inputClass}
@@ -430,6 +434,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   id="notes"
                   name="notes"
                   rows={3}
+                  maxLength={3000}
                   placeholder="Estimated arrival time, baby cot request, airport transfer, or any questions for Josip..."
                   className={`${inputClass} resize-y min-h-[85px]`}
                 />

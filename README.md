@@ -1,67 +1,38 @@
-# Payload Blank Template
+# Villa San Antonio
 
-This template comes configured with the bare minimum to get started on anything you need.
+Next.js 16 website and Payload CMS backed by PostgreSQL.
 
-## Quick start
+## Local development
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+1. Copy `.env.example` to `.env` and provide a PostgreSQL connection, `PAYLOAD_SECRET`, and `CRON_SECRET`.
+2. Install dependencies with `pnpm install`.
+3. Apply committed migrations with `pnpm payload migrate`.
+4. Start the app with `pnpm dev` and open `http://localhost:3000`.
 
-## Quick Start - local setup
+Database schema changes are migration-driven. Keep `PAYLOAD_ALLOW_SCHEMA_PUSH=false` for shared and production databases. Only enable schema push for an explicitly disposable development database.
 
-To spin up this template locally, follow these steps:
+## Verification
 
-### Clone
+- `pnpm run lint`
+- `pnpm run generate:types`
+- `pnpm run test:int`
+- `pnpm run build`
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+The integration test creates a uniquely named temporary PostgreSQL database and removes it when finished. The configured database user therefore needs `CREATEDB`, or `TEST_DATABASE_ADMIN_URL` must point to a PostgreSQL connection that has that permission.
 
-### Development
+## Coolify deployment
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+Set `DATABASE_URL`, `PAYLOAD_SECRET`, and `CRON_SECRET` on the web application container. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+Configure calendar sync as a Coolify Scheduled Task on the web/Next.js container, not the PostgreSQL container:
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- Schedule: every 15 minutes
+- Cron expression: `*/15 * * * *`
+- Timeout: `60` seconds
+- Command:
 
-#### Docker (Optional)
+```sh
+node -e "fetch('http://127.0.0.1:'+(process.env.PORT||'3000')+'/api/cron/sync-calendar',{headers:{authorization:'Bearer '+process.env.CRON_SECRET}}).then(async r=>{const body=await r.text();console.log(body);if(!r.ok)process.exit(1)}).catch(e=>{console.error(e);process.exit(1)})"
+```
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
-
-To do so, follow these steps:
-
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
-
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+The calendar feed is fetched and validated, and only the last successful sync timestamp is stored. Individual availability ranges are not appended to the database.

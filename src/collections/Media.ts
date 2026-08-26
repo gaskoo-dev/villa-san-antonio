@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { PUBLIC_PATHS, revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const mediaRevalidation = revalidateCollectionPaths(PUBLIC_PATHS)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -12,6 +15,10 @@ export const Media: CollectionConfig = {
   },
   admin: {
     group: 'Media',
+  },
+  hooks: {
+    afterChange: [mediaRevalidation.afterChange],
+    afterDelete: [mediaRevalidation.afterDelete],
   },
   fields: [
     {

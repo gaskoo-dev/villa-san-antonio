@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 import { BookingBand } from '@/components/BookingBand'
 import { DiscoverExperiences, type DiscoverSectionData } from '@/components/DiscoverExperiences'
@@ -12,6 +13,8 @@ import {
   mediaSrc,
 } from '@/lib/queries'
 import type { Media, Page } from '@/payload-types'
+import { buildPageMetadata } from '@/lib/metadata'
+import { getRequestLocale } from '@/lib/request-locale'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 type HeroSubBlock = Extract<LayoutBlock, { blockType: 'hero-sub' }>
@@ -20,7 +23,7 @@ type BookingBandBlockType = Extract<LayoutBlock, { blockType: 'bookingBand' }>
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: 'Discover Šibenik, Krka & Dalmatia | Villa San Antonio',
   description:
     'Explore the top attractions around Villa San Antonio: Krka National Park waterfalls, UNESCO fortresses, Kornati boat tours, Primošten vineyards, and pristine Adriatic beaches.',
@@ -29,14 +32,22 @@ export const metadata: Metadata = {
   },
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('discover', locale), fallbackMetadata, '/discover')
+}
+
 export default async function DiscoverPage() {
+  const locale = await getRequestLocale()
   const [pageDoc, gallery, categories, experiences, destinations] = await Promise.all([
-    getPageBySlug('discover'),
-    getGallery(),
-    getDiscoverCategories(),
-    getDiscoverItems(),
-    getDrives(),
+    getPageBySlug('discover', locale),
+    getGallery(200, locale),
+    getDiscoverCategories(locale),
+    getDiscoverItems(locale),
+    getDrives(locale),
   ])
+
+  if (!pageDoc) notFound()
 
   const fallbackHeroImg = gallery[2] ?? gallery[0]
 

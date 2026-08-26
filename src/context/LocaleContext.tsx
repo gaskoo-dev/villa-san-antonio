@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useSyncExternalStore } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { LOCALES, translations, type Locale, type TranslationSchema } from '@/lib/translations'
 
@@ -37,6 +38,7 @@ function getServerSnapshot(): Locale {
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
   const locale = useSyncExternalStore(subscribe, getLocaleSnapshot, getServerSnapshot)
 
   const setLocale = (l: Locale) => {
@@ -45,6 +47,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
       document.cookie = `vsa_locale=${l};path=/;max-age=31536000;SameSite=Lax`
       document.documentElement.lang = l
       listeners.forEach((listener) => listener())
+      router.refresh()
     }
   }
 

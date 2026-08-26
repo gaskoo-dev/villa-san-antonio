@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { adminWrite, anyoneCanCreate } from '@/access'
+import { adminWrite } from '@/access'
 
 export const BookingInquiries: CollectionConfig = {
   slug: 'booking-inquiries',
@@ -16,7 +16,9 @@ export const BookingInquiries: CollectionConfig = {
   access: {
     // Guest data stays private: only authenticated admins can read/update.
     read: adminWrite,
-    create: anyoneCanCreate,
+    // Public submissions go through the validated Server Action. Keeping the
+    // collection private prevents bots from writing directly to Payload REST/GraphQL.
+    create: adminWrite,
     update: adminWrite,
     delete: adminWrite,
   },
@@ -25,8 +27,8 @@ export const BookingInquiries: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'firstName', type: 'text', required: true },
-        { name: 'lastName', type: 'text', required: true },
+        { name: 'firstName', type: 'text', required: true, maxLength: 80 },
+        { name: 'lastName', type: 'text', required: true, maxLength: 80 },
       ],
     },
     {
@@ -37,6 +39,7 @@ export const BookingInquiries: CollectionConfig = {
     {
       name: 'country',
       type: 'text',
+      maxLength: 100,
     },
     {
       type: 'row',
@@ -63,6 +66,7 @@ export const BookingInquiries: CollectionConfig = {
       name: 'notes',
       type: 'textarea',
       label: 'Optional notes / requests',
+      maxLength: 3000,
     },
     {
       name: 'status',
@@ -80,9 +84,10 @@ export const BookingInquiries: CollectionConfig = {
   ],
   hooks: {
     beforeValidate: [
-      ({ data }) => {
-        // Status never comes from the public form
-        if (data && typeof data === 'object') {
+      ({ data, operation }) => {
+        // New inquiries always start as "new". Updates from the admin panel
+        // must retain status so the inbox workflow can advance.
+        if (operation === 'create' && data && typeof data === 'object') {
           delete data.status
         }
         return data

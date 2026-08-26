@@ -9,6 +9,7 @@ import { SiteHeader } from '@/components/SiteHeader'
 import { LocaleProvider } from '@/context/LocaleContext'
 import { SITE_URL } from '@/lib/content'
 import { getFooter, getHeader } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 
 import './globals.css'
 
@@ -47,13 +48,14 @@ export const metadata: Metadata = {
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getRequestLocale()
   const [headerData, footerData] = await Promise.all([
-    getHeader(),
-    getFooter(),
+    getHeader(locale),
+    getFooter(locale),
   ])
 
   return (
-    <html lang="en" className={`${dmSans.variable} ${instrumentSerif.variable}`}>
+    <html lang={locale} className={`${dmSans.variable} ${instrumentSerif.variable}`}>
       <body>
         <LocaleProvider>
           <CursorDot />

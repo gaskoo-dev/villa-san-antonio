@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const reviewsRevalidation = revalidateCollectionPaths(['/'])
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -16,6 +19,10 @@ export const Reviews: CollectionConfig = {
     delete: adminWrite,
   },
   defaultSort: 'sortOrder',
+  hooks: {
+    afterChange: [reviewsRevalidation.afterChange],
+    afterDelete: [reviewsRevalidation.afterDelete],
+  },
   fields: [
     {
       name: 'name',

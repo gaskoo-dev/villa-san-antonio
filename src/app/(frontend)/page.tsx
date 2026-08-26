@@ -2,6 +2,7 @@ import { IconArrowRight, IconArrowUpRight, IconClock, IconFlame, IconMoon, IconS
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
@@ -12,7 +13,9 @@ import { Reveal } from '@/components/Reveal'
 import { ReviewsSwiper } from '@/components/ReviewsSwiper'
 import { StatsBand } from '@/components/StatsBand'
 import { REVIEWS_INTRO } from '@/lib/content'
+import { buildPageMetadata } from '@/lib/metadata'
 import { getFaqItems, getGallery, getPageBySlug, getReviews, mediaSrc, type GalleryEntry } from '@/lib/queries'
+import { getRequestLocale } from '@/lib/request-locale'
 import type { FaqItem, Media, Page, Review } from '@/payload-types'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -34,9 +37,14 @@ const PLACE_ICON_MAP = {
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   description:
     'A fully private villa for eight guests in the Dalmatian hills near Šibenik. Heated pool, BBQ house, fenced garden, pets welcome. Check availability for your dates.',
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return buildPageMetadata(await getPageBySlug('home', locale), fallbackMetadata, '/')
 }
 
 function img(gallery: GalleryEntry[], pattern: string) {
@@ -49,12 +57,15 @@ function slide(entry?: GalleryEntry) {
 }
 
 export default async function HomePage() {
+  const locale = await getRequestLocale()
   const [homePage, gallery, reviews, faqItems] = await Promise.all([
-    getPageBySlug('home'),
-    getGallery(),
+    getPageBySlug('home', locale),
+    getGallery(200, locale),
     getReviews(200),
-    getFaqItems(),
+    getFaqItems(locale),
   ])
+
+  if (!homePage) notFound()
 
   const defaultHeroSlides = [img(gallery, '-071'), img(gallery, '-027'), img(gallery, '-005'), img(gallery, '-006')]
     .map(slide)

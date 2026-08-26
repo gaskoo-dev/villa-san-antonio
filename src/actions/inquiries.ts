@@ -1,7 +1,10 @@
 'use server'
 
+import { headers } from 'next/headers'
+
 import { getPayloadClient, getSettings } from '@/lib/queries'
 import type { FormState } from '@/lib/form-state'
+import { consumeRateLimit } from '@/lib/rate-limit'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -10,10 +13,32 @@ function str(data: FormData, key: string): string {
   return typeof v === 'string' ? v.trim() : ''
 }
 
+async function isRateLimited(form: 'booking' | 'contact'): Promise<boolean> {
+  const requestHeaders = await headers()
+  const forwardedFor = requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim()
+  const clientAddress = forwardedFor || requestHeaders.get('x-real-ip') || 'unknown'
+  const result = consumeRateLimit(`${form}:${clientAddress.slice(0, 128)}`, {
+    limit: 5,
+    windowMs: 15 * 60 * 1000,
+  })
+  return !result.allowed
+}
+
+function exceeds(value: string, maximum: number): boolean {
+  return value.length > maximum
+}
+
 export async function submitBookingInquiry(_prev: FormState, data: FormData): Promise<FormState> {
   // Honeypot: real guests never fill this
   if (str(data, 'company')) {
     return { status: 'success', message: 'Request received.' }
+  }
+
+  if (await isRateLimited('booking')) {
+    return {
+      status: 'error',
+      message: 'Too many requests from this connection. Please wait 15 minutes and try again.',
+    }
   }
 
   const siteSettings = await getSettings()
@@ -30,8 +55,13 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
   const pets = str(data, 'pets') || 'no'
 
   if (!firstName) errors.firstName = 'Please enter your first name.'
+  if (exceeds(firstName, 80)) errors.firstName = 'First name is too long.'
   if (!lastName) errors.lastName = 'Please enter your last name.'
+  if (exceeds(lastName, 80)) errors.lastName = 'Last name is too long.'
   if (!emailRe.test(email)) errors.email = 'Please enter a valid email address.'
+  if (exceeds(email, 254)) errors.email = 'Email address is too long.'
+  if (exceeds(str(data, 'country'), 100)) errors.country = 'Country is too long.'
+  if (exceeds(str(data, 'notes'), 3_000)) errors.notes = 'Notes are too long.'
   if (!checkIn) errors.checkIn = 'Select a check-in date.'
   if (!checkOut) errors.checkOut = 'Select a check-out date.'
   if (checkIn && checkOut && checkOut <= checkIn) errors.checkOut = 'Check-out must be after check-in.'
@@ -46,7 +76,10 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
     }
   }
   if (!Number.isFinite(adults) || adults < 1) errors.adults = 'At least one adult.'
+  if (adults > 8) errors.adults = 'Maximum capacity is 8 guests.'
   if (!Number.isFinite(kids) || kids < 0) errors.kids = 'Invalid number.'
+  if (kids > 8) errors.kids = 'Maximum capacity is 8 guests.'
+  if (!['no', 'yes'].includes(pets)) errors.pets = 'Invalid option.'
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', errors }
@@ -56,6 +89,9 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
     const payload = await getPayloadClient()
     await payload.create({
       collection: 'booking-inquiries',
+      // Trusted server-side operation. Collection REST/GraphQL create access
+      // remains admin-only so submissions cannot bypass this validation.
+      overrideAccess: true,
       data: {
         firstName,
         lastName,
@@ -84,6 +120,13 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
     return { status: 'success', message: 'Message sent.' }
   }
 
+  if (await isRateLimited('contact')) {
+    return {
+      status: 'error',
+      message: 'Too many messages from this connection. Please wait 15 minutes and try again.',
+    }
+  }
+
   const errors: Record<string, string> = {}
   const name = str(data, 'name')
   const email = str(data, 'email')
@@ -92,9 +135,13 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
   const consent = data.get('consent') === 'on'
 
   if (!name) errors.name = 'Please enter your name.'
+  if (exceeds(name, 120)) errors.name = 'Name is too long.'
   if (!emailRe.test(email)) errors.email = 'Please enter a valid email address.'
+  if (exceeds(email, 254)) errors.email = 'Email address is too long.'
   if (!subject) errors.subject = 'Please add a subject.'
+  if (exceeds(subject, 200)) errors.subject = 'Subject is too long.'
   if (message.length < 5) errors.message = 'Please write your message.'
+  if (exceeds(message, 5_000)) errors.message = 'Message is too long.'
   if (!consent) errors.consent = 'We need your consent to reply.'
 
   if (Object.keys(errors).length > 0) {
@@ -105,6 +152,7 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
     const payload = await getPayloadClient()
     await payload.create({
       collection: 'contact-messages',
+      overrideAccess: true,
       data: { name, email, subject, message, consent: true },
     })
     return { status: 'success', message: 'Message sent. We\u2019ll get back to you shortly.' }

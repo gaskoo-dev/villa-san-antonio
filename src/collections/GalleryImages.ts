@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite, publicRead } from '@/access'
+import { PUBLIC_PATHS, revalidateCollectionPaths } from '@/hooks/revalidate'
+
+const galleryRevalidation = revalidateCollectionPaths(PUBLIC_PATHS)
 
 export const GalleryImages: CollectionConfig = {
   slug: 'gallery-images',
@@ -49,6 +52,8 @@ export const GalleryImages: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [galleryRevalidation.afterChange],
+    afterDelete: [galleryRevalidation.afterDelete],
   },
   fields: [
     {
