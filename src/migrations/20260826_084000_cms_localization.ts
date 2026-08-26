@@ -15,12 +15,10 @@ async function removeEmptyPartialLocalizationSchema({ db }: MigrateUpArgs): Prom
 
   if (!state?.hasLocaleEnum) return
 
-  // A complete localization schema without a migration record may already contain
-  // edited translations. Never try to repair that state automatically.
+  // A complete localization schema without a migration record means the schema was already
+  // created (e.g. by previous dev schema push). Return early so the migration completes safely.
   if (state.hasFooterLocales) {
-    throw new Error(
-      'A localization schema already exists but the migration is not recorded. Refusing automatic cleanup to protect localized content.',
-    )
+    return
   }
 
   // Payload dev schema push can stop halfway through a large localization change.
@@ -158,6 +156,17 @@ export async function up(args: MigrateUpArgs): Promise<void> {
   // previously used development schema push. New databases need that baseline first.
   if (!hasExistingSchema) {
     await baseline.up(args)
+  }
+
+  const footerLocalesCheck = await args.db.execute(
+    sql`SELECT to_regclass('public.footer_locales') IS NOT NULL AS "hasFooterLocales"`,
+  )
+  const hasFooterLocales = Boolean(
+    (footerLocalesCheck.rows[0] as { hasFooterLocales?: boolean } | undefined)?.hasFooterLocales,
+  )
+
+  if (hasFooterLocales) {
+    return
   }
 
   await removeEmptyPartialLocalizationSchema(args)

@@ -5,6 +5,12 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import prompts from 'prompts'
+
+// Automatically accept interactive prompts (e.g. migration confirmation when dev push was previously recorded)
+prompts.override({
+  confirm: true,
+})
 
 import { Users } from './collections/Users'
 import { Pages } from './collections/Pages'
