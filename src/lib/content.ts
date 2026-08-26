@@ -1,7 +1,13 @@
 // Static marketing copy (migrated from villa-sanantonio.com) and site constants.
 // Dynamic collections (reviews, FAQ, gallery, amenities, settings) live in Payload.
 
-export const SITE_URL = 'https://villa-sanantonio.com'
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  process.env.SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'https://villa-sanantonio.com')
 export const SITE_NAME = 'Villa San Antonio'
 export const CONTACT_EMAIL = 'kontakt@villa-sanantonio.com'
 export const CONTACT_PHONE = '+385 91 602 1899'

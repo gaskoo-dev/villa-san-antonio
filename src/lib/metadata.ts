@@ -18,6 +18,24 @@ export function buildPageMetadata(
   const imageUrl = metaImage ? mediaSrc(metaImage, 'desktop') || mediaSrc(metaImage) : null
   const canonical = new URL(pathname || '/', SITE_URL).toString()
 
+  const absoluteImageUrl = imageUrl
+    ? imageUrl.startsWith('http://') || imageUrl.startsWith('https://')
+      ? imageUrl
+      : new URL(imageUrl, SITE_URL).toString()
+    : null
+
+  const ogImages = absoluteImageUrl
+    ? [
+        {
+          url: absoluteImageUrl,
+          width: metaImage?.width ?? 1920,
+          height: metaImage?.height ?? 1438,
+          alt: metaImage?.alt || cmsTitle || 'Villa San Antonio',
+          type: metaImage?.mimeType || 'image/jpeg',
+        },
+      ]
+    : fallback.openGraph?.images
+
   return {
     ...fallback,
     title: cmsTitle ? { absolute: cmsTitle } : fallback.title,
@@ -31,16 +49,14 @@ export function buildPageMetadata(
       title: cmsTitle || undefined,
       description: typeof description === 'string' ? description : undefined,
       url: canonical,
-      images: imageUrl
-        ? [{ url: imageUrl, alt: metaImage?.alt || cmsTitle || 'Villa San Antonio' }]
-        : fallback.openGraph?.images,
+      images: ogImages,
     },
     twitter: {
       ...fallback.twitter,
-      card: imageUrl ? 'summary_large_image' : 'summary',
+      card: absoluteImageUrl ? 'summary_large_image' : 'summary',
       title: cmsTitle || undefined,
       description: typeof description === 'string' ? description : undefined,
-      images: imageUrl ? [imageUrl] : fallback.twitter?.images,
+      images: absoluteImageUrl ? [absoluteImageUrl] : fallback.twitter?.images,
     },
   }
 }

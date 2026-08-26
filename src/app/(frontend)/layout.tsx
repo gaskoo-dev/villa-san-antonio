@@ -44,6 +44,19 @@ export const metadata: Metadata = {
     siteName: 'Villa San Antonio',
     type: 'website',
     locale: 'en_GB',
+    images: [
+      {
+        url: '/branding/logo-black.png',
+        width: 1200,
+        height: 630,
+        alt: 'Villa San Antonio · Šibenik, Dalmatia',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/branding/logo-black.png'],
   },
 }
 

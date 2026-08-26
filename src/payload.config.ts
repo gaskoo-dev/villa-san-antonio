@@ -30,6 +30,7 @@ import { Footer } from './globals/Footer'
 import { SiteSettings } from './globals/SiteSettings'
 import { withLocalizedContent } from './fields/localizeContentFields'
 import { migrations } from './migrations'
+import { SITE_URL } from './lib/content'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -111,7 +112,7 @@ export default buildConfig({
         'A fully private villa for eight guests near Šibenik, Dalmatia with heated pool, BBQ house and fenced garden. Book direct with 0% fees.',
       generateURL: ({ doc }) => {
         const slug = (doc as { slug?: string })?.slug
-        return `https://villa-sanantonio.com${slug && slug !== 'home' ? `/${slug}` : ''}`
+        return `${SITE_URL}${slug && slug !== 'home' ? `/${slug}` : ''}`
       },
     }),
   ],
