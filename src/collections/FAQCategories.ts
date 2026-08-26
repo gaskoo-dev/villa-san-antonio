@@ -14,8 +14,13 @@ export const FAQCategories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'sortOrder'],
+    defaultColumns: ['name', 'slug', 'updatedAt'],
     group: 'FAQ',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description:
+      'Categories shown as filters on the FAQ page. Drag rows to change their frontend order.',
   },
   access: {
     read: publicRead,
@@ -23,7 +28,8 @@ export const FAQCategories: CollectionConfig = {
     update: adminWrite,
     delete: adminWrite,
   },
-  defaultSort: 'sortOrder',
+  orderable: true,
+  defaultSort: '_order',
   hooks: {
     afterChange: [faqCategoryRevalidation.afterChange],
     afterDelete: [faqCategoryRevalidation.afterDelete],
@@ -47,7 +53,7 @@ export const FAQCategories: CollectionConfig = {
       defaultValue: 100,
       label: 'Display Order',
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
   ],

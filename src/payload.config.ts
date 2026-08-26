@@ -31,6 +31,20 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: ' · Villa San Antonio CMS',
+    },
+    components: {
+      graphics: {
+        Logo: '@/components/admin/AdminBrand#AdminLogo',
+        Icon: '@/components/admin/AdminBrand#AdminIcon',
+      },
+      views: {
+        dashboard: {
+          Component: '@/components/admin/DashboardView#DashboardView',
+        },
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -52,7 +66,11 @@ export default buildConfig({
   ],
   globals: [withLocalizedContent(Header), withLocalizedContent(Footer), SiteSettings],
   localization: {
-    locales: ['en', 'de', 'hr'],
+    locales: [
+      { code: 'en', label: 'English' },
+      { code: 'de', label: 'Deutsch' },
+      { code: 'hr', label: 'Hrvatski' },
+    ],
     defaultLocale: 'en',
     fallback: true,
   },

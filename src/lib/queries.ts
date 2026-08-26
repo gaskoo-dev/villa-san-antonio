@@ -60,7 +60,7 @@ export async function getReviews(limit = 30): Promise<Review[]> {
   const { docs } = await payload.find({
     collection: 'reviews',
     limit,
-    sort: 'sortOrder',
+    sort: '_order',
     depth: 0,
   })
   return docs as Review[]
@@ -73,7 +73,7 @@ export async function getFaqCategories(locale: CMSLocale = 'en'): Promise<FaqCat
     locale,
     fallbackLocale: 'en',
     limit: 50,
-    sort: 'sortOrder',
+    sort: '_order',
     depth: 0,
   })
   return docs as FaqCategory[]
@@ -86,7 +86,7 @@ export async function getFaqItems(locale: CMSLocale = 'en'): Promise<FaqItem[]> 
     locale,
     fallbackLocale: 'en',
     limit: 50,
-    sort: 'sortOrder',
+    sort: '_order',
     depth: 1,
   })
   return docs as FaqItem[]
@@ -99,7 +99,7 @@ export async function getGalleryCategories(locale: CMSLocale = 'en'): Promise<Ga
     locale,
     fallbackLocale: 'en',
     limit: 50,
-    sort: 'sortOrder',
+    sort: '_order',
     depth: 0,
   })
   return docs as GalleryCategory[]
@@ -120,7 +120,7 @@ export async function getGallery(
     locale,
     fallbackLocale: 'en',
     limit,
-    sort: 'sortOrder',
+    sort: '_order',
     depth: 1,
   })
   return docs.filter((doc) => typeof doc.image !== 'number' && doc.image) as GalleryEntry[]

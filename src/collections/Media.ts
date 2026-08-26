@@ -14,7 +14,13 @@ export const Media: CollectionConfig = {
     delete: adminWrite,
   },
   admin: {
+    useAsTitle: 'filename',
+    defaultColumns: ['filename', 'alt', 'updatedAt'],
     group: 'Media',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description: 'Uploaded images with thumbnail previews, alt text, and update details.',
   },
   hooks: {
     afterChange: [mediaRevalidation.afterChange],

@@ -13,8 +13,12 @@ export const GalleryImages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'alt',
-    defaultColumns: ['image', 'alt', 'category', 'featured', 'sortOrder'],
+    defaultColumns: ['image', 'alt', 'category', 'featured', 'updatedAt'],
     group: 'Gallery',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description: 'Drag rows to change the order in which images appear on the website.',
   },
   access: {
     read: publicRead,
@@ -22,7 +26,8 @@ export const GalleryImages: CollectionConfig = {
     update: adminWrite,
     delete: adminWrite,
   },
-  defaultSort: 'sortOrder',
+  orderable: true,
+  defaultSort: '_order',
   hooks: {
     beforeChange: [
       async ({ data, req }) => {
@@ -93,7 +98,7 @@ export const GalleryImages: CollectionConfig = {
       type: 'number',
       defaultValue: 100,
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
   ],

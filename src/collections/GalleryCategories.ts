@@ -14,8 +14,13 @@ export const GalleryCategories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'sortOrder'],
+    defaultColumns: ['name', 'slug', 'updatedAt'],
     group: 'Gallery',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description:
+      'Categories shown as filters in the gallery. Drag rows to change their frontend order.',
   },
   access: {
     read: publicRead,
@@ -23,7 +28,8 @@ export const GalleryCategories: CollectionConfig = {
     update: adminWrite,
     delete: adminWrite,
   },
-  defaultSort: 'sortOrder',
+  orderable: true,
+  defaultSort: '_order',
   hooks: {
     afterChange: [galleryCategoryRevalidation.afterChange],
     afterDelete: [galleryCategoryRevalidation.afterDelete],
@@ -47,7 +53,7 @@ export const GalleryCategories: CollectionConfig = {
       defaultValue: 100,
       label: 'Display Order',
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
   ],

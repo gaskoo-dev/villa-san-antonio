@@ -9,8 +9,12 @@ export const Reviews: CollectionConfig = {
   slug: 'reviews',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'country', 'stars', 'source', 'sortOrder'],
+    defaultColumns: ['name', 'country', 'stars', 'source', 'updatedAt'],
     group: 'Reviews',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description: 'Drag rows to change the order in which reviews appear on the website.',
   },
   access: {
     read: publicRead,
@@ -18,7 +22,8 @@ export const Reviews: CollectionConfig = {
     update: adminWrite,
     delete: adminWrite,
   },
-  defaultSort: 'sortOrder',
+  orderable: true,
+  defaultSort: '_order',
   hooks: {
     afterChange: [reviewsRevalidation.afterChange],
     afterDelete: [reviewsRevalidation.afterDelete],
@@ -69,8 +74,7 @@ export const Reviews: CollectionConfig = {
       type: 'number',
       defaultValue: 100,
       admin: {
-        position: 'sidebar',
-        description: 'Lower numbers appear first',
+        hidden: true,
       },
     },
   ],

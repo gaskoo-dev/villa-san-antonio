@@ -13,8 +13,12 @@ export const FAQItems: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'question',
-    defaultColumns: ['question', 'category', 'sortOrder'],
+    defaultColumns: ['question', 'category', 'updatedAt'],
     group: 'FAQ',
+    pagination: {
+      defaultLimit: 50,
+    },
+    description: 'Drag rows to change the order in which FAQ items appear on the website.',
   },
   access: {
     read: publicRead,
@@ -22,7 +26,8 @@ export const FAQItems: CollectionConfig = {
     update: adminWrite,
     delete: adminWrite,
   },
-  defaultSort: 'sortOrder',
+  orderable: true,
+  defaultSort: '_order',
   hooks: {
     afterChange: [faqRevalidation.afterChange],
     afterDelete: [faqRevalidation.afterDelete],
@@ -52,7 +57,7 @@ export const FAQItems: CollectionConfig = {
       type: 'number',
       defaultValue: 100,
       admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
   ],

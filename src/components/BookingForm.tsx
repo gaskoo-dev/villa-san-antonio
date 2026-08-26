@@ -28,13 +28,23 @@ const inputClass =
 
 const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/55'
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null
   return (
-    <p role="alert" className="mt-1.5 text-xs font-medium text-red-600 animate-[var(--animate-fade-in)]">
+    <p id={id} role="alert" className="mt-1.5 text-xs font-medium text-red-700 animate-[var(--animate-fade-in)]">
       {message}
     </p>
   )
+}
+
+function getInputClass(error?: string, extra = ''): string {
+  return [
+    inputClass,
+    error ? 'border-red-400 bg-red-50/40 focus:border-red-500' : '',
+    extra,
+  ]
+    .filter(Boolean)
+    .join(' ')
 }
 
 function formatHumanDate(dateStr: string, locale: string = 'hr'): string {
@@ -74,6 +84,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   const [step, setStep] = useState<1 | 2>(1)
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
+  const dateError = state.errors?.checkIn || state.errors?.checkOut
 
   const handleSelectRange = (start: string, end: string) => {
     setCheckIn(start)
@@ -189,6 +200,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               minNights={minNights}
               onSelectRange={handleSelectRange}
             />
+            <FieldError id="booking-dates-error" message={dateError} />
 
             {/* Selected Stay Highlight Banner */}
             {checkIn && checkOut ? (
@@ -285,6 +297,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                 <span>Change</span>
               </button>
             </div>
+            <FieldError id="booking-dates-submit-error" message={dateError} />
 
             <form action={formAction} noValidate className="space-y-5">
               <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
@@ -307,9 +320,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     placeholder="e.g. Michael"
                     autoComplete="given-name"
                     required
-                    className={inputClass}
+                    aria-describedby={state.errors?.firstName ? 'firstName-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.firstName)}
+                    className={getInputClass(state.errors?.firstName)}
                   />
-                  <FieldError message={state.errors?.firstName} />
+                  <FieldError id="firstName-error" message={state.errors?.firstName} />
                 </div>
 
                 <div>
@@ -326,9 +341,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     placeholder="e.g. Weber"
                     autoComplete="family-name"
                     required
-                    className={inputClass}
+                    aria-describedby={state.errors?.lastName ? 'lastName-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.lastName)}
+                    className={getInputClass(state.errors?.lastName)}
                   />
-                  <FieldError message={state.errors?.lastName} />
+                  <FieldError id="lastName-error" message={state.errors?.lastName} />
                 </div>
               </div>
 
@@ -347,9 +364,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   placeholder="your-email@example.com"
                   autoComplete="email"
                   required
-                  className={inputClass}
+                  aria-describedby={state.errors?.email ? 'email-error' : undefined}
+                  aria-invalid={Boolean(state.errors?.email)}
+                  className={getInputClass(state.errors?.email)}
                 />
-                <FieldError message={state.errors?.email} />
+                <FieldError id="email-error" message={state.errors?.email} />
               </div>
 
               {/* Country & Party Composition */}
@@ -366,8 +385,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     maxLength={100}
                     placeholder="Germany, Austria..."
                     autoComplete="country-name"
-                    className={inputClass}
+                    aria-describedby={state.errors?.country ? 'country-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.country)}
+                    className={getInputClass(state.errors?.country)}
                   />
+                  <FieldError id="country-error" message={state.errors?.country} />
                 </div>
 
                 <div>
@@ -381,12 +403,13 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     name="adults"
                     type="number"
                     min={1}
-                    max={8}
                     defaultValue={2}
                     required
-                    className={`${inputClass} tabular-nums`}
+                    aria-describedby={state.errors?.adults ? 'adults-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.adults)}
+                    className={getInputClass(state.errors?.adults, 'tabular-nums')}
                   />
-                  <FieldError message={state.errors?.adults} />
+                  <FieldError id="adults-error" message={state.errors?.adults} />
                 </div>
 
                 <div>
@@ -398,10 +421,12 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     name="kids"
                     type="number"
                     min={0}
-                    max={8}
                     defaultValue={0}
-                    className={`${inputClass} tabular-nums`}
+                    aria-describedby={state.errors?.kids ? 'kids-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.kids)}
+                    className={getInputClass(state.errors?.kids, 'tabular-nums')}
                   />
+                  <FieldError id="kids-error" message={state.errors?.kids} />
                 </div>
 
                 <div>
@@ -412,7 +437,9 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                     id="pets"
                     name="pets"
                     defaultValue="no"
-                    className={`${inputClass} cursor-pointer bg-white`}
+                    aria-describedby={state.errors?.pets ? 'pets-error' : undefined}
+                    aria-invalid={Boolean(state.errors?.pets)}
+                    className={getInputClass(state.errors?.pets, 'cursor-pointer bg-white')}
                   >
                     <option value="no" className="bg-white text-ink">
                       {locale === 'de' ? 'Nein' : locale === 'hr' ? 'Ne' : 'No'}
@@ -421,6 +448,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                       {locale === 'de' ? 'Ja' : locale === 'hr' ? 'Da' : 'Yes'}
                     </option>
                   </select>
+                  <FieldError id="pets-error" message={state.errors?.pets} />
                 </div>
               </div>
 
@@ -436,8 +464,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   rows={3}
                   maxLength={3000}
                   placeholder="Estimated arrival time, baby cot request, airport transfer, or any questions for Josip..."
-                  className={`${inputClass} resize-y min-h-[85px]`}
+                  aria-describedby={state.errors?.notes ? 'notes-error' : undefined}
+                  aria-invalid={Boolean(state.errors?.notes)}
+                  className={getInputClass(state.errors?.notes, 'resize-y min-h-[85px]')}
                 />
+                <FieldError id="notes-error" message={state.errors?.notes} />
               </div>
 
               {state.status === 'error' && state.message && (
@@ -466,7 +497,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               {/* Reassurance trust footer */}
               <div className="flex items-center justify-center gap-1.5 text-center text-[11px] text-ink/45 pt-1">
                 <IconLock size={13} stroke={2} className="text-ink/55" />
-                <span>Direct inquiry · No instant charges · Dates held securely</span>
+                <span>Direct inquiry · No instant charges · Availability rechecked on submit</span>
               </div>
             </form>
           </motion.div>

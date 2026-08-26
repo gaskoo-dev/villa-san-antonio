@@ -5,6 +5,11 @@ import { headers } from 'next/headers'
 import { getPayloadClient, getSettings } from '@/lib/queries'
 import type { FormState } from '@/lib/form-state'
 import { consumeRateLimit } from '@/lib/rate-limit'
+import {
+  dateRangeHasConflict,
+  getAvailabilitySnapshot,
+  isValidIsoDay,
+} from '@/lib/availability'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -64,6 +69,8 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
   if (exceeds(str(data, 'notes'), 3_000)) errors.notes = 'Notes are too long.'
   if (!checkIn) errors.checkIn = 'Select a check-in date.'
   if (!checkOut) errors.checkOut = 'Select a check-out date.'
+  if (checkIn && !isValidIsoDay(checkIn)) errors.checkIn = 'Select a valid check-in date.'
+  if (checkOut && !isValidIsoDay(checkOut)) errors.checkOut = 'Select a valid check-out date.'
   if (checkIn && checkOut && checkOut <= checkIn) errors.checkOut = 'Check-out must be after check-in.'
 
   if (checkIn && checkOut && checkOut > checkIn) {
@@ -76,13 +83,34 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
     }
   }
   if (!Number.isFinite(adults) || adults < 1) errors.adults = 'At least one adult.'
-  if (adults > 8) errors.adults = 'Maximum capacity is 8 guests.'
   if (!Number.isFinite(kids) || kids < 0) errors.kids = 'Invalid number.'
-  if (kids > 8) errors.kids = 'Maximum capacity is 8 guests.'
   if (!['no', 'yes'].includes(pets)) errors.pets = 'Invalid option.'
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', errors }
+  }
+
+  const availability = await getAvailabilitySnapshot({
+    forceFresh: true,
+    settings: siteSettings,
+  })
+
+  if (!availability.officialFeedAvailable) {
+    const message = "We couldn't verify live availability right now. Please wait a moment and try again."
+    return {
+      status: 'error',
+      message,
+      errors: { checkIn: message, checkOut: message },
+    }
+  }
+
+  if (dateRangeHasConflict(availability.disabledDates, checkIn, checkOut)) {
+    const message = 'These dates are no longer available. Please choose another stay.'
+    return {
+      status: 'error',
+      message,
+      errors: { checkIn: message, checkOut: message },
+    }
   }
 
   try {

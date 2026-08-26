@@ -28,10 +28,20 @@ import { OrderedListFeatureClient as OrderedListFeatureClient_e70f5e05f09f93e00b
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { LockableTextField as LockableTextField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableEmailField as LockableEmailField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableDateField as LockableDateField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableNumberField as LockableNumberField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableSelectField as LockableSelectField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableTextareaField as LockableTextareaField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
+import { LockableCheckboxField as LockableCheckboxField_4c3edb9aa2f05ae8a6576399faa61141 } from '@/components/admin/LockableBookingFields'
 import { HeaderLinkRowLabel as HeaderLinkRowLabel_6a5881f20e192ea1d64235c48382ffe0 } from '@/components/admin/HeaderLinkRowLabel'
 import { FooterLinkRowLabel as FooterLinkRowLabel_f3f723dddecc0f96e21ecd9959413846 } from '@/components/admin/FooterLinkRowLabels'
 import { FooterSocialLinkRowLabel as FooterSocialLinkRowLabel_f3f723dddecc0f96e21ecd9959413846 } from '@/components/admin/FooterLinkRowLabels'
 import { SyncCalendarButton as SyncCalendarButton_29a5f5f33d70343ac6bff8c98770d40f } from '@/components/admin/SyncCalendarButton'
+import { AdminIcon as AdminIcon_c3544fd04a86558fd1f1e4a8d6afed38 } from '@/components/admin/AdminBrand'
+import { AdminLogo as AdminLogo_c3544fd04a86558fd1f1e4a8d6afed38 } from '@/components/admin/AdminBrand'
+import { DashboardView as DashboardView_8d5ccf53266e3797f61e9453e2f2d431 } from '@/components/admin/DashboardView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -66,9 +76,19 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#RelationshipFeatureClient": RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/admin/LockableBookingFields#LockableTextField": LockableTextField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableEmailField": LockableEmailField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableDateField": LockableDateField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableNumberField": LockableNumberField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableSelectField": LockableSelectField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableTextareaField": LockableTextareaField_4c3edb9aa2f05ae8a6576399faa61141,
+  "@/components/admin/LockableBookingFields#LockableCheckboxField": LockableCheckboxField_4c3edb9aa2f05ae8a6576399faa61141,
   "@/components/admin/HeaderLinkRowLabel#HeaderLinkRowLabel": HeaderLinkRowLabel_6a5881f20e192ea1d64235c48382ffe0,
   "@/components/admin/FooterLinkRowLabels#FooterLinkRowLabel": FooterLinkRowLabel_f3f723dddecc0f96e21ecd9959413846,
   "@/components/admin/FooterLinkRowLabels#FooterSocialLinkRowLabel": FooterSocialLinkRowLabel_f3f723dddecc0f96e21ecd9959413846,
   "@/components/admin/SyncCalendarButton#SyncCalendarButton": SyncCalendarButton_29a5f5f33d70343ac6bff8c98770d40f,
+  "@/components/admin/AdminBrand#AdminIcon": AdminIcon_c3544fd04a86558fd1f1e4a8d6afed38,
+  "@/components/admin/AdminBrand#AdminLogo": AdminLogo_c3544fd04a86558fd1f1e4a8d6afed38,
+  "@/components/admin/DashboardView#DashboardView": DashboardView_8d5ccf53266e3797f61e9453e2f2d431,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

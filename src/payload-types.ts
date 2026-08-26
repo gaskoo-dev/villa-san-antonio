@@ -553,6 +553,8 @@ export interface Page {
   createdAt: string;
 }
 /**
+ * Uploaded images with thumbnail previews, alt text, and update details.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -598,11 +600,14 @@ export interface Media {
   };
 }
 /**
+ * Drag rows to change the order in which reviews appear on the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
  */
 export interface Review {
   id: number;
+  _order?: string | null;
   name: string;
   country?: string | null;
   /**
@@ -618,19 +623,19 @@ export interface Review {
    * Link to the original review
    */
   sourceUrl?: string | null;
-  /**
-   * Lower numbers appear first
-   */
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Drag rows to change the order in which FAQ items appear on the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faq-items".
  */
 export interface FaqItem {
   id: number;
+  _order?: string | null;
   question: string;
   answer: string;
   category?: (number | null) | FaqCategory;
@@ -639,11 +644,14 @@ export interface FaqItem {
   createdAt: string;
 }
 /**
+ * Categories shown as filters on the FAQ page. Drag rows to change their frontend order.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faq-categories".
  */
 export interface FaqCategory {
   id: number;
+  _order?: string | null;
   name: string;
   /**
    * URL-friendly identifier (auto-generated from Name, click Unlock to edit)
@@ -731,11 +739,14 @@ export interface DrivesDistance {
   createdAt: string;
 }
 /**
+ * Drag rows to change the order in which images appear on the website.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gallery-images".
  */
 export interface GalleryImage {
   id: number;
+  _order?: string | null;
   image: number | Media;
   /**
    * Overrides the media alt text if filled in
@@ -751,11 +762,14 @@ export interface GalleryImage {
   createdAt: string;
 }
 /**
+ * Categories shown as filters in the gallery. Drag rows to change their frontend order.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gallery-categories".
  */
 export interface GalleryCategory {
   id: number;
+  _order?: string | null;
   name: string;
   /**
    * URL-friendly identifier (auto-generated from Name, click Unlock to edit)
@@ -1415,6 +1429,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "gallery-images_select".
  */
 export interface GalleryImagesSelect<T extends boolean = true> {
+  _order?: T;
   image?: T;
   alt?: T;
   category?: T;
@@ -1428,6 +1443,7 @@ export interface GalleryImagesSelect<T extends boolean = true> {
  * via the `definition` "gallery-categories_select".
  */
 export interface GalleryCategoriesSelect<T extends boolean = true> {
+  _order?: T;
   name?: T;
   slug?: T;
   sortOrder?: T;
@@ -1439,6 +1455,7 @@ export interface GalleryCategoriesSelect<T extends boolean = true> {
  * via the `definition` "reviews_select".
  */
 export interface ReviewsSelect<T extends boolean = true> {
+  _order?: T;
   name?: T;
   country?: T;
   stars?: T;
@@ -1454,6 +1471,7 @@ export interface ReviewsSelect<T extends boolean = true> {
  * via the `definition` "faq-items_select".
  */
 export interface FaqItemsSelect<T extends boolean = true> {
+  _order?: T;
   question?: T;
   answer?: T;
   category?: T;
@@ -1466,6 +1484,7 @@ export interface FaqItemsSelect<T extends boolean = true> {
  * via the `definition` "faq-categories_select".
  */
 export interface FaqCategoriesSelect<T extends boolean = true> {
+  _order?: T;
   name?: T;
   slug?: T;
   sortOrder?: T;

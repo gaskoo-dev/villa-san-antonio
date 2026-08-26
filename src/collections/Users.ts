@@ -4,6 +4,11 @@ export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
     useAsTitle: 'email',
+    defaultColumns: ['email', 'updatedAt', 'createdAt'],
+    pagination: {
+      defaultLimit: 50,
+    },
+    description: 'CMS users with account activity and creation details.',
   },
   auth: true,
   fields: [
