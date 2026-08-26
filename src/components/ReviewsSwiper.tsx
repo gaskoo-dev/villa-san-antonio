@@ -216,7 +216,7 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl border border-ink/10 bg-white p-6 sm:p-9 shadow-2xl space-y-6 will-change-transform transition-all duration-250 ease-out ${
+            className={`relative w-full max-w-2xl max-h-[85vh] overflow-y-auto no-scrollbar rounded-3xl border border-ink/10 bg-white p-6 sm:p-9 shadow-2xl space-y-6 will-change-transform transition-all duration-250 ease-out ${
               isVisible
                 ? 'opacity-100 scale-100 translate-y-0'
                 : 'opacity-0 scale-[0.96] translate-y-3'
