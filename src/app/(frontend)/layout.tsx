@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   },
   openGraph: DEFAULT_OPEN_GRAPH,
   twitter: DEFAULT_TWITTER,
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {

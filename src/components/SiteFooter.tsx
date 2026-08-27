@@ -103,15 +103,8 @@ export async function SiteFooter({
           { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
 
-  // Bottom Legal & Policy Links
-  const legalLinks =
-    footerData?.legalLinks && footerData.legalLinks.length > 0
-      ? footerData.legalLinks
-      : [
-          { label: 'Privacy Policy', link: '/privacy-policy' },
-          { label: 'Cookie Policy', link: '/cookie-policy' },
-          { label: 'Terms & Conditions', link: '/terms' },
-        ]
+  // Keep legal links hidden until approved legal copy and routes are available.
+  const legalLinks: Array<{ label: string; link: string }> = []
   const copyright = footerData?.copyright || `${SITE_NAME}. All rights reserved.`
 
   return (

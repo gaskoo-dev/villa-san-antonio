@@ -30,9 +30,6 @@ const fallbackMetadata: Metadata = {
   title: 'Direct Booking & Availability | Villa San Antonio Šibenik',
   description:
     'Book Villa San Antonio directly with the owner for guaranteed best rates, 0% booking fees, and live availability. Heated pool, 3 bedrooms, private estate near Šibenik, Croatia.',
-  alternates: {
-    canonical: 'https://villa-sanantonio.com/booking',
-  },
 }
 
 export async function generateMetadata(): Promise<Metadata> {

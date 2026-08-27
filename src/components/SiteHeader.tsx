@@ -103,7 +103,7 @@ export function SiteHeader({
             </a>
           </div>
 
-          {enableLanguages && (
+          {enableLanguages && locales.length > 1 && (
             <div className="flex items-center gap-3">
               {/* Languages */}
               <div className="flex items-center gap-1.5 font-semibold">
@@ -287,7 +287,7 @@ export function SiteHeader({
               </nav>
 
               {/* Language Switcher in Drawer */}
-              {enableLanguages && (
+              {enableLanguages && locales.length > 1 && (
                 <div className="border-t border-ink/10 pt-6">
                   <span className="block text-[11px] font-semibold uppercase tracking-[0.16rem] text-ink/50 mb-3">
                     Language

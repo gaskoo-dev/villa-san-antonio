@@ -107,6 +107,7 @@ export function ShaderHero({
 
   useEffect(() => {
     if (images.length < 2) return
+    if (window.matchMedia('(max-width: 767px)').matches || reduceRef.current) return
     const canvas = canvasRef.current
     if (!canvas) return
 

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { IconChevronRight } from '@tabler/icons-react'
 
+import { SITE_URL } from '@/lib/content'
+
 export interface BreadcrumbItem {
   label: string
   href?: string
@@ -26,7 +28,7 @@ export function Breadcrumbs({
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      ...(item.href ? { item: `https://villa-sanantonio.com${item.href}` } : {}),
+      ...(item.href ? { item: new URL(item.href, SITE_URL).toString() } : {}),
     })),
   }
 

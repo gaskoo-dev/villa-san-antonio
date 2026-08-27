@@ -12,8 +12,8 @@ import { HeroSection } from '@/components/HeroSection'
 import { Reveal } from '@/components/Reveal'
 import { ReviewsSwiper } from '@/components/ReviewsSwiper'
 import { StatsBand } from '@/components/StatsBand'
-import { REVIEWS_INTRO } from '@/lib/content'
-import { buildPageMetadata } from '@/lib/metadata'
+import { CONTACT_EMAIL, CONTACT_PHONE, REVIEWS_INTRO, SITE_URL } from '@/lib/content'
+import { buildPageMetadata, DEFAULT_SOCIAL_IMAGE } from '@/lib/metadata'
 import { getFaqItems, getGallery, getPageBySlug, getReviews, mediaSrc, type GalleryEntry } from '@/lib/queries'
 import { getRequestLocale } from '@/lib/request-locale'
 import type { FaqItem, Media, Page, Review } from '@/payload-types'
@@ -255,8 +255,10 @@ export default async function HomePage() {
     name: 'Villa San Antonio',
     description:
       'Premium private holiday villa for 6+2 guests near Šibenik, Dalmatia. Heated pool, jacuzzi, BBQ house, fully fenced garden, pet-friendly.',
-    url: 'https://villa-sanantonio.com',
-    email: 'kontakt@villa-sanantonio.com',
+    url: SITE_URL,
+    image: DEFAULT_SOCIAL_IMAGE.url,
+    email: CONTACT_EMAIL,
+    telephone: CONTACT_PHONE,
     address: { '@type': 'PostalAddress', addressLocality: 'Podine, Šibenik', addressCountry: 'HR' },
     geo: {
       '@type': 'GeoCoordinates',
@@ -267,7 +269,7 @@ export default async function HomePage() {
       ? {
           aggregateRating: {
             '@type': 'AggregateRating',
-            ratingValue: avgStars.toFixed(1),
+            ratingValue: Number(avgStars.toFixed(1)),
             reviewCount: reviews.length,
             bestRating: 5,
             worstRating: 1,

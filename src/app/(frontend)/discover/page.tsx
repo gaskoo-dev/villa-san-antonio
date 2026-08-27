@@ -26,10 +26,7 @@ export const revalidate = 3600
 const fallbackMetadata: Metadata = {
   title: 'Discover Šibenik, Krka & Dalmatia | Villa San Antonio',
   description:
-    'Explore the top attractions around Villa San Antonio: Krka National Park waterfalls, UNESCO fortresses, Kornati boat tours, Primošten vineyards, and pristine Adriatic beaches.',
-  alternates: {
-    canonical: 'https://villa-sanantonio.com/discover',
-  },
+    'Explore Krka waterfalls, Šibenik’s UNESCO fortresses, Kornati boat tours, Primošten vineyards and Adriatic beaches near Villa San Antonio.',
 }
 
 export async function generateMetadata(): Promise<Metadata> {

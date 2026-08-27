@@ -22,7 +22,9 @@ The integration test creates a uniquely named temporary PostgreSQL database and 
 
 ## Coolify deployment
 
-Set `DATABASE_URL`, `PAYLOAD_SECRET`, `CRON_SECRET`, and `SITE_URL` on the web application container. `SITE_URL` must be the public origin, for example `https://villa-sanantonio.com`; a trailing slash is accepted and normalized. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
+Set `DATABASE_URL`, `PAYLOAD_SECRET`, `CRON_SECRET`, and `SITE_URL` on the web application container. `SITE_URL` must be the public origin, for example `https://villa-sanantonio.com`; a trailing slash is accepted and normalized. Set `GOOGLE_SITE_VERIFICATION` to the verification token supplied by Google Search Console. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
+
+After the production domain is switched, verify the canonical and social image URLs on the final domain, then submit `https://villa-sanantonio.com/sitemap.xml` in Google Search Console.
 
 Mount Coolify persistent storage at `/app/media`. The image contains the committed media as an initial snapshot, while uploads made through Payload are written to that volume and must survive container replacements.
 
