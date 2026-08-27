@@ -19,6 +19,7 @@ import {
   BOOKING_ANCHOR,
   CONTACT_EMAIL,
   CONTACT_PHONE,
+  INSTAGRAM_URL,
   NAV_LINKS,
   PRIMARY_CTA_LABEL,
   SITE_NAME,
@@ -94,14 +95,20 @@ export async function SiteFooter({
   const address = footerData?.contactSection?.address || 'Podine 14, near Šibenik'
   const region = footerData?.contactSection?.region || 'Dalmatia · Croatia'
 
-  const socialLinks =
+  const rawSocialLinks =
     footerData?.socialLinks && footerData.socialLinks.length > 0
       ? footerData.socialLinks
       : [
-          { platform: 'instagram' as const, label: 'Instagram', url: 'https://www.instagram.com' },
+          { platform: 'instagram' as const, label: 'Instagram', url: INSTAGRAM_URL },
           { platform: 'facebook' as const, label: 'Facebook', url: 'https://www.facebook.com' },
           { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
+  const socialLinks = rawSocialLinks.map((social) =>
+    social.platform === 'instagram' &&
+    /^https?:\/\/(?:www\.)?instagram\.com\/?$/i.test(social.url.trim())
+      ? { ...social, url: INSTAGRAM_URL }
+      : social,
+  )
 
   // Keep legal links hidden until approved legal copy and routes are available.
   const legalLinks: Array<{ label: string; link: string }> = []
@@ -119,7 +126,7 @@ export async function SiteFooter({
         {/* Editorial Heading Section */}
         <div className="mb-16 flex flex-col justify-between gap-6 border-b border-white/10 pb-12 md:flex-row md:items-end">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/65">
               {editorialSubheading}
             </p>
             <h2 className="mt-2 font-serif text-3xl italic font-normal tracking-tight text-white/95 sm:text-4xl lg:text-5xl">
@@ -151,7 +158,7 @@ export async function SiteFooter({
 
           {/* Column 2: Direct Booking Perks & CTA (Col span 4 - Centered) */}
           <div className="lg:col-span-4 lg:mx-auto">
-            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/65">
               {directBookingTitle}
             </p>
             <ul className="mt-6 space-y-3.5 text-sm text-white/70">
@@ -180,7 +187,7 @@ export async function SiteFooter({
 
           {/* Column 3: Navigation Links (Col span 2 - Centered) */}
           <nav aria-label="Footer" className="lg:col-span-2 lg:mx-auto">
-            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/65">
               {exploreTitle}
             </p>
             <ul className="mt-6 space-y-3">
@@ -188,7 +195,7 @@ export async function SiteFooter({
                 <li key={link.href + link.label}>
                   <Link
                     href={link.href}
-                    className="group inline-flex items-center gap-1 text-sm text-white/70 transition-all duration-200 hover:text-white hover:translate-x-1"
+                    className="group inline-flex min-h-11 min-w-11 items-center gap-1 text-sm text-white/70 transition-all duration-200 hover:text-white hover:translate-x-1"
                   >
                     <IconChevronRight
                       size={13}
@@ -204,14 +211,14 @@ export async function SiteFooter({
 
           {/* Column 4: Contact & Social (Col span 3 - Right side container with left-aligned text) */}
           <div className="flex flex-col lg:col-span-3 lg:ml-auto">
-            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/40">
+            <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-white/65">
               {contactTitle}
             </p>
             <ul className="mt-6 space-y-3 text-sm text-white/70">
               <li>
                 <a
                   href={`mailto:${email}`}
-                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
+                  className="inline-flex min-h-11 items-center gap-2 transition-colors hover:text-white"
                 >
                   <IconMail size={16} stroke={1.7} className="opacity-60" />
                   <span>{email}</span>
@@ -220,7 +227,7 @@ export async function SiteFooter({
               <li>
                 <a
                   href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-                  className="inline-flex items-center gap-2 transition-colors hover:text-white"
+                  className="inline-flex min-h-11 items-center gap-2 transition-colors hover:text-white"
                 >
                   <IconPhone size={16} stroke={1.7} className="opacity-60" />
                   <span>{phone}</span>
@@ -249,7 +256,7 @@ export async function SiteFooter({
                     target="_blank"
                     rel="noreferrer"
                     aria-label={social.label || `Villa San Antonio on ${social.platform}`}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/70 transition-all duration-200 hover:border-white hover:bg-white hover:text-ink hover:scale-110 active:scale-95 shadow-sm"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/70 transition-all duration-200 hover:border-white hover:bg-white hover:text-ink hover:scale-110 active:scale-95 shadow-sm"
                   >
                     <IconComponent size={17} stroke={1.6} />
                   </a>
@@ -260,7 +267,7 @@ export async function SiteFooter({
         </div>
 
         {/* Bottom Bar with Legal Policy Links and Copyright */}
-        <div className="flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/40 sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/65 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} {copyright}</p>
           <div className="flex flex-wrap items-center gap-5 sm:gap-6 text-xs text-white/50">
             {legalLinks.map((item) => (

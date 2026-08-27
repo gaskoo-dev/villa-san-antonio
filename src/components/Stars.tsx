@@ -11,9 +11,13 @@ export function Stars({
 }) {
   const safe = Math.max(0, Math.min(5, count))
   return (
-    <span className={`inline-flex items-center gap-0.5 text-amber-700 ${className}`} aria-label={`${safe} out of 5 stars`}>
+    <span
+      role="img"
+      className={`inline-flex items-center gap-0.5 text-amber-700 ${className}`}
+      aria-label={`${safe} out of 5 stars`}
+    >
       {Array.from({ length: safe }).map((_, i) => (
-        <IconStarFilled key={i} size={size} className="text-amber-700" />
+        <IconStarFilled key={i} size={size} className="text-amber-700" aria-hidden />
       ))}
     </span>
   )

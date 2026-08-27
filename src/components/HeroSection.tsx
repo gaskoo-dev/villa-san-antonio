@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ScrollToExplore } from '@/components/ScrollToExplore'
 import { ShaderHero, type ShaderSlide } from '@/components/ShaderHero'
 import { useLocale } from '@/context/LocaleContext'
+import { INSTAGRAM_URL } from '@/lib/content'
 
 export type HeroContentItem = {
   kicker: string
@@ -75,6 +76,12 @@ export function HeroSection({
   const current = items[activeIndex % items.length]
 
   const animDuration = (transitionDuration ?? 2000) / 1000
+  const resolvedInstagramUrl =
+    instagramUrl === undefined
+      ? INSTAGRAM_URL
+      : /^https?:\/\/(?:www\.)?instagram\.com\/?$/i.test(instagramUrl?.trim() || '')
+        ? INSTAGRAM_URL
+        : instagramUrl
 
   const ctaPrimary = {
     label: primaryCta?.label?.trim() || t.nav.checkAvailability,
@@ -150,19 +157,19 @@ export function HeroSection({
         </div>
         <ScrollToExplore targetId="perspective" label={scrollLabel || t.hero.meta.scroll} />
         <div className="hidden md:flex items-center gap-5 text-xs font-medium tracking-[0.14rem]">
-          {(instagramUrl || instagramUrl === undefined) && (
+          {resolvedInstagramUrl && (
             <a
-              href={instagramUrl || 'https://www.instagram.com/villa_sanantonio/'}
+              href={resolvedInstagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="flex items-center gap-2 transition-colors hover:text-white"
+              className="flex min-h-11 items-center gap-2 transition-colors hover:text-white"
             >
               <IconBrandInstagram size={18} stroke={1.8} />
               <span>Instagram</span>
             </a>
           )}
-          {(instagramUrl || instagramUrl === undefined) && (facebookUrl || facebookUrl === undefined) && (
+          {resolvedInstagramUrl && (facebookUrl || facebookUrl === undefined) && (
             <span className="opacity-30">·</span>
           )}
           {(facebookUrl || facebookUrl === undefined) && (

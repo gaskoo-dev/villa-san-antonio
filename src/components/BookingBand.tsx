@@ -160,9 +160,9 @@ export function BookingBand(props: BookingBandProps = {}) {
                       <Icon size={19} stroke={1.8} />
                     </div>
                     <div className="min-w-0 flex-1 pt-0.5">
-                      <h4 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
+                      <h3 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                         {item.title}
-                      </h4>
+                      </h3>
                       <p className="mt-1.5 text-[11px] sm:text-xs text-ink/60 leading-relaxed text-pretty">
                         {item.desc}
                       </p>
@@ -191,9 +191,9 @@ export function BookingBand(props: BookingBandProps = {}) {
                   </div>
                 )}
                 <div>
-                  <h4 className="text-sm font-semibold text-ink leading-tight">
+                  <p className="text-sm font-semibold text-ink leading-tight">
                     {props.hostName || 'Josip & Family'}
-                  </h4>
+                  </p>
                   <p className="text-xs text-ink/50 leading-tight">
                     {props.hostRole || 'Estate Owners & Hosts'}
                   </p>

@@ -157,9 +157,9 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
                       {getInitials(review.name)}
                     </div>
                     <div>
-                      <h4 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
+                      <h3 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                         {review.name}
-                      </h4>
+                      </h3>
                       {review.country && (
                         <p className="text-[11px] text-ink/50 leading-tight">{review.country}</p>
                       )}
@@ -259,9 +259,9 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
                   {getInitials(modalReview.name)}
                 </div>
                 <div>
-                  <h4 className="text-base font-semibold text-ink leading-tight">
+                  <p className="text-base font-semibold text-ink leading-tight">
                     {modalReview.name}
-                  </h4>
+                  </p>
                   {modalReview.country && (
                     <p className="text-xs text-ink/50 leading-tight mt-0.5">
                       {modalReview.country}

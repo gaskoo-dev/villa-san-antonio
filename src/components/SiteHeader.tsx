@@ -88,7 +88,7 @@ export function SiteHeader({
           <div className="flex items-center gap-6">
             <a
               href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-              className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90"
+              className="inline-flex min-h-11 items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90"
             >
               <IconPhone size={18} stroke={1.8} className="opacity-90" />
               <span>{phone}</span>
@@ -96,7 +96,7 @@ export function SiteHeader({
             <span className="hidden opacity-30 sm:inline">/</span>
             <a
               href={`mailto:${email}`}
-              className="hidden items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90 sm:inline-flex"
+              className="hidden min-h-11 items-center gap-2.5 transition-opacity hover:opacity-100 opacity-90 sm:inline-flex"
             >
               <IconMail size={18} stroke={1.8} className="opacity-90" />
               <span>{email}</span>
@@ -177,7 +177,7 @@ export function SiteHeader({
               href={link.href}
               target={link.newTab ? '_blank' : undefined}
               rel={link.newTab ? 'noopener noreferrer' : undefined}
-              className={`text-xs font-medium uppercase tracking-[0.13rem] transition-colors duration-200 ${
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center text-xs font-medium uppercase tracking-[0.13rem] transition-colors duration-200 ${
                 overHero
                   ? 'text-white/80 hover:text-white'
                   : pathname === link.href
@@ -208,7 +208,7 @@ export function SiteHeader({
             aria-expanded={menuOpen}
             aria-label="Toggle navigation menu"
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
+            className={`flex h-12 w-12 items-center justify-center rounded-full border transition-colors ${
               overHero
                 ? 'border-white/25 text-white hover:border-white'
                 : 'border-ink/15 text-ink hover:border-ink/40'
@@ -252,7 +252,7 @@ export function SiteHeader({
                 type="button"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close navigation menu"
-                className="flex h-10 w-10 items-center justify-center text-ink transition-opacity hover:opacity-60 active:scale-90 cursor-pointer p-1"
+                className="flex h-12 w-12 items-center justify-center text-ink transition-opacity hover:opacity-60 active:scale-90 cursor-pointer p-1"
               >
                 <IconX size={28} stroke={1.6} />
               </button>
@@ -273,7 +273,7 @@ export function SiteHeader({
                       target={link.newTab ? '_blank' : undefined}
                       rel={link.newTab ? 'noopener noreferrer' : undefined}
                       onClick={() => setMenuOpen(false)}
-                      className={`flex items-center justify-between text-2xl font-medium tracking-tight py-1 ${
+                      className={`flex min-h-11 items-center justify-between text-2xl font-medium tracking-tight py-1 ${
                         pathname === link.href ? 'text-ink font-semibold' : 'text-ink/75 hover:text-ink'
                       }`}
                     >
@@ -330,7 +330,7 @@ export function SiteHeader({
               <div className="grid grid-cols-2 gap-3">
                 <a
                   href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
-                  className="flex items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
+                  className="flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
                 >
                   <IconPhone size={16} stroke={1.8} />
                   <span>Call host</span>
@@ -339,7 +339,7 @@ export function SiteHeader({
                   href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
+                  className="flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-surface/60 py-3 text-xs font-medium text-ink transition-colors active:bg-surface"
                 >
                   <IconBrandWhatsapp size={16} stroke={1.8} />
                   <span>WhatsApp</span>

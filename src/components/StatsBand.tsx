@@ -36,7 +36,7 @@ function Counter({ value, suffix = '' }: { value: number; suffix?: string }) {
   return (
     <span ref={ref} className="tabular-nums">
       {display}
-      {suffix ? <span className="ml-1 text-2xl font-normal text-ink/40 sm:text-3xl">{suffix}</span> : null}
+      {suffix ? <span className="ml-1 text-2xl font-normal text-ink/60 sm:text-3xl">{suffix}</span> : null}
     </span>
   )
 }
@@ -131,7 +131,7 @@ export function StatsBand({
                   {m.label}
                 </span>
               </div>
-              <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-xs leading-relaxed text-ink/55">
+              <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-xs leading-relaxed text-ink/70">
                 {detail}
               </p>
             </div>
