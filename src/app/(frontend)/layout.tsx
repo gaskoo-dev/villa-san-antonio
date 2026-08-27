@@ -3,9 +3,13 @@ import { DM_Sans, Instrument_Serif } from 'next/font/google'
 import React from 'react'
 
 import { BackToTop } from '@/components/BackToTop'
+import { AnalyticsInteractions } from '@/components/AnalyticsInteractions'
+import { CookieConsentUI } from '@/components/CookieConsentUI'
 import { CursorDot } from '@/components/CursorDot'
+import { GoogleTagManager } from '@/components/GoogleTagManager'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
+import { CookieConsentProvider } from '@/context/CookieConsentContext'
 import { LocaleProvider } from '@/context/LocaleContext'
 import { SITE_URL } from '@/lib/content'
 import { DEFAULT_OPEN_GRAPH, DEFAULT_TWITTER } from '@/lib/metadata'
@@ -59,11 +63,16 @@ export default async function FrontendLayout({ children }: { children: React.Rea
     <html lang={locale} className={`${dmSans.variable} ${instrumentSerif.variable}`}>
       <body>
         <LocaleProvider>
-          <CursorDot />
-          <SiteHeader headerData={headerData} />
-          <main id="content">{children}</main>
-          <SiteFooter footerData={footerData} />
-          <BackToTop />
+          <CookieConsentProvider>
+            <GoogleTagManager />
+            <AnalyticsInteractions />
+            <CursorDot />
+            <SiteHeader headerData={headerData} />
+            <main id="content">{children}</main>
+            <SiteFooter footerData={footerData} />
+            <BackToTop />
+            <CookieConsentUI />
+          </CookieConsentProvider>
         </LocaleProvider>
       </body>
     </html>

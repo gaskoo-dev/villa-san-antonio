@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
+import { ConsentMap } from '@/components/ConsentMap'
 import { ContactForm } from '@/components/ContactForm'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
@@ -198,21 +199,12 @@ export default async function ContactPage() {
       {/* Dynamic Google Maps Location Section */}
       {enableMap && (
         <section className="h-[300px] sm:h-[420px] w-full border-t border-ink/10 relative">
-          <a
-            href={mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute inset-0 block cursor-pointer"
-            aria-label="Open Villa San Antonio in Google Maps"
-          >
-            <iframe
-              src={`https://maps.google.com/maps?q=${lat},${lng}+(Villa+San+Antonio)&hl=en&z=${zoom}&output=embed`}
-              title="Villa San Antonio location map"
-              className="pointer-events-none h-full w-full border-0"
-              loading="lazy"
-              tabIndex={-1}
-            />
-          </a>
+          <ConsentMap
+            directUrl={mapsUrl}
+            embedUrl={`https://maps.google.com/maps?q=${lat},${lng}+(Villa+San+Antonio)&hl=en&z=${zoom}&output=embed`}
+            title="Villa San Antonio location map"
+            className="absolute inset-0 h-full w-full"
+          />
         </section>
       )}
 

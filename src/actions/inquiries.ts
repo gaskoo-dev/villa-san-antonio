@@ -10,6 +10,7 @@ import {
   getAvailabilitySnapshot,
   isValidIsoDay,
 } from '@/lib/availability'
+import { turnstileMessage, verifyTurnstileToken } from '@/lib/turnstile'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -18,10 +19,13 @@ function str(data: FormData, key: string): string {
   return typeof v === 'string' ? v.trim() : ''
 }
 
-async function isRateLimited(form: 'booking' | 'contact'): Promise<boolean> {
+async function getClientAddress(): Promise<string> {
   const requestHeaders = await headers()
   const forwardedFor = requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim()
-  const clientAddress = forwardedFor || requestHeaders.get('x-real-ip') || 'unknown'
+  return forwardedFor || requestHeaders.get('x-real-ip') || 'unknown'
+}
+
+function isRateLimited(form: 'booking' | 'contact', clientAddress: string): boolean {
   const result = consumeRateLimit(`${form}:${clientAddress.slice(0, 128)}`, {
     limit: 5,
     windowMs: 15 * 60 * 1000,
@@ -39,7 +43,8 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
     return { status: 'success', message: 'Request received.' }
   }
 
-  if (await isRateLimited('booking')) {
+  const clientAddress = await getClientAddress()
+  if (isRateLimited('booking', clientAddress)) {
     return {
       status: 'error',
       message: 'Too many requests from this connection. Please wait 15 minutes and try again.',
@@ -88,6 +93,17 @@ export async function submitBookingInquiry(_prev: FormState, data: FormData): Pr
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', errors }
+  }
+
+  const turnstile = await verifyTurnstileToken({
+    action: 'booking_inquiry',
+    remoteIp: clientAddress,
+    token: str(data, 'cf-turnstile-response'),
+  })
+
+  if (!turnstile.success) {
+    const message = turnstileMessage(turnstile.reason)
+    return { status: 'error', message, errors: { turnstile: message } }
   }
 
   const availability = await getAvailabilitySnapshot({
@@ -148,7 +164,8 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
     return { status: 'success', message: 'Message sent.' }
   }
 
-  if (await isRateLimited('contact')) {
+  const clientAddress = await getClientAddress()
+  if (isRateLimited('contact', clientAddress)) {
     return {
       status: 'error',
       message: 'Too many messages from this connection. Please wait 15 minutes and try again.',
@@ -174,6 +191,21 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', errors }
+  }
+
+  const turnstile = await verifyTurnstileToken({
+    action: 'contact_message',
+    remoteIp: clientAddress,
+    token: str(data, 'cf-turnstile-response'),
+  })
+
+  if (!turnstile.success) {
+    const turnstileError = turnstileMessage(turnstile.reason)
+    return {
+      status: 'error',
+      message: turnstileError,
+      errors: { turnstile: turnstileError },
+    }
   }
 
   try {

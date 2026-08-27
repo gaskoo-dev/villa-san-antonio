@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { BookingBand } from '@/components/BookingBand'
+import { ConsentMap } from '@/components/ConsentMap'
 import { PageIntro } from '@/components/PageIntro'
 import { Reveal } from '@/components/Reveal'
 import { RoomImageSlider, type SlideImage } from '@/components/RoomImageSlider'
@@ -313,24 +314,16 @@ export default async function AboutPage() {
           {/* Embedded Interactive Google Map Card */}
           {storyBlock?.showMap !== false && (
             <Reveal delay={120} className="mt-8 flex flex-1 flex-col min-h-[340px] overflow-hidden rounded-3xl border border-ink/10 bg-paper shadow-xs">
-              <a
-                href={storyBlock?.mapDirectUrl || 'https://maps.app.goo.gl/Xm8sAH7drKf2pADaA'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative flex-1 min-h-[280px] w-full overflow-hidden block cursor-pointer group"
-                aria-label="Open Villa San Antonio in Google Maps"
-              >
-                <iframe
-                  src={
-                    storyBlock?.mapEmbedUrl ||
-                    'https://maps.google.com/maps?q=43.6470678,16.0546611+(Villa+San+Antonio)&hl=en&z=13&output=embed'
-                  }
-                  title="Villa San Antonio location on Google Maps"
-                  className="pointer-events-none absolute inset-0 h-full w-full border-0"
-                  loading="lazy"
-                  tabIndex={-1}
-                />
-              </a>
+              <ConsentMap
+                directUrl={storyBlock?.mapDirectUrl || 'https://maps.app.goo.gl/Xm8sAH7drKf2pADaA'}
+                embedUrl={
+                  storyBlock?.mapEmbedUrl ||
+                  'https://maps.google.com/maps?q=43.6470678,16.0546611+(Villa+San+Antonio)&hl=en&z=13&output=embed'
+                }
+                title="Villa San Antonio location on Google Maps"
+                showDirectLink={false}
+                className="relative block min-h-[280px] w-full flex-1"
+              />
               <div className="flex items-center justify-between border-t border-ink/10 bg-surface/60 px-5 py-3.5 text-xs shrink-0">
                 <span className="text-ink/75 font-medium truncate">
                   {storyBlock?.mapAddress || 'Podine 14, Šibenik'}

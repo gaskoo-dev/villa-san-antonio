@@ -1,10 +1,12 @@
 'use client'
 
 import { IconArrowUpRight, IconCircleCheck, IconLoader2 } from '@tabler/icons-react'
-import { useActionState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { submitContactMessage } from '@/actions/inquiries'
+import { TurnstileWidget, turnstileClientEnabled } from '@/components/TurnstileWidget'
+import { useAnalytics } from '@/hooks/useAnalytics'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
@@ -19,17 +21,24 @@ function FieldError({ message }: { message?: string }) {
   )
 }
 
-function SubmitButton() {
+function SubmitButton({ securityReady }: { securityReady: boolean }) {
   const { pending } = useFormStatus()
+  const waitingForSecurity = !pending && !securityReady
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={pending || !securityReady}
       className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-4 rounded-full bg-ink px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
-      <span>{pending ? 'Sending message...' : 'Send message'}</span>
+      <span>
+        {pending
+          ? 'Sending message...'
+          : waitingForSecurity
+            ? 'Completing security check...'
+            : 'Send message'}
+      </span>
       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-        {pending ? (
+        {pending || waitingForSecurity ? (
           <IconLoader2 size={15} className="animate-spin text-ink" />
         ) : (
           <IconArrowUpRight size={15} stroke={2.5} aria-hidden />
@@ -40,7 +49,16 @@ function SubmitButton() {
 }
 
 export function ContactForm() {
+  const track = useAnalytics()
   const [state, formAction] = useActionState(submitContactMessage, emptyFormState)
+  const [turnstileReady, setTurnstileReady] = useState(!turnstileClientEnabled)
+  const leadTrackedRef = useRef(false)
+
+  useEffect(() => {
+    if (state.status !== 'success' || leadTrackedRef.current) return
+    leadTrackedRef.current = true
+    track('generate_lead', { lead_type: 'contact_message' })
+  }, [state.status, track])
 
   if (state.status === 'success') {
     return (
@@ -163,6 +181,13 @@ export function ContactForm() {
         <FieldError message={state.errors?.consent} />
       </div>
 
+      <TurnstileWidget
+        action="contact_message"
+        onVerifiedChange={setTurnstileReady}
+        resetSignal={state}
+      />
+      <FieldError message={state.errors?.turnstile} />
+
       {/* Error Alert Box */}
       {state.status === 'error' && state.message && (
         <div role="alert" className="rounded-2xl border border-red-200 bg-red-50/70 p-4 text-xs sm:text-sm text-red-800 animate-[var(--animate-fade-in)]">
@@ -172,7 +197,7 @@ export function ContactForm() {
 
       {/* Submit Button */}
       <div className="pt-2">
-        <SubmitButton />
+        <SubmitButton securityReady={turnstileReady} />
       </div>
     </form>
   )

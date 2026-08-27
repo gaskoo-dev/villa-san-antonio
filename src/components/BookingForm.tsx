@@ -15,12 +15,14 @@ import {
   IconUsers,
 } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'motion/react'
-import { useActionState, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { submitBookingInquiry } from '@/actions/inquiries'
 import { AvailabilityCalendar } from '@/components/AvailabilityCalendar'
+import { TurnstileWidget, turnstileClientEnabled } from '@/components/TurnstileWidget'
 import { useLocale } from '@/context/LocaleContext'
+import { useAnalytics } from '@/hooks/useAnalytics'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
@@ -62,15 +64,24 @@ function formatHumanDate(dateStr: string, locale: string = 'hr'): string {
   }).format(d)
 }
 
-function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
+function SubmitButton({
+  label,
+  pendingLabel,
+  securityReady,
+}: {
+  label: string
+  pendingLabel: string
+  securityReady: boolean
+}) {
   const { pending } = useFormStatus()
+  const waitingForSecurity = !pending && !securityReady
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={pending || !securityReady}
       className="group relative flex flex-1 items-center justify-center gap-4 rounded-full bg-ink px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14rem] text-white shadow-lg transition-all duration-300 hover:bg-ink/85 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
-      <span>{pending ? pendingLabel : label}</span>
+      <span>{pending ? pendingLabel : waitingForSecurity ? 'Completing security check...' : label}</span>
       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:translate-x-0.5">
         <IconArrowRight size={15} stroke={2.5} aria-hidden />
       </span>
@@ -80,16 +91,47 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
 
 export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   const { t, locale } = useLocale()
+  const track = useAnalytics()
   const [state, formAction] = useActionState(submitBookingInquiry, emptyFormState)
   const [step, setStep] = useState<1 | 2>(1)
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
+  const [turnstileReady, setTurnstileReady] = useState(!turnstileClientEnabled)
+  const bookingStartedRef = useRef(false)
+  const leadTrackedRef = useRef(false)
   const dateError = state.errors?.checkIn || state.errors?.checkOut
 
+  const trackBookingFormStart = () => {
+    if (bookingStartedRef.current) return
+    bookingStartedRef.current = true
+    track('booking_form_start')
+  }
+
   const handleSelectRange = (start: string, end: string) => {
+    trackBookingFormStart()
     setCheckIn(start)
     setCheckOut(end)
+
+    if (start && end) {
+      const selectedNights = Math.max(
+        0,
+        Math.ceil((new Date(end).getTime() - new Date(start).getTime()) / (1000 * 60 * 60 * 24)),
+      )
+
+      if (selectedNights > 0) {
+        track('date_range_selected', {
+          minimum_nights: minNights,
+          nights: selectedNights,
+        })
+      }
+    }
   }
+
+  useEffect(() => {
+    if (state.status !== 'success' || leadTrackedRef.current) return
+    leadTrackedRef.current = true
+    track('generate_lead', { lead_type: 'booking_inquiry' })
+  }, [state.status, track])
 
   // Calculate nights count
   let nights = 0
@@ -126,7 +168,10 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
   }
 
   return (
-    <div className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden h-full flex flex-col justify-between">
+    <div
+      onFocusCapture={trackBookingFormStart}
+      className="relative rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden h-full flex flex-col justify-between"
+    >
       {/* Step Progress Header */}
       <div className="border-b border-ink/10 pb-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -471,6 +516,13 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                 <FieldError id="notes-error" message={state.errors?.notes} />
               </div>
 
+              <TurnstileWidget
+                action="booking_inquiry"
+                onVerifiedChange={setTurnstileReady}
+                resetSignal={state}
+              />
+              <FieldError id="turnstile-error" message={state.errors?.turnstile} />
+
               {state.status === 'error' && state.message && (
                 <div
                   role="alert"
@@ -491,7 +543,11 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                   <span>Back</span>
                 </button>
 
-                <SubmitButton label={t.booking.submit} pendingLabel={t.booking.sending} />
+                <SubmitButton
+                  label={t.booking.submit}
+                  pendingLabel={t.booking.sending}
+                  securityReady={turnstileReady}
+                />
               </div>
 
               {/* Reassurance trust footer */}

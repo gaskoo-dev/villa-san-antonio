@@ -15,6 +15,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { CookieSettingsButton } from '@/components/CookieSettingsButton'
 import {
   BOOKING_ANCHOR,
   CONTACT_EMAIL,
@@ -285,6 +286,7 @@ export async function SiteFooter({
         <div className="flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/65 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} {copyright}</p>
           <div className="flex flex-wrap items-center gap-5 sm:gap-6 text-xs text-white/50">
+            <CookieSettingsButton />
             {legalLinks.map((item) => (
               <Link
                 key={item.link + item.label}
