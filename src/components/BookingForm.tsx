@@ -24,9 +24,9 @@ import { useLocale } from '@/context/LocaleContext'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
-  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
+  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/55 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
 
-const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/55'
+const labelClass = 'mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.13rem] text-ink/65'
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null
@@ -131,7 +131,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
       <div className="border-b border-ink/10 pb-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.14rem] text-ink/50">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14rem] text-ink/65">
               Step {step} of 2
             </span>
             <h3 className="text-xl font-medium tracking-tight text-ink">
@@ -241,7 +241,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
                 </span>
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-ink/15 bg-paper/30 p-3.5 text-center text-xs text-ink/55">
+              <div className="rounded-2xl border border-dashed border-ink/15 bg-paper/30 p-3.5 text-center text-xs text-ink/65">
                 Select arrival and departure dates on the calendar (minimum {minNights} nights stay)
               </div>
             )}
@@ -456,7 +456,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               <div>
                 <label htmlFor="notes" className={labelClass}>
                   <span>{t.booking.notes}</span>
-                  <span className="font-normal normal-case tracking-normal text-ink/40">(optional)</span>
+                  <span className="font-normal normal-case tracking-normal text-ink/65">(optional)</span>
                 </label>
                 <textarea
                   id="notes"
@@ -495,7 +495,7 @@ export function BookingForm({ minNights = 3 }: { minNights?: number }) {
               </div>
 
               {/* Reassurance trust footer */}
-              <div className="flex items-center justify-center gap-1.5 text-center text-[11px] text-ink/45 pt-1">
+              <div className="flex items-center justify-center gap-1.5 text-center text-[11px] text-ink/65 pt-1">
                 <IconLock size={13} stroke={2} className="text-ink/55" />
                 <span>Direct inquiry · No instant charges · Availability rechecked on submit</span>
               </div>

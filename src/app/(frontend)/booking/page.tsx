@@ -173,9 +173,9 @@ export default async function BookingPage() {
             <div className="rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-6 sm:p-9 shadow-[0_8px_32px_rgba(0,0,0,0.04)] h-full flex flex-col justify-between space-y-8">
               {/* 3-Step Process Timeline */}
               <div className="space-y-4">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/65">
                   {stepsTitle}
-                </h3>
+                </h2>
                 <div className="divide-y divide-ink/8 space-y-3.5">
                   {steps.map((step, idx) => (
                     <div
@@ -186,9 +186,9 @@ export default async function BookingPage() {
                         {step.num || `0${idx + 1}`}
                       </span>
                       <div>
-                        <h4 className="text-sm font-semibold text-ink leading-tight">
+                        <h3 className="text-sm font-semibold text-ink leading-tight">
                           {step.title}
-                        </h4>
+                        </h3>
                         <p className="mt-1 text-xs text-ink/65 leading-relaxed">
                           {step.desc}
                         </p>
@@ -200,9 +200,9 @@ export default async function BookingPage() {
 
               {/* Direct Booking Privileges */}
               <div className="space-y-4 border-t border-ink/8 pt-6">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/65">
                   {privilegesTitle}
-                </h3>
+                </h2>
                 <div className="space-y-3.5">
                   {privileges.map((item, idx) => {
                     const Icon = item.Icon
@@ -212,9 +212,9 @@ export default async function BookingPage() {
                           <Icon size={16} stroke={2} />
                         </div>
                         <div>
-                          <h5 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
+                          <h3 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                             {item.title}
-                          </h5>
+                          </h3>
                           <p className="mt-0.5 text-xs text-ink/65 leading-relaxed">
                             {item.desc}
                           </p>
@@ -247,7 +247,7 @@ export default async function BookingPage() {
                       <h4 className="text-sm sm:text-base font-semibold text-ink leading-tight">
                         {hostName}
                       </h4>
-                      <p className="text-xs text-ink/50 leading-tight">{hostSubtitle}</p>
+                      <p className="text-xs text-ink/65 leading-tight">{hostSubtitle}</p>
                     </div>
                   </div>
 
@@ -264,7 +264,7 @@ export default async function BookingPage() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-4 py-2 font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-full border border-emerald-700 bg-emerald-700 px-4 py-2 font-semibold text-white shadow-sm transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                   >
                     <IconBrandWhatsapp size={15} stroke={2} />
                     <span>{whatsappLabel}</span>

@@ -405,7 +405,7 @@ export default async function HomePage() {
 
                     <div className="mt-6 flex flex-col flex-1 justify-between space-y-4">
                       <div>
-                        <div className="flex items-center gap-2 text-ink/50 text-xs font-semibold uppercase tracking-wider mb-2">
+                        <div className="flex items-center gap-2 text-ink/65 text-xs font-semibold uppercase tracking-wider mb-2">
                           <Icon size={16} />
                           <span>{place.time}</span>
                         </div>

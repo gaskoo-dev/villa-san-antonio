@@ -101,7 +101,7 @@
   }
 
   .kicker {
-    @apply text-xs font-medium uppercase tracking-[0.16rem] text-ink/55;
+    @apply text-xs font-medium uppercase tracking-[0.16rem] text-ink/65;
   }
 
   .body-quiet {

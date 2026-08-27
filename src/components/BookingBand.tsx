@@ -137,7 +137,7 @@ export function BookingBand(props: BookingBandProps = {}) {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex sm:inline-flex items-center justify-center gap-2 rounded-full border border-emerald-600 bg-emerald-600 px-5 sm:px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.12rem] text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:scale-105 active:scale-95 text-center"
+                className="flex sm:inline-flex items-center justify-center gap-2 rounded-full border border-emerald-700 bg-emerald-700 px-5 sm:px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.12rem] text-white shadow-sm transition-all duration-200 hover:bg-emerald-800 hover:scale-105 active:scale-95 text-center"
               >
                 <IconBrandWhatsapp size={18} stroke={2} />
                 <span>{props.whatsappLabel || 'WhatsApp Chat'}</span>
@@ -163,7 +163,7 @@ export function BookingBand(props: BookingBandProps = {}) {
                       <h3 className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                         {item.title}
                       </h3>
-                      <p className="mt-1.5 text-[11px] sm:text-xs text-ink/60 leading-relaxed text-pretty">
+                      <p className="mt-1.5 text-[11px] sm:text-xs text-ink/70 leading-relaxed text-pretty">
                         {item.desc}
                       </p>
                     </div>
@@ -194,7 +194,7 @@ export function BookingBand(props: BookingBandProps = {}) {
                   <p className="text-sm font-semibold text-ink leading-tight">
                     {props.hostName || 'Josip & Family'}
                   </p>
-                  <p className="text-xs text-ink/50 leading-tight">
+                  <p className="text-xs text-ink/65 leading-tight">
                     {props.hostRole || 'Estate Owners & Hosts'}
                   </p>
                 </div>

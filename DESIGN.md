@@ -46,7 +46,7 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.control}"
   link-kicker:
-    textColor: "rgba(9,11,12,0.55)"
+    textColor: "rgba(9,11,12,0.65)"
 ---
 
 # Villa San Antonio design system
@@ -69,7 +69,7 @@ Paper ground, ink type, one accent voice: Instrument Serif italic closing a tigh
 
 - Display: DM Sans 600, `clamp(3.2rem, 7.2vw, 7.5rem)`, `leading-[0.88]`, `tracking-[-0.075em]`, centered on home, left on subpages; last phrase in Instrument Serif 400 italic (`accent-serif`), tracking -0.02em.
 - Section H2: DM Sans 500, `text-5xl sm:text-6xl lg:text-7xl`, `tracking-[-0.06em]`, with serif italic accent phrase.
-- Kickers: `text-xs font-medium uppercase tracking-[0.13-0.16rem] text-ink/55` above headings (reference-pinned pattern; use once per section).
+- Kickers: `text-xs font-medium uppercase tracking-[0.13-0.16rem] text-ink/65` above headings (reference-pinned pattern; use once per section).
 - Body: DM Sans 400, 14-15px, `leading-6`, ink/55-60, max 65ch. Nav/labels uppercase tracked xs.
 - Card H3: DM Sans 500 `text-4xl sm:text-5xl tracking-[-0.06em]`. Dark numbered rows: Instrument Serif italic numerals 01-04 in white/40.
 

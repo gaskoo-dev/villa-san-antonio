@@ -869,9 +869,9 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
 
                     {/* Content - Title max in 2 lines & 3-sentence snippet */}
                     <div className="space-y-2 pt-1">
-                      <h3 className="font-serif text-xl sm:text-2xl text-ink leading-snug line-clamp-2 min-h-[3.2rem] flex items-center group-hover:text-emerald-950 transition-colors">
+                      <h2 className="font-serif text-xl sm:text-2xl text-ink leading-snug line-clamp-2 min-h-[3.2rem] flex items-center group-hover:text-emerald-950 transition-colors">
                         {exp.title}
-                      </h3>
+                      </h2>
                       <p className="text-xs sm:text-sm text-ink/70 leading-relaxed line-clamp-3">
                         {cardSnippet}
                       </p>
@@ -893,6 +893,7 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
                         href={exp.mapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Open ${exp.title} in Google Maps`}
                         onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/60 rounded-full px-2.5 py-1 hover:bg-emerald-100 transition-colors"
                       >
@@ -916,12 +917,12 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
         {/* Destinations & Travel Times Matrix */}
         <Reveal className="rounded-3xl border border-ink/10 bg-white/90 backdrop-blur-sm p-7 sm:p-10 lg:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.04)] space-y-8">
           <div className="space-y-2 text-center sm:text-left">
-            <span className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50">
+            <span className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/65">
               {data?.destinationsKicker || 'Regional Map & Travel Times'}
             </span>
-            <h3 className="font-serif text-2xl sm:text-3xl text-ink">
+            <h2 className="font-serif text-2xl sm:text-3xl text-ink">
               {data?.destinationsTitle || 'Everything within effortless driving distance.'}
-            </h3>
+            </h2>
             <p className="max-w-2xl text-xs sm:text-sm text-ink/65 leading-relaxed">
               {data?.destinationsLead ||
                 'Located in Podine (Šibenik hinterland), Villa San Antonio provides complete sanctuary without isolation — scenic highways and coastal roads take you anywhere in minutes.'}
@@ -939,24 +940,24 @@ export function DiscoverExperiences({ data }: { data?: DiscoverSectionData | nul
                 className="group flex flex-col justify-between rounded-2xl border border-ink/8 bg-paper/40 p-4.5 space-y-3 hover:border-ink/25 hover:bg-paper/70 hover:shadow-xs transition-all cursor-pointer"
               >
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-ink/50">
+                  <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-ink/65">
                     <span>{dest.category || 'Destination'}</span>
                     <span className="rounded-md bg-white px-2 py-0.5 text-ink shadow-2xs font-bold">
                       {dest.driveTime}
                     </span>
                   </div>
-                  <h4 className="text-sm font-semibold text-ink leading-tight pt-1 group-hover:text-ink/80 flex items-center justify-between gap-1">
+                  <h3 className="text-sm font-semibold text-ink leading-tight pt-1 group-hover:text-ink/80 flex items-center justify-between gap-1">
                     <span>{dest.name}</span>
                     <IconArrowUpRight
                       size={14}
                       className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0 text-ink/60"
                     />
-                  </h4>
+                  </h3>
                   {dest.desc && (
                     <p className="text-xs text-ink/60 leading-relaxed pt-0.5">{dest.desc}</p>
                   )}
                 </div>
-                <div className="pt-2 border-t border-ink/6 flex items-center justify-between text-xs text-ink/50">
+                <div className="pt-2 border-t border-ink/6 flex items-center justify-between text-xs text-ink/65">
                   <span>Distance:</span>
                   <span className="font-semibold text-ink/85">{dest.distance}</span>
                 </div>

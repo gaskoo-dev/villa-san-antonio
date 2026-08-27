@@ -8,7 +8,7 @@ import { submitContactMessage } from '@/actions/inquiries'
 import { emptyFormState } from '@/lib/form-state'
 
 const inputClass =
-  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/35 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
+  'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/55 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
@@ -79,7 +79,7 @@ export function ContactForm() {
       {/* Name and Email Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+          <label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
             Your Name <span className="text-amber-700">*</span>
           </label>
           <input
@@ -96,7 +96,7 @@ export function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="cemail" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+          <label htmlFor="cemail" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
             Email Address <span className="text-amber-700">*</span>
           </label>
           <input
@@ -115,7 +115,7 @@ export function ContactForm() {
 
       {/* Subject Input */}
       <div>
-        <label htmlFor="subject" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+        <label htmlFor="subject" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
           Subject <span className="text-amber-700">*</span>
         </label>
         <input
@@ -132,7 +132,7 @@ export function ContactForm() {
 
       {/* Message Textarea */}
       <div>
-        <label htmlFor="message" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+        <label htmlFor="message" className="mb-2 block text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
           Message <span className="text-amber-700">*</span>
         </label>
         <textarea

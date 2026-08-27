@@ -80,7 +80,7 @@ export function GalleryGrid({
       {/* Category Filter Tabs Bar */}
       <div className="mb-12 flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/40">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink/65">
             Curated Spaces
           </p>
           <h2 className="mt-1 font-serif text-2xl sm:text-3xl text-ink">
@@ -109,7 +109,7 @@ export function GalleryGrid({
             <span className="relative z-10 whitespace-nowrap">All</span>
             <span
               className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
-                selectedCategory === 'all' ? 'text-white/60' : 'text-ink/40'
+                selectedCategory === 'all' ? 'text-white/70' : 'text-ink/65'
               }`}
             >
               {categoryCounts.all ?? 0}
@@ -142,7 +142,7 @@ export function GalleryGrid({
                 <span className="relative z-10 whitespace-nowrap">{cat.name}</span>
                 <span
                   className={`relative z-10 text-[10px] tabular-nums shrink-0 ${
-                    isSelected ? 'text-white/60' : 'text-ink/40'
+                    isSelected ? 'text-white/70' : 'text-ink/65'
                   }`}
                 >
                   {count}

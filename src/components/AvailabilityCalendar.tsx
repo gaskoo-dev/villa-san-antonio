@@ -191,7 +191,7 @@ export function AvailabilityCalendar({
         </div>
 
         {/* Days of week header */}
-        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-ink/40">
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-ink/65">
           {DAYS_OF_WEEK.map((d) => (
             <div key={d} className="py-1">
               {d}
@@ -280,7 +280,7 @@ export function AvailabilityCalendar({
           <span className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink">
             Availability Calendar
           </span>
-          <span className="hidden sm:inline-flex items-center rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase text-ink/55">
+          <span className="hidden sm:inline-flex items-center rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase text-ink/65">
             Min. {effectiveMinNights} nights
           </span>
           {loading && (
@@ -345,7 +345,7 @@ export function AvailabilityCalendar({
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded-full bg-black/[0.06] border border-black/10" />
-            <span className="text-ink/50 line-through">Reserved</span>
+            <span className="text-ink/65 line-through">Reserved</span>
           </div>
         </div>
 

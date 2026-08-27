@@ -161,7 +161,7 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
                         {review.name}
                       </h3>
                       {review.country && (
-                        <p className="text-[11px] text-ink/50 leading-tight">{review.country}</p>
+                        <p className="text-[11px] text-ink/65 leading-tight">{review.country}</p>
                       )}
                     </div>
                   </div>
@@ -191,12 +191,12 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
           >
             <IconChevronRight size={18} stroke={2} />
           </button>
-          <span className="ml-2 text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+          <span className="ml-2 text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
             {activeIndex + 1} of {reviews.length} reviews
           </span>
         </div>
 
-        <span className="text-xs font-medium text-ink/50">
+        <span className="text-xs font-medium text-ink/65">
           Swipe or click any review to read full text
         </span>
       </div>
@@ -263,7 +263,7 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
                     {modalReview.name}
                   </p>
                   {modalReview.country && (
-                    <p className="text-xs text-ink/50 leading-tight mt-0.5">
+                    <p className="text-xs text-ink/65 leading-tight mt-0.5">
                       {modalReview.country}
                     </p>
                   )}

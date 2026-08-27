@@ -88,7 +88,7 @@ export default async function ContactPage() {
         <div>
           <Reveal>
             {contactBlock?.kicker && (
-              <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/50 mb-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.16rem] text-ink/65 mb-2">
                 {contactBlock.kicker}
               </p>
             )}
@@ -109,7 +109,7 @@ export default async function ContactPage() {
                   <IconMail size={18} stroke={1.5} aria-hidden />
                 </span>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/50">Email</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/65">Email</p>
                   <a
                     href={`mailto:${email}`}
                     className="mt-1 inline-block text-sm text-ink hover:underline"
@@ -125,7 +125,7 @@ export default async function ContactPage() {
                   <IconPhone size={18} stroke={1.5} aria-hidden />
                 </span>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/50">Direct Phone & WhatsApp</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/65">Direct Phone & WhatsApp</p>
                   <div className="mt-1 flex flex-wrap items-center gap-2.5 sm:gap-3">
                     <a
                       href={`tel:${cleanPhone}`}
@@ -137,7 +137,7 @@ export default async function ContactPage() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white transition-transform hover:scale-105 active:scale-95"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-700 px-3 py-1 text-xs font-semibold text-white transition-transform hover:scale-105 active:scale-95"
                     >
                       <IconBrandWhatsapp size={14} />
                       <span>{whatsappLabel}</span>
@@ -152,7 +152,7 @@ export default async function ContactPage() {
                   <IconMapPin size={18} stroke={1.5} aria-hidden />
                 </span>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/50">Location</p>
+                  <p className="text-xs font-medium uppercase tracking-[0.14rem] text-ink/65">Location</p>
                   <a
                     href={mapsUrl}
                     target="_blank"
@@ -168,7 +168,7 @@ export default async function ContactPage() {
             {/* Optional FAQ Helper Card */}
             {showFaqCard && (
               <div className="mt-8 sm:mt-12 rounded-2xl border border-ink/10 bg-paper/60 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/50">
+                <p className="text-xs font-semibold uppercase tracking-[0.14rem] text-ink/65">
                   {contactBlock?.faqCardTitle || 'Need immediate answers?'}
                 </p>
                 <p className="mt-1 text-xs text-ink/70 leading-relaxed">

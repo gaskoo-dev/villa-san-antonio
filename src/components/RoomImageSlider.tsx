@@ -159,7 +159,7 @@ export function RoomImageSlider({
         </div>
 
         {/* Bottom Dot Indicators */}
-        <div className="absolute bottom-3 inset-x-0 z-10 flex items-center justify-center gap-1.5 pointer-events-none">
+        <div className="absolute bottom-1.5 inset-x-0 z-10 flex items-center justify-center pointer-events-none">
           {images.map((_, idx) => (
             <button
               key={idx}
@@ -169,10 +169,15 @@ export function RoomImageSlider({
                 swiperRef.current?.slideToLoop(idx)
               }}
               aria-label={`Go to slide ${idx + 1}`}
-              className={`pointer-events-auto h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === activeIndex ? 'w-5 bg-white shadow-xs' : 'w-1.5 bg-white/50 hover:bg-white/80'
-              }`}
-            />
+              className="group pointer-events-auto flex h-6 w-6 items-center justify-center cursor-pointer"
+            >
+              <span
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === activeIndex ? 'w-5 bg-white shadow-xs' : 'w-1.5 bg-white/50 group-hover:bg-white/80'
+                }`}
+                aria-hidden="true"
+              />
+            </button>
           ))}
         </div>
       </div>

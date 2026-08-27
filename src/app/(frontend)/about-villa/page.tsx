@@ -136,7 +136,7 @@ function SpaceRow({
       <div className={`space-y-6 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
         <Reveal delay={80}>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-medium tracking-widest text-ink/40">
+            <span className="text-xs font-mono font-medium tracking-widest text-ink/65">
               {String(index + 1).padStart(2, '0')}
             </span>
             <span className="h-px w-8 bg-ink/20" />
@@ -381,7 +381,7 @@ export default async function AboutPage() {
                       <Icon size={22} stroke={1.75} />
                     </span>
                     <div>
-                      <h4 className="text-sm font-semibold text-ink leading-tight">{h.label}</h4>
+                      <h3 className="text-sm font-semibold text-ink leading-tight">{h.label}</h3>
                       <p className="mt-1 text-xs text-ink/60 leading-relaxed">{h.detail}</p>
                     </div>
                   </div>

@@ -158,7 +158,7 @@ export default async function FaqPage() {
                         <IconComponent size={19} stroke={1.8} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-semibold uppercase tracking-wider text-ink/50">
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-ink/65">
                           {fact.title}
                         </p>
                         <p className="mt-0.5 text-base font-semibold tracking-tight text-ink">
