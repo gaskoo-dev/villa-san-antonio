@@ -22,7 +22,9 @@ The integration test creates a uniquely named temporary PostgreSQL database and 
 
 ## Coolify deployment
 
-Set `DATABASE_URL`, `PAYLOAD_SECRET`, and `CRON_SECRET` on the web application container. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
+Set `DATABASE_URL`, `PAYLOAD_SECRET`, `CRON_SECRET`, and `SITE_URL` on the web application container. `SITE_URL` must be the public origin, for example `https://villa-sanantonio.com`; a trailing slash is accepted and normalized. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
+
+Mount Coolify persistent storage at `/app/media`. The image contains the committed media as an initial snapshot, while uploads made through Payload are written to that volume and must survive container replacements.
 
 Configure calendar sync as a Coolify Scheduled Task on the web/Next.js container, not the PostgreSQL container:
 

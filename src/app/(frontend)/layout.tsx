@@ -8,6 +8,7 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
 import { LocaleProvider } from '@/context/LocaleContext'
 import { SITE_URL } from '@/lib/content'
+import { DEFAULT_OPEN_GRAPH, DEFAULT_TWITTER } from '@/lib/metadata'
 import { getFooter, getHeader } from '@/lib/queries'
 import { getRequestLocale } from '@/lib/request-locale'
 
@@ -40,24 +41,8 @@ export const metadata: Metadata = {
     icon: '/branding/logo-black.png',
     apple: '/branding/logo-black.png',
   },
-  openGraph: {
-    siteName: 'Villa San Antonio',
-    type: 'website',
-    locale: 'en_GB',
-    images: [
-      {
-        url: '/branding/logo-black.png',
-        width: 1200,
-        height: 630,
-        alt: 'Villa San Antonio · Šibenik, Dalmatia',
-        type: 'image/png',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/branding/logo-black.png'],
-  },
+  openGraph: DEFAULT_OPEN_GRAPH,
+  twitter: DEFAULT_TWITTER,
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {

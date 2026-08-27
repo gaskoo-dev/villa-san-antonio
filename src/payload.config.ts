@@ -112,7 +112,8 @@ export default buildConfig({
         'A fully private villa for eight guests near Šibenik, Dalmatia with heated pool, BBQ house and fenced garden. Book direct with 0% fees.',
       generateURL: ({ doc }) => {
         const slug = (doc as { slug?: string })?.slug
-        return `${SITE_URL}${slug && slug !== 'home' ? `/${slug}` : ''}`
+        const pathname = slug && slug !== 'home' ? `/${slug.replace(/^\/+/, '')}` : '/'
+        return new URL(pathname, SITE_URL).toString()
       },
     }),
   ],

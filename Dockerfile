@@ -56,6 +56,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/media ./media
 RUN mkdir -p .next media
 RUN chown -R nextjs:nodejs .next media
 
+# Keep runtime uploads outside the disposable container layer.
+# Configure the deployment to retain this volume between releases.
+VOLUME ["/app/media"]
+
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

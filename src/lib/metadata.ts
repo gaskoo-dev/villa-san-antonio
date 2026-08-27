@@ -1,8 +1,27 @@
 import type { Metadata } from 'next'
 
 import { SITE_URL } from '@/lib/content'
-import { mediaSrc } from '@/lib/media'
 import type { Media, Page } from '@/payload-types'
+
+export const DEFAULT_SOCIAL_IMAGE = {
+  url: new URL('/branding/social-preview.jpg', SITE_URL).toString(),
+  width: 1200,
+  height: 630,
+  alt: 'Villa San Antonio · Private pool villa near Šibenik, Dalmatia',
+  type: 'image/jpeg',
+} as const
+
+export const DEFAULT_OPEN_GRAPH = {
+  siteName: 'Villa San Antonio',
+  type: 'website' as const,
+  locale: 'en_GB',
+  images: [DEFAULT_SOCIAL_IMAGE],
+}
+
+export const DEFAULT_TWITTER = {
+  card: 'summary_large_image' as const,
+  images: [DEFAULT_SOCIAL_IMAGE.url],
+}
 
 export function buildPageMetadata(
   page: Page | null,
@@ -15,7 +34,9 @@ export function buildPageMetadata(
     page?.meta?.image && typeof page.meta.image === 'object'
       ? (page.meta.image as Media)
       : null
-  const imageUrl = metaImage ? mediaSrc(metaImage, 'desktop') || mediaSrc(metaImage) : null
+  const desktopImage = metaImage?.sizes?.desktop
+  const usesDesktopImage = Boolean(desktopImage?.url)
+  const imageUrl = usesDesktopImage ? desktopImage?.url : metaImage?.url
   const canonical = new URL(pathname || '/', SITE_URL).toString()
 
   const absoluteImageUrl = imageUrl
@@ -28,13 +49,17 @@ export function buildPageMetadata(
     ? [
         {
           url: absoluteImageUrl,
-          width: metaImage?.width ?? 1920,
-          height: metaImage?.height ?? 1438,
+          width: (usesDesktopImage ? desktopImage?.width : metaImage?.width) ?? 1920,
+          height: (usesDesktopImage ? desktopImage?.height : metaImage?.height) ?? 1438,
           alt: metaImage?.alt || cmsTitle || 'Villa San Antonio',
           type: metaImage?.mimeType || 'image/jpeg',
         },
       ]
-    : fallback.openGraph?.images
+    : fallback.openGraph?.images || DEFAULT_OPEN_GRAPH.images
+
+  const twitterImages = absoluteImageUrl
+    ? [absoluteImageUrl]
+    : fallback.twitter?.images || DEFAULT_TWITTER.images
 
   return {
     ...fallback,
@@ -45,6 +70,7 @@ export function buildPageMetadata(
       canonical,
     },
     openGraph: {
+      ...DEFAULT_OPEN_GRAPH,
       ...fallback.openGraph,
       title: cmsTitle || undefined,
       description: typeof description === 'string' ? description : undefined,
@@ -52,11 +78,12 @@ export function buildPageMetadata(
       images: ogImages,
     },
     twitter: {
+      ...DEFAULT_TWITTER,
       ...fallback.twitter,
-      card: absoluteImageUrl ? 'summary_large_image' : 'summary',
+      card: 'summary_large_image',
       title: cmsTitle || undefined,
       description: typeof description === 'string' ? description : undefined,
-      images: absoluteImageUrl ? [absoluteImageUrl] : fallback.twitter?.images,
+      images: twitterImages,
     },
   }
 }

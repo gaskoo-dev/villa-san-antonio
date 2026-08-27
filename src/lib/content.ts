@@ -1,13 +1,27 @@
 // Static marketing copy (migrated from villa-sanantonio.com) and site constants.
 // Dynamic collections (reviews, FAQ, gallery, amenities, settings) live in Payload.
 
-export const SITE_URL =
+const configuredSiteUrl =
+  process.env.SITE_URL ||
   process.env.NEXT_PUBLIC_SITE_URL ||
   process.env.NEXT_PUBLIC_SERVER_URL ||
-  process.env.SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://villa-sanantonio.com')
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+  'https://villa-sanantonio.com'
+
+function normalizeSiteUrl(value: string): string {
+  const trimmed = value.trim()
+  const candidate = /^[a-z][a-z\d+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
+  const url = new URL(candidate)
+
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    throw new Error(`SITE_URL must use http or https, received "${url.protocol}"`)
+  }
+
+  const pathname = url.pathname.replace(/\/+$/, '')
+  return `${url.origin}${pathname}`
+}
+
+export const SITE_URL = normalizeSiteUrl(configuredSiteUrl)
 export const SITE_NAME = 'Villa San Antonio'
 export const CONTACT_EMAIL = 'kontakt@villa-sanantonio.com'
 export const CONTACT_PHONE = '+385 91 602 1899'
