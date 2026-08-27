@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite } from '@/access'
+import { sendBookingInquiryNotification } from '@/hooks/sendInquiryNotification'
 
 export const BookingInquiries: CollectionConfig = {
   slug: 'booking-inquiries',
@@ -236,6 +237,7 @@ export const BookingInquiries: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [sendBookingInquiryNotification],
     beforeValidate: [
       ({ data, operation }) => {
         // New inquiries always start as "new". Updates from the admin panel

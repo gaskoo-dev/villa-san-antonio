@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminWrite } from '@/access'
+import { sendContactMessageNotification } from '@/hooks/sendInquiryNotification'
 
 export const ContactMessages: CollectionConfig = {
   slug: 'contact-messages',
@@ -136,6 +137,7 @@ export const ContactMessages: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [sendContactMessageNotification],
     beforeValidate: [
       ({ data, operation }) => {
         if (operation === 'create' && data && typeof data === 'object') {

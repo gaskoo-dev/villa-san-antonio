@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import path from 'path'
@@ -34,6 +35,15 @@ import { SITE_URL } from './lib/content'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const smtpHost = process.env.SMTP_HOST?.trim()
+const smtpUser = process.env.SMTP_USER?.trim()
+const smtpPass = process.env.SMTP_PASS?.trim()
+const smtpFromEmail = process.env.SMTP_FROM_EMAIL?.trim()
+const smtpPortValue = Number.parseInt(process.env.SMTP_PORT || '465', 10)
+const smtpPort = Number.isFinite(smtpPortValue) ? smtpPortValue : 465
+const smtpSecure = process.env.SMTP_SECURE !== 'false'
+const smtpConfigured = Boolean(smtpHost && smtpUser && smtpPass && smtpFromEmail)
 
 export default buildConfig({
   admin: {
@@ -82,6 +92,21 @@ export default buildConfig({
     fallback: true,
   },
   editor: lexicalEditor(),
+  email: smtpConfigured
+    ? nodemailerAdapter({
+        defaultFromAddress: smtpFromEmail!,
+        defaultFromName: process.env.SMTP_FROM_NAME?.trim() || 'Villa San Antonio',
+        transportOptions: {
+          auth: {
+            pass: smtpPass!,
+            user: smtpUser!,
+          },
+          host: smtpHost!,
+          port: smtpPort,
+          secure: smtpSecure,
+        },
+      })
+    : undefined,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
