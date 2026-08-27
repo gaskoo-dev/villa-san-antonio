@@ -152,6 +152,7 @@ export function SiteHeader({
               alt=""
               width={500}
               height={500}
+              sizes="72px"
               priority
               className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ease-[var(--ease-reveal)] ${
                 overHero ? 'opacity-100' : 'opacity-0'
@@ -162,6 +163,7 @@ export function SiteHeader({
               alt=""
               width={500}
               height={500}
+              sizes="72px"
               priority
               className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ease-[var(--ease-reveal)] ${
                 overHero ? 'opacity-0' : 'opacity-100'
@@ -243,6 +245,7 @@ export function SiteHeader({
                     alt="Villa San Antonio"
                     width={300}
                     height={300}
+                    sizes="(min-width: 640px) 72px, 64px"
                     className="h-full w-full object-contain"
                   />
                 </div>

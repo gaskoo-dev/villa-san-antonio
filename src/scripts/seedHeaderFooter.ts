@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
+import { FACEBOOK_URL, INSTAGRAM_URL } from '../lib/content'
 import config from '../payload.config'
 
 async function seedHeaderFooter() {
@@ -71,12 +72,12 @@ async function seedHeaderFooter() {
         {
           platform: 'instagram',
           label: 'Instagram',
-          url: 'https://www.instagram.com',
+          url: INSTAGRAM_URL,
         },
         {
           platform: 'facebook',
           label: 'Facebook',
-          url: 'https://www.facebook.com',
+          url: FACEBOOK_URL,
         },
         {
           platform: 'whatsapp',

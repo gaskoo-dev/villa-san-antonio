@@ -393,6 +393,7 @@ export default async function HomePage() {
                         src={place.src}
                         alt={place.alt}
                         fill
+                        sizes="(min-width: 768px) 30vw, 92vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       {place.tag && (

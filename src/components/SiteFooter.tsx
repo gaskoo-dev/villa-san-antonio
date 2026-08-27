@@ -19,6 +19,7 @@ import {
   BOOKING_ANCHOR,
   CONTACT_EMAIL,
   CONTACT_PHONE,
+  FACEBOOK_URL,
   INSTAGRAM_URL,
   NAV_LINKS,
   PRIMARY_CTA_LABEL,
@@ -100,15 +101,28 @@ export async function SiteFooter({
       ? footerData.socialLinks
       : [
           { platform: 'instagram' as const, label: 'Instagram', url: INSTAGRAM_URL },
-          { platform: 'facebook' as const, label: 'Facebook', url: 'https://www.facebook.com' },
+          { platform: 'facebook' as const, label: 'Facebook', url: FACEBOOK_URL },
           { platform: 'whatsapp' as const, label: 'WhatsApp', url: 'https://wa.me/385916021899' },
         ]
-  const socialLinks = rawSocialLinks.map((social) =>
-    social.platform === 'instagram' &&
-    /^https?:\/\/(?:www\.)?instagram\.com\/?$/i.test(social.url.trim())
-      ? { ...social, url: INSTAGRAM_URL }
-      : social,
-  )
+  const socialLinks = rawSocialLinks.map((social) => {
+    const url = social.url.trim()
+
+    if (
+      social.platform === 'instagram' &&
+      /^https?:\/\/(?:www\.)?instagram\.com\/?$/i.test(url)
+    ) {
+      return { ...social, url: INSTAGRAM_URL }
+    }
+
+    if (
+      social.platform === 'facebook' &&
+      /^https?:\/\/(?:www\.|web\.)?facebook\.com\/?$/i.test(url)
+    ) {
+      return { ...social, url: FACEBOOK_URL }
+    }
+
+    return social
+  })
 
   // Keep legal links hidden until approved legal copy and routes are available.
   const legalLinks: Array<{ label: string; link: string }> = []
@@ -148,6 +162,7 @@ export async function SiteFooter({
                 alt="Villa San Antonio"
                 width={500}
                 height={500}
+                sizes="(min-width: 1024px) 120px, 112px"
                 className="h-28 w-28 lg:h-[120px] lg:w-[120px] object-contain"
               />
             </Link>

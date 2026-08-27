@@ -26,6 +26,7 @@ export const SITE_NAME = 'Villa San Antonio'
 export const CONTACT_EMAIL = 'kontakt@villa-sanantonio.com'
 export const CONTACT_PHONE = '+385 91 602 1899'
 export const INSTAGRAM_URL = 'https://www.instagram.com/villa_sanantonio/'
+export const FACEBOOK_URL = 'https://web.facebook.com/villasanantoniopodine/'
 
 export const NAV_LINKS = [
   { href: '/about-villa', label: 'About Villa' },

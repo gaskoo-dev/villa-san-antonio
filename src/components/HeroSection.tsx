@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ScrollToExplore } from '@/components/ScrollToExplore'
 import { ShaderHero, type ShaderSlide } from '@/components/ShaderHero'
 import { useLocale } from '@/context/LocaleContext'
-import { INSTAGRAM_URL } from '@/lib/content'
+import { FACEBOOK_URL, INSTAGRAM_URL } from '@/lib/content'
 
 export type HeroContentItem = {
   kicker: string
@@ -174,7 +174,7 @@ export function HeroSection({
           )}
           {(facebookUrl || facebookUrl === undefined) && (
             <a
-              href={facebookUrl || 'https://web.facebook.com/villasanantoniopodine/'}
+              href={facebookUrl || FACEBOOK_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
