@@ -177,7 +177,7 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
   const email = str(data, 'email')
   const subject = str(data, 'subject')
   const message = str(data, 'message')
-  const consent = data.get('consent') === 'on'
+  const privacyAcknowledged = data.get('privacyAcknowledged') === 'on'
 
   if (!name) errors.name = 'Please enter your name.'
   if (exceeds(name, 120)) errors.name = 'Name is too long.'
@@ -187,7 +187,9 @@ export async function submitContactMessage(_prev: FormState, data: FormData): Pr
   if (exceeds(subject, 200)) errors.subject = 'Subject is too long.'
   if (message.length < 5) errors.message = 'Please write your message.'
   if (exceeds(message, 5_000)) errors.message = 'Message is too long.'
-  if (!consent) errors.consent = 'We need your consent to reply.'
+  if (!privacyAcknowledged) {
+    errors.privacyAcknowledged = 'Please confirm how your contact details will be used.'
+  }
 
   if (Object.keys(errors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', errors }

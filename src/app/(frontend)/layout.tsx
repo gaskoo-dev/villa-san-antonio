@@ -5,6 +5,7 @@ import React from 'react'
 import { BackToTop } from '@/components/BackToTop'
 import { AnalyticsInteractions } from '@/components/AnalyticsInteractions'
 import { CookieConsentUI } from '@/components/CookieConsentUI'
+import { CookieSettingsButton } from '@/components/CookieSettingsButton'
 import { CursorDot } from '@/components/CursorDot'
 import { GoogleTagManager } from '@/components/GoogleTagManager'
 import { SiteFooter } from '@/components/SiteFooter'
@@ -70,6 +71,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
             <SiteHeader headerData={headerData} />
             <main id="content">{children}</main>
             <SiteFooter footerData={footerData} />
+            <CookieSettingsButton floating />
             <BackToTop />
             <CookieConsentUI />
           </CookieConsentProvider>

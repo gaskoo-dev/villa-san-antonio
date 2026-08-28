@@ -55,7 +55,7 @@ export function BackToTop({
           exit={{ opacity: 0, y: 16, scale: 0.9 }}
           transition={{ duration: 0.2 }}
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-paper/90 text-ink shadow-lg backdrop-blur-md transition-all hover:scale-110 hover:border-ink/30 hover:bg-paper hover:shadow-xl active:scale-95 cursor-pointer sm:bottom-8 sm:right-8"
+          className="fixed bottom-6 right-2 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-paper/90 text-ink shadow-lg backdrop-blur-md transition-all hover:scale-110 hover:border-ink/30 hover:bg-paper hover:shadow-xl active:scale-95 cursor-pointer sm:bottom-8 sm:right-8"
         >
           <IconArrowUp size={18} stroke={2} />
         </motion.button>

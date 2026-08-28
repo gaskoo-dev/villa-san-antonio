@@ -1,6 +1,6 @@
 'use client'
 
-import { IconArrowUpRight, IconCircleCheck, IconLoader2 } from '@tabler/icons-react'
+import { IconArrowUpRight, IconCheck, IconCircleCheck, IconLoader2 } from '@tabler/icons-react'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -12,10 +12,10 @@ import { emptyFormState } from '@/lib/form-state'
 const inputClass =
   'w-full rounded-2xl border border-ink/15 bg-paper/50 px-4.5 py-3.5 text-base sm:text-sm text-ink placeholder:text-ink/55 transition-colors duration-200 hover:border-ink/35 focus:border-ink/35 focus:outline-none'
 
-function FieldError({ message }: { message?: string }) {
+function FieldError({ id, message }: { id?: string; message?: string }) {
   if (!message) return null
   return (
-    <p role="alert" className="mt-1.5 text-xs font-medium text-red-600 animate-[var(--animate-fade-in)]">
+    <p id={id} role="alert" className="mt-1.5 text-xs font-medium text-red-700 animate-[var(--animate-fade-in)]">
       {message}
     </p>
   )
@@ -53,6 +53,7 @@ export function ContactForm() {
   const [state, formAction] = useActionState(submitContactMessage, emptyFormState)
   const [turnstileReady, setTurnstileReady] = useState(!turnstileClientEnabled)
   const leadTrackedRef = useRef(false)
+  const privacyAcknowledgedError = state.errors?.privacyAcknowledged
 
   useEffect(() => {
     if (state.status !== 'success' || leadTrackedRef.current) return
@@ -165,20 +166,34 @@ export function ContactForm() {
         <FieldError message={state.errors?.message} />
       </div>
 
-      {/* Privacy Consent Checkbox */}
+      {/* Privacy notice acknowledgment */}
       <div>
-        <label className="group flex items-start gap-3 text-xs sm:text-sm leading-6 text-ink/65 cursor-pointer">
-          <input
-            type="checkbox"
-            name="consent"
-            defaultChecked
-            className="mt-1 h-4 w-4 shrink-0 rounded-md border-ink/20 accent-ink cursor-pointer"
-          />
-          <span className="transition-colors group-hover:text-ink">
-            I agree to the processing of my contact details for the direct reply to my inquiry. No marketing emails or newsletters.
+        <label className="group flex min-h-11 cursor-pointer items-start gap-3.5 text-sm leading-6 text-ink/70">
+          <span className="relative mt-0.5 flex h-6 w-6 shrink-0">
+            <input
+              id="privacyAcknowledged"
+              type="checkbox"
+              name="privacyAcknowledged"
+              required
+              aria-describedby={`privacy-acknowledgment-text${privacyAcknowledgedError ? ' privacy-acknowledgment-error' : ''}`}
+              aria-invalid={Boolean(privacyAcknowledgedError)}
+              className={`peer h-6 w-6 cursor-pointer appearance-none rounded-md border bg-white transition-colors checked:border-ink checked:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
+                privacyAcknowledgedError ? 'border-red-500' : 'border-ink/30'
+              }`}
+            />
+            <IconCheck
+              size={16}
+              stroke={2.5}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 m-auto text-white opacity-0 transition-opacity peer-checked:opacity-100"
+            />
+          </span>
+          <span id="privacy-acknowledgment-text" className="transition-colors group-hover:text-ink">
+            I understand that the contact details I provide will be used only to respond to this inquiry and will not be used for marketing.
+            <span aria-hidden className="ml-1 text-amber-700">*</span>
           </span>
         </label>
-        <FieldError message={state.errors?.consent} />
+        <FieldError id="privacy-acknowledgment-error" message={privacyAcknowledgedError} />
       </div>
 
       <TurnstileWidget

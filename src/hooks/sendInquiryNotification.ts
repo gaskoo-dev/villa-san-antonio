@@ -15,9 +15,16 @@ function isEmailNotificationConfigured(): boolean {
     process.env.SMTP_HOST?.trim() &&
       process.env.SMTP_USER?.trim() &&
       process.env.SMTP_PASS?.trim() &&
-      process.env.SMTP_FROM_EMAIL?.trim() &&
-      process.env.INQUIRY_NOTIFICATION_EMAIL?.trim(),
+      process.env.SMTP_FROM_EMAIL?.trim(),
   )
+}
+
+function bookingNotificationRecipient(): string {
+  return process.env.BOOKING_NOTIFICATION_EMAIL?.trim() || 'booking@villa-sanantonio.com'
+}
+
+function contactNotificationRecipient(): string {
+  return process.env.CONTACT_NOTIFICATION_EMAIL?.trim() || 'kontakt@villa-sanantonio.com'
 }
 
 function escapeHtml(value: unknown): string {
@@ -110,7 +117,7 @@ export const sendBookingInquiryNotification: CollectionAfterChangeHook<BookingIn
     return doc
   }
 
-  const recipient = process.env.INQUIRY_NOTIFICATION_EMAIL!.trim()
+  const recipient = bookingNotificationRecipient()
   const guestName = `${oneLine(doc.firstName, '')} ${oneLine(doc.lastName, '')}`.trim()
   const checkIn = formatDate(doc.checkIn)
   const checkOut = formatDate(doc.checkOut)
@@ -180,7 +187,7 @@ export const sendContactMessageNotification: CollectionAfterChangeHook<ContactMe
     return doc
   }
 
-  const recipient = process.env.INQUIRY_NOTIFICATION_EMAIL!.trim()
+  const recipient = contactNotificationRecipient()
   const senderName = oneLine(doc.name, 'Gost')
   const messageSubject = oneLine(doc.subject, 'Bez predmeta')
   const adminUrl = adminRecordUrl('contact-messages', doc.id)

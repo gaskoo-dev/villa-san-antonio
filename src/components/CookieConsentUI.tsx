@@ -1,14 +1,15 @@
 'use client'
 
 import {
+  IconAdjustmentsHorizontal,
   IconChartBar,
-  IconCookie,
   IconExternalLink,
   IconMapPin,
   IconShieldCheck,
   IconSpeakerphone,
   IconX,
 } from '@tabler/icons-react'
+import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useCookieConsent } from '@/context/CookieConsentContext'
@@ -22,7 +23,8 @@ const COPY = {
       'We use one essential cookie to remember your choice. With your permission, we use analytics to improve the website and load Google Maps on location sections.',
     accept: 'Accept all',
     reject: 'Reject non-essential',
-    settings: 'Choose settings',
+    settings: 'Cookie details & settings',
+    closeBanner: 'Close and reject non-essential cookies',
     dialogTitle: 'Cookie settings',
     dialogBody:
       'Choose whether analytics and external maps may load. You can change or withdraw this choice at any time from the footer.',
@@ -51,7 +53,8 @@ const COPY = {
       'Wir verwenden ein notwendiges Cookie, um Ihre Auswahl zu speichern. Mit Ihrer Zustimmung nutzen wir Analysen zur Verbesserung der Website und laden Google Maps.',
     accept: 'Alle akzeptieren',
     reject: 'Nicht notwendige ablehnen',
-    settings: 'Einstellungen wählen',
+    settings: 'Cookie-Details & Einstellungen',
+    closeBanner: 'Schließen und nicht notwendige Cookies ablehnen',
     dialogTitle: 'Cookie-Einstellungen',
     dialogBody:
       'Wählen Sie, ob Analysen und externe Karten geladen werden dürfen. Sie können diese Auswahl jederzeit im Footer ändern oder widerrufen.',
@@ -80,7 +83,8 @@ const COPY = {
       'Koristimo jedan nužni kolačić kako bismo zapamtili vaš izbor. Uz dopuštenje koristimo analitiku za poboljšanje stranice i učitavamo Google Maps.',
     accept: 'Prihvati sve',
     reject: 'Odbij neobavezno',
-    settings: 'Odaberi postavke',
+    settings: 'Detalji i postavke kolačića',
+    closeBanner: 'Zatvori i odbij neobavezne kolačiće',
     dialogTitle: 'Postavke kolačića',
     dialogBody:
       'Odaberite smiju li se koristiti analitika i vanjske karte. Izbor možete u svakom trenutku promijeniti ili povući putem podnožja stranice.',
@@ -112,44 +116,65 @@ function ConsentBanner() {
   return (
     <section
       aria-label={copy.bannerLabel}
-      className="fixed inset-x-3 bottom-3 z-[90] mx-auto max-w-[1180px] border border-white/15 bg-ink text-white shadow-[0_18px_50px_rgba(9,11,12,0.28)] sm:inset-x-5 sm:bottom-5"
+      className="fixed inset-x-3 bottom-3 z-[90] mx-auto max-w-[1240px] overflow-hidden rounded-2xl border border-white/15 bg-ink text-white animate-fade-in sm:inset-x-5 sm:bottom-5"
     >
-      <div className="grid gap-5 px-5 py-5 sm:px-7 sm:py-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-10">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2 text-white/70">
-            <IconCookie size={17} stroke={1.7} aria-hidden />
-            <p className="text-xs font-semibold uppercase tracking-[0.14rem]">
-              {copy.bannerLabel}
+      <button
+        type="button"
+        onClick={rejectNonEssential}
+        aria-label={copy.closeBanner}
+        className="absolute right-0 top-0 z-10 flex h-11 w-11 items-center justify-center text-white/60 transition-colors duration-200 hover:text-white focus-visible:outline-white"
+      >
+        <IconX size={18} stroke={1.8} aria-hidden />
+      </button>
+
+      <div className="grid gap-5 px-5 py-5 sm:px-7 sm:py-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-center lg:gap-12 lg:px-8 lg:py-7 lg:pr-16">
+        <div className="grid min-w-0 grid-cols-[56px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 sm:flex sm:gap-6">
+          <div className="relative h-14 w-14 shrink-0 sm:h-[78px] sm:w-[78px]">
+            <Image
+              src="/branding/logo-white.png"
+              alt=""
+              width={500}
+              height={500}
+              sizes="(min-width: 640px) 78px, 64px"
+              className="h-full w-full object-contain"
+            />
+          </div>
+
+          <div className="min-w-0 border-l border-white/15 pl-4 pr-10 sm:pl-6 sm:pr-12 lg:pr-0">
+            <h2 className="text-balance text-2xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-[2rem]">
+              {copy.bannerTitle}
+            </h2>
+            <p className="mt-2 hidden max-w-[60ch] text-sm leading-6 text-white/70 sm:block">
+              {copy.bannerBody}
             </p>
           </div>
-          <h2 className="mt-3 text-balance text-2xl font-medium tracking-[-0.03em] sm:text-3xl">
-            {copy.bannerTitle}
-          </h2>
-          <p className="mt-2 max-w-[72ch] text-sm leading-6 text-white/70">
+
+          <p className="col-span-2 max-w-[60ch] text-sm leading-6 text-white/70 sm:hidden">
             {copy.bannerBody}
           </p>
         </div>
 
-        <div className="grid shrink-0 gap-2 sm:grid-cols-3 lg:min-w-[480px]">
-          <button
-            type="button"
-            onClick={rejectNonEssential}
-            className="inline-flex min-h-11 items-center justify-center border border-white/35 bg-white px-5 text-xs font-semibold uppercase tracking-[0.1rem] text-ink transition-colors hover:bg-paper focus-visible:outline-white"
-          >
-            {copy.reject}
-          </button>
+        <div className="grid shrink-0 grid-cols-2 gap-2.5">
           <button
             type="button"
             onClick={acceptAll}
-            className="inline-flex min-h-11 items-center justify-center border border-white/35 bg-white px-5 text-xs font-semibold uppercase tracking-[0.1rem] text-ink transition-colors hover:bg-paper focus-visible:outline-white"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/35 px-3 text-[10px] font-semibold uppercase leading-4 tracking-[0.08rem] text-white transition-colors duration-200 hover:border-white hover:bg-white hover:text-ink focus-visible:outline-white sm:px-5 sm:text-xs sm:tracking-[0.1rem]"
           >
             {copy.accept}
           </button>
           <button
             type="button"
-            onClick={openSettings}
-            className="inline-flex min-h-11 items-center justify-center border border-white/35 px-5 text-xs font-semibold uppercase tracking-[0.1rem] text-white transition-colors hover:bg-white/10 focus-visible:outline-white"
+            onClick={rejectNonEssential}
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/35 px-3 text-[10px] font-semibold uppercase leading-4 tracking-[0.08rem] text-white transition-colors duration-200 hover:border-white hover:bg-white hover:text-ink focus-visible:outline-white sm:px-5 sm:text-xs sm:tracking-[0.1rem]"
           >
+            {copy.reject}
+          </button>
+          <button
+            type="button"
+            onClick={openSettings}
+            className="col-span-2 inline-flex min-h-11 items-center justify-center gap-2 text-xs font-medium uppercase tracking-[0.1rem] text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline-white"
+          >
+            <IconAdjustmentsHorizontal size={16} stroke={1.7} aria-hidden />
             {copy.settings}
           </button>
         </div>
@@ -304,8 +329,8 @@ function CookieSettingsDialog() {
             >
               <span
                 aria-hidden
-                className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ${
-                  analytics ? 'translate-x-8' : 'translate-x-1'
+                className={`absolute left-1 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ${
+                  analytics ? 'translate-x-8' : 'translate-x-0'
                 }`}
               />
             </button>
@@ -344,8 +369,8 @@ function CookieSettingsDialog() {
             >
               <span
                 aria-hidden
-                className={`absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ${
-                  externalMedia ? 'translate-x-8' : 'translate-x-1'
+                className={`absolute left-1 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full bg-white transition-transform duration-200 ${
+                  externalMedia ? 'translate-x-8' : 'translate-x-0'
                 }`}
               />
             </button>

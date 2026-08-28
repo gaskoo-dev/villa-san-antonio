@@ -104,6 +104,7 @@ export const ContactMessages: CollectionConfig = {
         {
           name: 'consent',
           type: 'checkbox',
+          label: 'Privacy notice acknowledged',
           required: true,
           defaultValue: false,
           admin: {
@@ -111,7 +112,8 @@ export const ContactMessages: CollectionConfig = {
               Field:
                 '@/components/admin/LockableBookingFields#LockableCheckboxField',
             },
-            description: 'The sender agreed to personal data processing',
+            description:
+              'The sender acknowledged the contact-form privacy notice. This is not marketing consent.',
           },
         },
       ],

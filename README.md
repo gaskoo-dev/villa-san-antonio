@@ -48,12 +48,13 @@ SMTP_USER=kontakt@villa-sanantonio.com
 SMTP_PASS=<email-account-password>
 SMTP_FROM_EMAIL=kontakt@villa-sanantonio.com
 SMTP_FROM_NAME=Villa San Antonio
-INQUIRY_NOTIFICATION_EMAIL=kontakt@villa-sanantonio.com
+BOOKING_NOTIFICATION_EMAIL=booking@villa-sanantonio.com
+CONTACT_NOTIFICATION_EMAIL=kontakt@villa-sanantonio.com
 ```
 
 `SMTP_PASS` must exist only in Coolify's environment variables or local `.env`; never place it in `.env.example`, README, application logs, or Git. If cPanel shows a different secure outgoing hostname, use the cPanel value so its TLS certificate matches. Keep the guest's address in `Reply-To`; never use guest-provided input as the sender address.
 
-When all required SMTP variables are present, Payload automatically enables the Nodemailer adapter. Every newly created booking inquiry or contact message is saved to the CMS and sends an owner notification to `INQUIRY_NOTIFICATION_EMAIL`. Status updates do not resend the notification. If SMTP is unavailable, the CMS record remains saved and the delivery error is written to the server log without exposing the guest's data in analytics.
+When all required SMTP variables are present, Payload automatically enables the Nodemailer adapter. Every newly created booking inquiry is sent to `BOOKING_NOTIFICATION_EMAIL`, while every new contact message is sent to `CONTACT_NOTIFICATION_EMAIL`. Both are saved to the CMS first. Status updates do not resend the notification. If SMTP is unavailable, the CMS record remains saved and the delivery error is written to the server log without exposing the guest's data in analytics.
 
 Before launch, use **cPanel → Email Deliverability** to confirm SPF, DKIM, and DMARC, then test both public forms and verify delivery to the inbox and spam folder.
 
