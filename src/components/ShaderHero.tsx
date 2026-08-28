@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image, { type ImageLoaderProps } from 'next/image'
 import type { ComponentType } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -16,6 +16,25 @@ type ShaderCanvasProps = {
 }
 
 const SHADER_BOOT_DELAY = 4000
+const MOBILE_IMAGE_MAX_WIDTH = 828
+
+function heroImageLoader({ src, width, quality }: ImageLoaderProps) {
+  const responsiveQuality = width <= MOBILE_IMAGE_MAX_WIDTH ? 65 : (quality ?? 70)
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${responsiveQuality}`
+}
+
+function isMobileOrTouchOnlyDevice() {
+  const navigatorWithUserAgentData = navigator as Navigator & {
+    userAgentData?: { mobile?: boolean }
+  }
+
+  return (
+    window.matchMedia('(max-width: 767px)').matches ||
+    window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
+    navigatorWithUserAgentData.userAgentData?.mobile === true ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+  )
+}
 
 /**
  * Paint a regular responsive image immediately, then add the WebGL transition
@@ -40,9 +59,8 @@ export function ShaderHero({
   useEffect(() => {
     if (images.length < 2) return
 
-    const desktop = window.matchMedia('(min-width: 768px)')
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (!desktop.matches || reducedMotion.matches) return
+    if (isMobileOrTouchOnlyDevice() || reducedMotion.matches) return
 
     let cancelled = false
     let idleId: number | undefined
@@ -79,6 +97,7 @@ export function ShaderHero({
     <div className="absolute inset-0 overflow-hidden bg-black">
       {poster && (
         <Image
+          loader={heroImageLoader}
           src={poster.src}
           alt={poster.alt}
           fill

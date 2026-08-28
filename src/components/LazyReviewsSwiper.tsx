@@ -58,13 +58,14 @@ export function LazyReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
       return
     }
 
+    const mobile = window.matchMedia('(max-width: 767px)').matches
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
         loadSwiper()
         observer.disconnect()
       },
-      { rootMargin: '600px 0px' },
+      { rootMargin: mobile ? '200px 0px' : '600px 0px' },
     )
 
     observer.observe(root)
