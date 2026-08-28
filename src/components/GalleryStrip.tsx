@@ -61,6 +61,7 @@ export function GalleryStrip({
                   alt={mediaAlt(entry)}
                   width={760}
                   height={950}
+                  quality={70}
                   sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 240px"
                   className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-reveal)] motion-safe:group-hover:scale-105"
                 />

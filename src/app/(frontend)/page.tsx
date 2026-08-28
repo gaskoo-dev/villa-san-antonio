@@ -9,8 +9,8 @@ import { BookingBand } from '@/components/BookingBand'
 import { FaqAccordion } from '@/components/FaqAccordion'
 import { GalleryStrip } from '@/components/GalleryStrip'
 import { HeroSection } from '@/components/HeroSection'
+import { LazyReviewsSwiper } from '@/components/LazyReviewsSwiper'
 import { Reveal } from '@/components/Reveal'
-import { ReviewsSwiper } from '@/components/ReviewsSwiper'
 import { StatsBand } from '@/components/StatsBand'
 import { CONTACT_EMAIL, CONTACT_PHONE, REVIEWS_INTRO, SITE_URL } from '@/lib/content'
 import { buildPageMetadata, DEFAULT_SOCIAL_IMAGE } from '@/lib/metadata'
@@ -343,6 +343,8 @@ export default async function HomePage() {
                   alt={perspectiveLeftImg.alt}
                   width={800}
                   height={1000}
+                  quality={70}
+                  sizes="(min-width: 1536px) 426px, (min-width: 1024px) 28vw, (min-width: 640px) 45vw, 92vw"
                   className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105"
                 />
               </Reveal>
@@ -354,6 +356,8 @@ export default async function HomePage() {
                   alt={perspectiveRightImg.alt}
                   width={800}
                   height={1000}
+                  quality={70}
+                  sizes="(min-width: 1536px) 426px, (min-width: 1024px) 28vw, (min-width: 640px) 45vw, 92vw"
                   className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105"
                 />
               </Reveal>
@@ -393,7 +397,8 @@ export default async function HomePage() {
                         src={place.src}
                         alt={place.alt}
                         fill
-                        sizes="(min-width: 768px) 30vw, 92vw"
+                        quality={70}
+                        sizes="(min-width: 1536px) 460px, (min-width: 768px) 29vw, 92vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       {place.tag && (
@@ -480,7 +485,7 @@ export default async function HomePage() {
           </div>
 
           <Reveal delay={100}>
-            <ReviewsSwiper reviews={reviewsToUse} />
+            <LazyReviewsSwiper reviews={reviewsToUse} />
           </Reveal>
         </div>
       </section>

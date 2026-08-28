@@ -2,7 +2,7 @@
 
 import { IconArrowRight, IconBrandFacebook, IconBrandInstagram, IconMapPin } from '@tabler/icons-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 import { ScrollToExplore } from '@/components/ScrollToExplore'
@@ -70,12 +70,17 @@ export function HeroSection({
   facebookUrl,
 }: HeroSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [hasAdvanced, setHasAdvanced] = useState(false)
   const { t } = useLocale()
 
   const items = slidesContent && slidesContent.length > 0 ? slidesContent : t.hero.slides
   const current = items[activeIndex % items.length]
 
-  const animDuration = (transitionDuration ?? 2000) / 1000
+  const animDuration = Math.min((transitionDuration ?? 2000) / 1000, 0.9)
+  const handleSlideChange = useCallback((index: number) => {
+    setHasAdvanced(true)
+    setActiveIndex(index)
+  }, [])
   const resolvedInstagramUrl =
     instagramUrl === undefined
       ? INSTAGRAM_URL
@@ -98,7 +103,7 @@ export function HeroSection({
         images={images}
         duration={transitionDuration ?? 2000}
         interval={interval ?? 6500}
-        onSlideChange={(index) => setActiveIndex(index)}
+        onSlideChange={handleSlideChange}
       />
       <div className="absolute inset-0 z-10 bg-black/50" />
 
@@ -108,9 +113,9 @@ export function HeroSection({
             <motion.div
               key={activeIndex}
               style={{ gridArea: '1 / 1 / 2 / 2' }}
-              initial={{ opacity: 0, y: 22, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -22, filter: 'blur(6px)' }}
+              initial={hasAdvanced ? { opacity: 0, y: 18 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -18 }}
               transition={{ duration: animDuration, ease: [0.22, 1, 0.36, 1] }}
               className="flex w-full flex-col items-center text-center"
             >
