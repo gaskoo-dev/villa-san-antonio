@@ -22,6 +22,8 @@ The integration test creates a uniquely named temporary PostgreSQL database and 
 
 ## Coolify deployment
 
+Create the application from the Git repository and select **Dockerfile** as the build pack. Use `/` as the base directory, expose port `3000`, and configure the production domain in Coolify. The Docker image uses Next.js standalone output and listens on `0.0.0.0:3000`.
+
 Set every production value from `.env.example` on the web application container. Never commit real passwords, API keys, database credentials, or `CRON_SECRET` values. At minimum, production requires:
 
 - `DATABASE_URL`, `PAYLOAD_SECRET`, `CRON_SECRET`, and `SITE_URL`
@@ -30,11 +32,26 @@ Set every production value from `.env.example` on the web application container.
 - `GOOGLE_SITE_VERIFICATION` after the Search Console property is created
 - the SMTP variables documented below when inquiry notifications are activated
 
+The build prerenders CMS-backed public pages, so these variables must be enabled for both **Build** and **Runtime** in Coolify:
+
+- `DATABASE_URL`
+- `PAYLOAD_SECRET`
+- `SITE_URL`
+- `GOOGLE_SITE_VERIFICATION`
+- `NEXT_PUBLIC_GTM_ID`
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+
+Keep `CRON_SECRET`, `TURNSTILE_SECRET_KEY`, `SMTP_PASS`, and the other SMTP settings runtime-only. Enable Coolify's **Use Docker Build Secrets** option for sensitive build-time values such as `DATABASE_URL` and `PAYLOAD_SECRET`; do not bake them into the image as ordinary Docker build arguments.
+
 `SITE_URL` must be the public origin, for example `https://villa-sanantonio.com`; a trailing slash is accepted and normalized. Production migrations run automatically when Payload starts. Take a database backup before the first deployment that introduces a new migration.
 
 After the production domain is switched, verify the canonical and social image URLs on the final domain, then submit `https://villa-sanantonio.com/sitemap.xml` in Google Search Console.
 
 Mount Coolify persistent storage at `/app/media`. The image contains the committed media as an initial snapshot, while uploads made through Payload are written to that volume and must survive container replacements.
+
+Configure the Coolify health check to request `/` on port `3000`. After the first successful deployment, confirm that `/admin`, `/api/availability`, `/sitemap.xml`, and one uploaded CMS image all respond on the production domain.
+
+The repository's `docker-compose.yml` is for local development only. Coolify production should use the root `Dockerfile`; do not deploy the development Compose stack.
 
 ## Production SMTP
 

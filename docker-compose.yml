@@ -1,43 +1,37 @@
-version: '3'
-
 services:
   payload:
-    image: node:20-alpine
+    image: node:22.17.0-alpine
     ports:
       - '3000:3000'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm payload migrate && pnpm dev"
     depends_on:
-      - mongo
-      # - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgres://payload:payload@postgres:5432/villa_san_antonio
 
-  # Ensure your DATABASE_URL uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
+  postgres:
+    image: postgres:17-alpine
     ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: villa_san_antonio
+      POSTGRES_PASSWORD: payload
+      POSTGRES_USER: payload
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U payload -d villa_san_antonio']
+      interval: 5s
+      timeout: 5s
+      retries: 10
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  data:
-  # pgdata:
+  pgdata:
   node_modules:
