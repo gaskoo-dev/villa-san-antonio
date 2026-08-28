@@ -4,7 +4,7 @@
   --style-radius-m: 10px;
   --style-radius-l: 12px;
 
-  /* Neutral Untitled UI scale with Villa San Antonio black as the brand color. */
+  /* Neutral Untitled UI scale used by Payload's native dark theme mapping. */
   --color-base-0: rgb(255, 255, 255);
   --color-base-50: rgb(249, 250, 251);
   --color-base-100: rgb(242, 244, 247);
@@ -37,8 +37,33 @@
   --uui-text-tertiary: #667085;
   --uui-brand: #090b0c;
   --uui-brand-hover: #242628;
+  --uui-on-brand: #ffffff;
   --uui-warning: #dc6803;
   --uui-warning-soft: #fffaeb;
+  --uui-header: rgba(255, 255, 255, 0.94);
+  --uui-controls: rgba(255, 255, 255, 0.96);
+  --uui-focus-ring: rgba(16, 24, 40, 0.14);
+  --uui-flag-border: rgba(16, 24, 40, 0.12);
+}
+
+html[data-theme='dark'] {
+  --uui-bg: #0c111d;
+  --uui-surface: #101828;
+  --uui-surface-hover: #182230;
+  --uui-border: #263244;
+  --uui-border-strong: #344054;
+  --uui-text: #f2f4f7;
+  --uui-text-secondary: #d0d5dd;
+  --uui-text-tertiary: #98a2b3;
+  --uui-brand: #f2f4f7;
+  --uui-brand-hover: #ffffff;
+  --uui-on-brand: #090b0c;
+  --uui-warning: #f79009;
+  --uui-warning-soft: rgba(247, 144, 9, 0.16);
+  --uui-header: rgba(12, 17, 29, 0.94);
+  --uui-controls: rgba(12, 17, 29, 0.96);
+  --uui-focus-ring: rgba(242, 244, 247, 0.14);
+  --uui-flag-border: rgba(242, 244, 247, 0.16);
 }
 
 body {
@@ -51,7 +76,7 @@ body {
 }
 
 .app-header__content {
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--uui-header);
   border-bottom: 1px solid var(--uui-border);
   backdrop-filter: blur(12px);
 }
@@ -66,7 +91,7 @@ body {
   }
 
   .popup-button:focus-visible .localizer-button {
-    box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.14);
+    box-shadow: 0 0 0 3px var(--uui-focus-ring);
   }
 
   .localizer-button {
@@ -83,7 +108,7 @@ body {
   }
 
   .popup-button:hover .localizer-button {
-    background: #ffffff;
+    background: var(--uui-surface);
     border-color: var(--uui-border-strong);
   }
 
@@ -122,9 +147,9 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 1px solid rgba(16, 24, 40, 0.12);
+    border: 1px solid var(--uui-flag-border);
     border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.32);
     content: '';
     height: 20px;
     width: 20px;
@@ -159,7 +184,7 @@ body {
 .popup__content:has(.localizer__locale-code) {
   border: 1px solid var(--uui-border);
   border-radius: 10px;
-  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.14);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
   min-width: 220px;
   padding: 6px;
 
@@ -186,7 +211,7 @@ body {
   }
 
   .popup-button-list__button--selected {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     color: var(--uui-text);
     cursor: default;
     font-weight: 600;
@@ -196,9 +221,9 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 1px solid rgba(16, 24, 40, 0.12);
+    border: 1px solid var(--uui-flag-border);
     border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.32);
     flex: 0 0 22px;
     font-size: 0;
     height: 22px;
@@ -220,10 +245,10 @@ body {
 }
 
 .btn--style-primary {
-  --color: #ffffff;
+  --color: var(--uui-on-brand);
   --bg-color: var(--uui-brand);
   --hover-bg: var(--uui-brand-hover);
-  --hover-color: #ffffff;
+  --hover-color: var(--uui-on-brand);
   border-radius: 8px;
   font-weight: 600;
 }
@@ -242,22 +267,7 @@ body {
 
 /* Keep Payload's permission-aware navigation and give it Untitled UI treatment. */
 .nav {
-  --theme-bg: #ffffff;
-  --theme-text: #101828;
-  --theme-elevation-0: #ffffff;
-  --theme-elevation-50: #f9fafb;
-  --theme-elevation-100: #f2f4f7;
-  --theme-elevation-150: #eaecf0;
-  --theme-elevation-200: #e4e7ec;
-  --theme-elevation-300: #d0d5dd;
-  --theme-elevation-400: #98a2b3;
-  --theme-elevation-500: #667085;
-  --theme-elevation-600: #475467;
-  --theme-elevation-700: #344054;
-  --theme-elevation-800: #1d2939;
-  --theme-elevation-900: #101828;
-  --theme-elevation-1000: #090b0c;
-  background: #ffffff;
+  background: var(--uui-surface);
   border-color: var(--uui-border);
 }
 
@@ -278,7 +288,7 @@ body {
 
 .nav a.nav__link:hover,
 .nav a.nav__link:focus-visible {
-  background: #f2f4f7;
+  background: var(--uui-surface-hover);
   text-decoration: none;
 }
 
@@ -317,6 +327,10 @@ body {
   height: 42px;
   object-fit: contain;
   width: 42px;
+}
+
+html[data-theme='dark'] .villa-admin-brand__mark {
+  filter: invert(1);
 }
 
 /* Payload defaults the breadcrumb home icon to 18px. Give the custom mark
@@ -991,7 +1005,7 @@ body {
   }
 
   .doc-controls {
-    background: rgba(255, 255, 255, 0.96);
+    background: var(--uui-controls);
     border-bottom: 1px solid var(--uui-border);
   }
 
@@ -1014,7 +1028,7 @@ body {
   }
 
   .document-fields__sidebar-wrap {
-    background: #fbfbfa;
+    background: var(--uui-surface);
     border-left: 1px solid var(--uui-border);
     width: var(--doc-sidebar-width);
   }
@@ -1075,7 +1089,7 @@ body {
   }
 
   .booking-inquiry-section .row-label::before {
-    background-color: #f2f4f7;
+    background-color: var(--uui-surface-hover);
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 8px;
@@ -1098,7 +1112,7 @@ body {
   }
 
   .booking-inquiry-section .collapsible__indicator {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     border-radius: 7px;
     color: var(--uui-text-secondary);
     height: 30px;
@@ -1171,12 +1185,12 @@ body {
   }
 
   .lockable-booking-field__toggle:hover {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     color: var(--uui-text);
   }
 
   .lockable-booking-field__toggle:focus-visible {
-    box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.12);
+    box-shadow: 0 0 0 3px var(--uui-focus-ring);
     color: var(--uui-text);
     outline: 1px solid var(--uui-text);
     outline-offset: 1px;
@@ -1201,7 +1215,7 @@ body {
   .booking-inquiry-section .react-select .rs__control--is-focused,
   .booking-inquiry-status .react-select .rs__control--is-focused {
     border-color: var(--uui-text-secondary);
-    box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.12);
+    box-shadow: 0 0 0 3px var(--uui-focus-ring);
     outline: none;
   }
 
@@ -1260,7 +1274,7 @@ body {
     background: var(--uui-surface);
     border: 1px solid var(--uui-border);
     border-radius: 10px;
-    box-shadow: 0 10px 24px rgba(16, 24, 40, 0.12);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.36);
     margin-top: 6px;
     overflow: hidden;
     z-index: 20;
@@ -1283,7 +1297,7 @@ body {
 
   .booking-inquiry-section .react-select .rs__option--is-selected,
   .booking-inquiry-status .react-select .rs__option--is-selected {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     color: var(--uui-text);
     font-weight: 600;
   }
@@ -1293,7 +1307,7 @@ body {
     input:not(.rs__input):not([type='checkbox']),
   .booking-inquiry-section .lockable-booking-field--locked textarea,
   .booking-inquiry-section .lockable-booking-field--locked .react-select .rs__control {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     border-color: var(--uui-border);
     color: var(--uui-text-tertiary);
     cursor: not-allowed;
@@ -1303,7 +1317,7 @@ body {
   .booking-inquiry-section
     .lockable-booking-field--locked
     .checkbox-input__input {
-    background: #f2f4f7;
+    background: var(--uui-surface-hover);
     border-color: var(--uui-border);
     cursor: not-allowed;
     opacity: 1;
@@ -1443,20 +1457,20 @@ body {
 .uui-button--primary {
   background: var(--uui-brand);
   border-color: var(--uui-brand);
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
-  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+  color: var(--uui-on-brand);
 }
 
 .uui-button--primary:hover {
   background: var(--uui-brand-hover);
   border-color: var(--uui-brand-hover);
-  color: #ffffff;
+  color: var(--uui-on-brand);
 }
 
 .uui-button--secondary {
-  background: #ffffff;
+  background: var(--uui-surface);
   border-color: var(--uui-border-strong);
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   color: var(--uui-text-secondary);
 }
 
@@ -1470,7 +1484,7 @@ body {
   background: var(--uui-surface);
   border: 1px solid var(--uui-border);
   border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   display: grid;
   gap: 24px;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -1551,7 +1565,7 @@ body {
   background: var(--uui-surface);
   border: 1px solid var(--uui-border);
   border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   min-width: 0;
   padding: 20px;
 }
@@ -1569,7 +1583,7 @@ body {
 .uui-content-cell__icon,
 .uui-activity-item__icon {
   align-items: center;
-  background: #f2f4f7;
+  background: var(--uui-surface-hover);
   border-radius: 8px;
   color: var(--uui-brand);
   display: inline-flex;
@@ -1611,7 +1625,7 @@ body {
   background: var(--uui-surface);
   border: 1px solid var(--uui-border);
   border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
@@ -1646,7 +1660,7 @@ body {
 }
 
 .uui-table th {
-  background: #f9fafb;
+  background: var(--uui-surface-hover);
   border-bottom: 1px solid var(--uui-border);
   color: var(--uui-text-tertiary);
   font-size: 11px;
@@ -1704,7 +1718,7 @@ body {
 .uui-badge,
 .uui-status-badge {
   align-items: center;
-  background: #f9fafb;
+  background: var(--uui-surface-hover);
   border: 1px solid var(--uui-border);
   border-radius: 6px;
   color: var(--uui-text-secondary);
@@ -1718,7 +1732,7 @@ body {
 }
 
 .uui-status-badge {
-  background: #ffffff;
+  background: var(--uui-surface);
   border-radius: 999px;
   gap: 6px;
 }
@@ -1745,7 +1759,7 @@ body {
 }
 
 .uui-table__action a:hover {
-  background: #f2f4f7;
+  background: var(--uui-surface-hover);
   color: var(--uui-text);
 }
 
@@ -1842,7 +1856,7 @@ body {
 .uui-activity-item__icon {
   background: var(--uui-brand);
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--uui-on-brand);
   height: 34px;
   position: relative;
   width: 34px;
@@ -1909,7 +1923,7 @@ body {
 }
 
 .uui-settings-card > a:hover {
-  background: #f2f4f7;
+  background: var(--uui-surface-hover);
   color: var(--uui-text);
 }
 

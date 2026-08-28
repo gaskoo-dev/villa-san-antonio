@@ -47,6 +47,7 @@ const smtpConfigured = Boolean(smtpHost && smtpUser && smtpPass && smtpFromEmail
 
 export default buildConfig({
   admin: {
+    theme: 'all',
     user: Users.slug,
     meta: {
       titleSuffix: ' · Villa San Antonio CMS',
